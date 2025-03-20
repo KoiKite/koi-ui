@@ -97,7 +97,6 @@ const koiClose = () => {
 /** 确认提交后关闭对话框 */
 const koiQuickClose = () => {
   visible.value = false;
-  koiMsgWarning("已提交🌻");
 };
 
 // 当前组件获取父组件传递的事件方法

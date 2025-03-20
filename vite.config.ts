@@ -37,7 +37,7 @@ export default defineConfig(({ command, mode }: ConfigEnv): UserConfig => {
         // @ts-ignore
         supportTs: true, // 打开后，可以读取 ts 文件模块。 请注意，打开后将无法监视.js 文件。
         watchFiles: true  // 监视文件更改 更改mock的时候，不需要重新启动编译
-        // prodEnabled:true //设置打包是否启用mock功能
+        // prodEnabled:true // 设置打包是否启用mock功能
       })
     ],
     resolve: {

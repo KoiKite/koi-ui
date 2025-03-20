@@ -88,7 +88,6 @@ const koiClose = () => {
 /** 确认提交后关闭抽屉 */
 const koiQuickClose = () => {
   visible.value = false;
-  koiMsgWarning("已提交🌻");
 };
 
 /** 确认 */

@@ -19,10 +19,25 @@
   <a href="http://39.107.143.109/login" target="_blank">点击这里</a>
   <span>&nbsp;]&nbsp;</span>
 <p>
+
 <p align="center">
   <span>&nbsp;[&nbsp;</span>
   博客演示[366元]
   <a href="http://39.107.143.109:8188/home/index" target="_blank">点击这里</a>
+  <span>&nbsp;]&nbsp;</span>
+<p>
+
+<p align="center">
+  <span>&nbsp;[&nbsp;</span>
+  大屏案例一[100元]
+  <a href="http://39.107.143.109:8199" target="_blank">点击这里</a>
+  <span>&nbsp;]&nbsp;</span>
+<p>
+
+<p align="center">
+  <span>&nbsp;[&nbsp;</span>
+  博客大屏案例二[100元]
+  <a href="http://39.107.143.109:8111" target="_blank">点击这里</a>
   <span>&nbsp;]&nbsp;</span>
 <p>
 
@@ -104,6 +119,10 @@ KOI-UI🌻 是一款开源企业级别的中后台管理平台模板，基于 Vu
 > 预览截图
 
 <table>
+  <tr>
+    <td><img src="https://pica.zhimg.com/80/v2-6888b1d2c35f2db3772223ea805fdbde_720w.webp" /></td>
+    <td><img src="https://pic2.zhimg.com/80/v2-205f28eba8f1c4b76d362e5e3617deed_720w.webp" /></td>
+  </tr>
   <tr>
     <td><img src="https://gitee.com/BigCatHome/koi-photo/raw/master/photos/KOI-ADMIN/KOI1.png" /></td>
     <td><img src="https://gitee.com/BigCatHome/koi-photo/raw/master/photos/KOI-ADMIN/KOI2.png" /></td>
