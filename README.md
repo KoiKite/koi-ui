@@ -29,14 +29,14 @@
 
 <p align="center">
   <span>&nbsp;[&nbsp;</span>
-  大屏案例一[100元]
+  大屏案例一[150元]
   <a href="http://39.107.143.109:8199" target="_blank">点击这里</a>
   <span>&nbsp;]&nbsp;</span>
 <p>
 
 <p align="center">
   <span>&nbsp;[&nbsp;</span>
-  博客大屏案例二[100元]
+  大屏案例二[150元]
   <a href="http://39.107.143.109:8111" target="_blank">点击这里</a>
   <span>&nbsp;]&nbsp;</span>
 <p>
