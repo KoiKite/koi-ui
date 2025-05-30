@@ -179,7 +179,7 @@ defineExpose({
   align-items: center;
   justify-content: center;
   width: auto;
-  height: 12px;
+  height: 28px;
   padding: 8px 12px;
   margin-top: 1px;
   font-size: var(--el-font-size-base);

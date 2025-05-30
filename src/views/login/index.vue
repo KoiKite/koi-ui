@@ -1,7 +1,7 @@
 <template>
   <div class="h-full">
     <el-row class="h-100%">
-      <div class="absolute top-10px right-10px flex flex-items-center">
+      <div class="pos-absolute top-10px right-10px flex flex-items-center">
         <KoiLanguage></KoiLanguage>
         <KoiDark></KoiDark>
       </div>

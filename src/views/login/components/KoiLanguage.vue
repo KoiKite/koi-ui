@@ -5,8 +5,8 @@
       <el-dropdown @command="handleChangeLanguage" style="vertical-align: baseline;">
         <KoiSvgIcon
           name="koi-menu-earth"
-          width="20"
-          height="20"
+          width="32"
+          height="32"
           class="rounded-full p-6px bg-[rgba(50,50,50,0.06)] dark:bg-[rgba(255,255,255,0.06)] m-r-10px border-none outline-none"
         ></KoiSvgIcon>
         <template #dropdown>

@@ -35,6 +35,9 @@
 
 /* 管理平台全局样式 */
 * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
   // 全局字体
   font-family: "KoiFont", Inter, 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
   // 修改图标
