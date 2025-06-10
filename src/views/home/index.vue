@@ -5,7 +5,7 @@
         <img class="w-60px h-60px rounded-full select-none user-avatar" :src="avatar" alt="avatar" />
         <div class="p-l-20px">
           <div class="font-bold p-b-8px whitespace-nowrap">
-            <span>KOI-ADMIN🌻</span><span class="c-#6169FF" @click="handleKoiAdminGitee">前后端版本[129块]</span><span>/</span><span class="c-#409EFF" @click="handleKoiUIGitee">纯前端[Gitee]</span><span>/</span
+            <span>KOI-ADMIN🌻</span><span class="c-#6169FF" @click="handleKoiAdminGitee">前后端版本[159块]</span><span>/</span><span class="c-#409EFF" @click="handleKoiUIGitee">纯前端[Gitee]</span><span>/</span
             ><span class="c-orange" @click="handleKoiUIGitHub">纯前端[GitHub]</span>
           </div>
           <div class="font-bold whitespace-nowrap">君可愿白衣饮茶，清风瘦马，再听一曲六月雨下。🌻</div>

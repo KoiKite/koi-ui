@@ -162,9 +162,23 @@ const initChart = () => {
       type: "category"
     },
     yAxis: {
-      type: "value",
-      // 去掉背景横刻度线
-      splitLine: { show: false }
+      type: 'value',
+      axisLine: {
+        show: true
+        // lineStyle: {
+        //   color: '#666' // 可选：设置 Y 轴颜色
+        // }
+      },
+      axisLabel: {
+        show: true
+        // color: '#666' // 可选：设置字体颜色
+      },
+      axisTick: {
+        show: true
+      },
+      splitLine: {
+        show: false // 去掉背景横刻度线
+      }
     },
     series: [
       {

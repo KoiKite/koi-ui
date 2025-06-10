@@ -50,7 +50,7 @@ const initChart = () => {
   const initOption = {
     grid: {
       top: "20%",
-      left: "0",
+      left: "2%",
       bottom: "18%",
       right: "0"
     },
@@ -76,8 +76,22 @@ const initChart = () => {
     yAxis: [
       {
         type: "value",
-        // 去掉背景横刻度线
-        splitLine: { show: false }
+        axisLine: {
+          show: true
+          // lineStyle: {
+          //   color: '#666' // 可选：设置 Y 轴颜色
+          // }
+        },
+        axisLabel: {
+          show: true
+          // color: '#666' // 可选：设置字体颜色
+        },
+        axisTick: {
+          show: true
+        },
+        splitLine: {
+          show: false // 去掉背景横刻度线
+        }
       }
     ],
     series: [
