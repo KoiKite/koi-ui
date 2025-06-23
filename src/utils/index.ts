@@ -141,13 +141,92 @@ export const getAllBreadcrumbList = (menuList: any, parent = [], result: { [key:
   return result;
 };
 
+/**
+ * @description 根据activeMenu找到所有的层级面包屑
+ * @param {Array} routes 菜单列表
+ * @param {Array} activeMenu 选中菜单
+ */
+export const findRouteByActiveMenu = (routes: any, activeMenu: any) => {
+  // 深度优先搜索函数
+  const dfs = (node: any, path: any) => {
+    // 创建当前节点的副本（不包含 children）
+    const currentNode = { ...node };
+    delete currentNode.children;
+    
+    // 添加到当前路径
+    const currentPath = [...path, currentNode];
+    
+    // 检查是否匹配目标路径
+    if (node.path === activeMenu) {
+      return currentPath;
+    }
+    
+    // 递归搜索子节点
+    if (node.children && node.children.length > 0) {
+      for (const child of node.children) {
+        const result: any = dfs(child, currentPath);
+        if (result) return result;
+      }
+    }
+    
+    return null;
+  };
+  
+  // 遍历所有根节点
+  for (const route of routes) {
+    const result = dfs(route, []);
+    if (result) return result;
+  }
+  
+  return null;
+};
+
+/**
+ * @description 根据activeMenu找到所有的层级面包屑和里面的children
+ * @param {Array} routes 菜单列表
+ * @param {Array} activeMenu 选中菜单
+ */
+export const findRouteChildrenByActiveMenu = (routes: any, activeMenu: any) => {
+  // 深度优先搜索函数
+  const dfs = (node: any, path: any) => {
+    // 创建当前节点的完整副本（包含 children）
+    const currentNode = { ...node };
+    
+    // 添加到当前路径
+    const currentPath = [...path, currentNode];
+    
+    // 检查是否匹配目标路径
+    if (node.path === activeMenu) {
+      return currentPath;
+    }
+    
+    // 递归搜索子节点
+    if (node.children && node.children.length > 0) {
+      for (const child of node.children) {
+        const result: any = dfs(child, currentPath);
+        if (result) return result;
+      }
+    }
+    
+    return null;
+  };
+  
+  // 遍历所有根节点
+  for (const route of routes) {
+    const result = dfs(route, []);
+    if (result) return result;
+  }
+  
+  return null;
+};
+
 const mode = import.meta.env.VITE_ROUTER_MODE;
 
 /**
  * @description 获取不同路由模式所对应的 url + params
  * @returns {String}
  */
-export function getUrlWithParams() {
+export const getUrlWithParams = () => {
   const url = {
     hash: location.hash.substring(1),
     history: location.pathname + location.search
@@ -160,7 +239,7 @@ export function getUrlWithParams() {
  * @description 获取浏览器默认语言
  * @returns {String}
  */
-export function getBrowserLang() {
+export const getBrowserLang = () => {
   // @ts-ignore
   let browserLang = navigator.language ? navigator.language : navigator.browserLanguage;
   let defaultBrowserLang = "";
