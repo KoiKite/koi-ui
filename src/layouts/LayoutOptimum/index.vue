@@ -1,5 +1,5 @@
 <template>
-  <!-- 分栏布局 -->
+  <!-- 混合布局 -->
   <el-container class="layout-container">
     <el-aside
       class="layout-aside transition-all"
@@ -23,13 +23,13 @@
     </el-aside>
     <el-container>
       <el-header class="layout-header">
-        <div class="header">
+        <div class="koi-header">
           <div class="header-left">
             <!-- 左侧菜单展开和折叠图标 -->
             <Collapse></Collapse>
             <div class="layout-row m-l-12px">
-              <el-scrollbar>
-                <div class="flex flex-wrap">
+              <el-scrollbar class="horizontal-scrollbar">
+                <div class="horizontal-menu">
                   <div
                     v-for="item in menuList"
                     :key="item.path"
@@ -65,7 +65,7 @@ import Collapse from "@/layouts/components/Header/components/Collapse.vue";
 import Toolbar from "@/layouts/components/Header/components/Toolbar.vue";
 import ColumnSubMenu from "@/layouts/components/Menu/ColumnSubMenu.vue";
 import Main from "@/layouts/components/Main/index.vue";
-import { ref, computed, watch } from "vue";
+import { ref, computed, watch, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import useAuthStore from "@/stores/modules/auth.ts";
 import { getLanguage } from "@/utils/index.ts";
@@ -124,78 +124,155 @@ const handleSubMenu = (item: any) => {
 
 const activeMenu = computed(() => (route.meta.activeMenu ? route.meta.activeMenu : route.path) as string);
 
-// const rowMenuColor = computed(() => {
-//   if (globalStore.asideInverted && globalStore.headerInverted) return "white";
-//   if (globalStore.asideInverted) return "black";
-//   if (globalStore.headerInverted) return "white";
-// });
+/** 添加鼠标滚轮控制横向滚动功能 */
+const handleWheelScroll = (event: WheelEvent) => {
+  const container = document.querySelector('.horizontal-scrollbar .el-scrollbar__wrap');
+  if (container) {
+    // 阻止默认的垂直滚动行为
+    event.preventDefault();
+    
+    // 计算滚动距离
+    const scrollAmount = event.deltaY > 0 ? 100 : -100;
+    
+    // 平滑滚动
+    container.scrollTo({
+      left: container.scrollLeft + scrollAmount,
+      behavior: 'smooth'
+    });
+  }
+};
+
+onMounted(() => {
+  const scrollContainer: any = document.querySelector('.horizontal-scrollbar .el-scrollbar__wrap');
+  if (scrollContainer) {
+    scrollContainer.addEventListener('wheel', handleWheelScroll, { passive: false });
+  }
+});
 </script>
 
 <style lang="scss" scoped>
-.header {
+.koi-header {
   display: flex;
   justify-content: space-between;
   height: $aside-header-height;
+  
   .header-left {
     display: flex;
     align-items: center;
-    overflow: hidden;
-    white-space: nowrap;
+    flex: 1; /* 关键修改：占据剩余空间 */
+    min-width: 0; /* 防止溢出 */
   }
 }
 
 .layout-row {
   display: flex;
   height: 100%;
+  flex: 1; /* 关键修改：占据剩余空间 */
+  min-width: 0; /* 防止溢出 */
   user-select: none;
   background-color: var(--el-header-bg-color);
+}
 
-  .left-row {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    max-width: 220px;
-    height: 100%;
-    padding: 6px 4px 6px 4px;
-    margin-left: 4px;
-    margin-top: 2px;
-    cursor: pointer;
-    border: 1px solid transparent;
-    // color: v-bind(rowMenuColor);
-    color: var(--el-header-optimum-color);
-    // @apply dark:text-#E5E3EA;
-    .el-icon {
-      font-size: 18px;
+.horizontal-scrollbar {
+  width: 100%; /* 占据全部可用宽度 */
+  height: calc(100% - 4px);
+  overflow: hidden;
+  margin-top: 2px;
+
+  :deep(.el-scrollbar__wrap) {
+    /* 关键修改：强制隐藏垂直滚动 */
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    
+    /* 关键修改：防止内容换行 */
+    white-space: nowrap;
+    
+    /* 关键修改：禁用垂直滚动 */
+    height: 100% !important;
+    
+    /* 关键修改：隐藏垂直滚动条 */
+    .el-scrollbar__view {
+      height: 100% !important;
     }
-    .title {
-      margin-top: 8px;
-      font-size: 12px;
-      font-weight: $aside-menu-font-weight;
-      line-height: 14px;
-      text-align: center;
-      letter-spacing: 2px;
+    
+    /* 关键修改：移除底部内边距 */
+    padding-bottom: 0 !important;
+  }
+  
+  :deep(.el-scrollbar__bar) {
+    &.is-horizontal {
+      height: 8px;
+      bottom: 2px;
     }
-    &:hover {
-      // color: var(--el-color-primary);
-      color: var(--el-header-optimum-hover-color);
-      // background: var(--el-color-primary-light-9);
-      // background: var(--el-menu-hover-bg-color);
-      background: var(--el-header-optimum-hover-bg-color);
-      // border: 2px dashed var(--el-color-primary);
-      border: 1px solid var(--el-header-optimum-border-color);
+    
+    /* 关键修改：隐藏垂直滚动条 */
+    &.is-vertical {
+      display: none !important;
+    }
+    
+    .el-scrollbar__thumb {
+      background-color: rgba(144, 147, 153, 0.5);
       border-radius: 4px;
+      transition: background-color 0.3s;
+      
+      &:hover {
+        background-color: rgba(144, 147, 153, 0.7);
+      }
     }
-    &.is-active {
-      // color: var(--el-color-primary);
-      color: var(--el-header-optimum-active-color);
-      // background: var(--el-color-primary-light-8);
-      // background: var(--el-menu-active-bg-color);
-      background: var(--el-header-optimum-active-bg-color);
-      // border: 2px dashed var(--el-color-primary);
-      border: 1px solid var(--el-header-optimum-border-color);
-      border-radius: 4px;
-    }
+  }
+}
+
+/* 水平菜单容器 */
+.horizontal-menu {
+  display: inline-flex; /* 关键修改：内联flex */
+  height: 100%; /* 关键修改：高度100%填充 */
+  min-width: 100%; /* 确保内容足够宽 */
+  user-select: none;
+  /* 关键修改：确保容器高度不会超出 */
+  box-sizing: border-box;
+}
+
+/* 菜单项样式 */
+.left-row {
+  display: inline-flex; /* 关键修改：内联flex */
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 70px;
+  max-width: 120px;
+  height: 100%;
+  padding: 6px 4px;
+  margin: 0 4px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  color: var(--el-header-optimum-color);
+  transition: all 0.3s ease;
+  
+  .title {
+    margin-top: 8px;
+    font-size: 12px;
+    font-weight: $aside-menu-font-weight;
+    line-height: 14px;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    letter-spacing: 1px;
+  }
+  
+  &:hover {
+    color: var(--el-header-optimum-hover-color);
+    background: var(--el-header-optimum-hover-bg-color);
+    border: 1px solid var(--el-header-optimum-border-color);
+    border-radius: 4px;
+  }
+  
+  &.is-active {
+    color: var(--el-header-optimum-active-color);
+    background: var(--el-header-optimum-active-bg-color);
+    border: 1px solid var(--el-header-optimum-border-color);
+    border-radius: 4px;
   }
 }
 

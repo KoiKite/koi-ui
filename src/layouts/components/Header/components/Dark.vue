@@ -25,7 +25,7 @@ const { switchDark } = useTheme();
 defineProps({
   size: {
     type: Number,
-    default: 21
+    default: 20
   }
 });
 
