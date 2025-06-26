@@ -1,9 +1,3 @@
-/* ElementPlus 横向布局内置样式修改 */
-:root {
-  --el-menu-sub-item-height: $aside-menu-height !important;
-  // --el-menu-horizontal-sub-item-height: 40px !important; // 横向菜单高度覆盖
-}
-
 /* 当前页面最大化CSS，选项卡也行要去掉可以加上.el-tabs */
 .main-maximize {
   .aside-split,

@@ -46,25 +46,60 @@ const handleMenuRouter = (value: any) => {
 };
 </script>
 
-<style lang="scss" scoped>
-.el-menu-item {
+<style lang="scss">
+.el-menu--horizontal .el-menu-item {
   user-select: none;
-  --el-menu-item-height: $aside-menu-height;
+  border: none !important;
+
   &.is-active {
     color: #fff !important;
     background-color: var(--el-color-primary) !important;
   }
 }
 
+.el-menu--horizontal>.el-menu-item.is-active {
+  border: none !important;
+  color: #fff !important;
+}
+
 .el-sub-menu {
   padding: 0 !important;
 
-  :deep(.el-sub-menu__title) {
+  .el-sub-menu__title {
     padding: 0 30px 0 15px !important;
 
     .el-sub-menu__icon-arrow {
       right: 10px !important;
     }
   }
+}
+
+.el-menu--horizontal .el-menu {
+  border: none !important;
+}
+.el-menu--horizontal>.el-sub-menu.is-active .el-sub-menu__title {
+  border: none !important;
+}
+.el-menu--horizontal>.el-sub-menu .el-sub-menu__title {
+  border: none !important;
+}
+.el-menu--horizontal .el-menu .el-menu-item,
+.el-menu--horizontal .el-menu .el-sub-menu__title {
+  height: 40px !important;
+  line-height: 40px !important;
+  border-radius: 6px !important; 
+}
+.el-menu--horizontal>.el-menu-item.is-active {
+  border: none !important;
+}
+.el-menu--popup {
+  border: none !important;
+  box-shadow: none !important;
+  padding: 6px 6px 6px 6px !important;
+  background: var(--el-header-bg-color) !important;
+}
+.el-menu--horizontal>.el-menu-item { 
+  /* height: 36px !important; */
+  border-radius: 6px !important;
 }
 </style>

@@ -158,7 +158,6 @@ const handleMenuRouter = (value: any) => {
     // border-left: $aside-menu-border-left solid var(--el-menu-border-left-color);
   }
 }
-
 </style>
 
 <style lang="scss">
