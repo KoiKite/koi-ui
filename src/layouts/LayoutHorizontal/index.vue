@@ -5,8 +5,7 @@
       <div class="menu-container">
         <div class="horizontal-menu-wrapper">
           <!-- 不能直接使用 HorizontalSubMenu 组件，因为菜单数据过多无法触发 el-menu 隐藏省略功能 -->
-          <el-menu mode="horizontal" class="horizontal-menu" :default-active="activeMenu" :router="false"
-            :ellipsis="true">
+          <el-menu mode="horizontal" class="horizontal-menu" :default-active="activeMenu" :router="false">
             <!-- 有下级，用el-sub-menu，无下级用el-menu-item -->
             <template v-for="item in menuList" :key="item.path">
               <!-- 非叶子节点 v-show：true(显示)false(隐藏)，v-if反之。 -->
@@ -89,29 +88,6 @@ const activeMenu = computed(() => (route.meta.activeMenu ? route.meta.activeMenu
       height: 100%;
       overflow: hidden;
       border-bottom: none;
-
-      .el-menu-item.is-active {
-        color: #ffffff !important;
-      }
-
-      .el-sub-menu.is-active {
-        background-color: var(--el-color-primary);
-      }
-
-      :deep(.is-active) {
-        background-color: var(--el-color-primary);
-        border-bottom-color: var(--el-color-primary);
-
-        .el-sub-menu__title {
-          color: #ffffff !important;
-          background-color: var(--el-color-primary);
-          border-bottom-color: var(--el-color-primary);
-
-          i {
-            color: #ffffff !important;
-          }
-        }
-      }
     }
   }
 }

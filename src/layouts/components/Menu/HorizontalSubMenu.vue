@@ -52,17 +52,12 @@ const handleMenuRouter = (value: any) => {
   border: none !important;
 
   &.is-active {
-    color: #fff !important;
-    background-color: var(--el-color-primary) !important;
+    color: var(--el-color-primary) !important;
+    background-color: var(--el-color-primary-light-9) !important;
   }
 }
 
-.el-menu--horizontal>.el-menu-item.is-active {
-  border: none !important;
-  color: #fff !important;
-}
-
-.el-sub-menu {
+.el-menu--horizontal .el-sub-menu {
   padding: 0 !important;
 
   .el-sub-menu__title {
@@ -83,23 +78,55 @@ const handleMenuRouter = (value: any) => {
 .el-menu--horizontal>.el-sub-menu .el-sub-menu__title {
   border: none !important;
 }
-.el-menu--horizontal .el-menu .el-menu-item,
-.el-menu--horizontal .el-menu .el-sub-menu__title {
-  height: 40px !important;
-  line-height: 40px !important;
-  border-radius: 6px !important; 
-}
 .el-menu--horizontal>.el-menu-item.is-active {
   border: none !important;
 }
-.el-menu--popup {
-  border: none !important;
-  box-shadow: none !important;
-  padding: 6px 6px 6px 6px !important;
-  background: var(--el-header-bg-color) !important;
-}
 .el-menu--horizontal>.el-menu-item { 
-  /* height: 36px !important; */
+  height: 36px !important;
   border-radius: 6px !important;
+}
+
+.el-popper.is-pure {
+  border-radius: 12px;
+}
+
+// 菜单折叠 hover 弹窗样式
+.el-menu--vertical,
+.el-menu--popup-container {
+  .el-menu--popup {
+    border-radius: 12px !important;
+    // box-shadow: none !important;
+    padding: 6px !important;
+    background: var(--el-header-bg-color) !important;
+
+    .el-sub-menu__title:hover,
+    .el-menu-item:hover {
+      border-radius: 6px;
+    }
+
+    .el-menu-item {
+      height: 40px;
+      margin-bottom: 4px;
+      border-radius: 6px;
+
+      &:last-of-type {
+        margin-bottom: 0;
+      }
+    }
+
+    .el-sub-menu {
+      height: 40px !important;
+      margin-bottom: 4px;
+
+      .el-sub-menu__title {
+        height: 40px !important;
+        border-radius: 6px;
+      }
+
+      &:last-of-type {
+        margin-bottom: 0;
+      }
+    }
+  }
 }
 </style>
