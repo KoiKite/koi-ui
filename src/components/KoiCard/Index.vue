@@ -14,6 +14,6 @@
 
 <style scoped>
 .koi-card {
-  @apply overflow-hidden p-x-20px p-t-10px p-b-0px bg-#fff text-#303133 dark:bg-#1d1e1f dark:text-#cfd3dc dark:b-#414243 border-1px border-solid border-#e4e7ed rounded-6px flex flex-col flex-1;
+  @apply overflow-hidden p-x-20px p-t-10px p-b-0px bg-#fff text-#303133 dark:bg-#1d1e1f dark:text-#cfd3dc dark:border-#414243 border-1px border-solid border-#e4e7ed rounded-6px flex flex-col flex-1;
 }
 </style>
