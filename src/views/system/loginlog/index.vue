@@ -64,7 +64,7 @@
         v-loading="loading"
         border
         :data="tableList"
-        empty-text="暂时没有数据哟🌻"
+        empty-text="暂时没有数据哟"
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" width="55" align="center" />
@@ -144,7 +144,7 @@
         <el-table-column label="登录时间" prop="loginTime" width="180px" align="center"></el-table-column>
         <el-table-column label="操作" align="center" width="120" fixed="right">
           <template #default="{ row }">
-            <el-tooltip content="删除🌻" placement="top">
+            <el-tooltip content="删除" placement="top">
               <el-button
                 type="danger"
                 icon="Delete"
@@ -198,38 +198,38 @@ const showSearch = ref<boolean>(true); // 默认显示搜索条件
 const tableList = ref<any>([
   {
     loginId: 1,
-    loginName: "YU-ADMIN🌻",
+    loginName: "YU-ADMIN",
     ipAddress: "127.0.0.1",
     loginAddress: "河南省 郑州市",
     loginStatus: "0",
     deviceName: "PC",
     browser: "Chrome 11",
     os: "Windows 10",
-    message: "YU-ADMIN🌻",
+    message: "YU-ADMIN",
     loginTime: "2023-08-08 23:00:00"
   },
   {
     loginId: 2,
-    loginName: "张大仙🌻",
+    loginName: "张大仙",
     ipAddress: "127.0.0.1",
     loginAddress: "河南省 郑州市",
     loginStatus: "0",
     deviceName: "PC",
     browser: "Chrome 11",
     os: "Windows 10",
-    message: "YU-ADMIN🌻",
+    message: "YU-ADMIN",
     loginTime: "2023-08-08 23:00:00"
   },
   {
     loginId: 3,
-    loginName: "王将🌻",
+    loginName: "王将",
     ipAddress: "127.0.0.1",
     loginAddress: "河南省 郑州市",
     loginStatus: "0",
     deviceName: "PC",
     browser: "Chrome 11",
     os: "Windows 10",
-    message: "YU-ADMIN🌻",
+    message: "YU-ADMIN",
     loginTime: "2023-08-08 23:00:00"
   }
 ]);
@@ -289,7 +289,7 @@ const handleListPage = async () => {
   //   loading.value = false;
   // } catch (error) {
   //   console.log(error);
-  //   koiNoticeError("数据查询失败，请刷新重试🌻");
+  //   koiNoticeError("数据查询失败，请刷新重试");
   // }
 };
 
@@ -302,7 +302,7 @@ const handleTableData = async () => {
     total.value = res.data.total;
   } catch (error) {
     console.log(error);
-    koiNoticeError("数据查询失败，请刷新重试🌻");
+    koiNoticeError("数据查询失败，请刷新重试");
   }
 };
 
@@ -335,20 +335,20 @@ const handleSelectionChange = (selection: any) => {
 //   koiMsgBox("确认要[" + text + "]-[" + row.loginName + "]吗？")
 //     .then(async () => {
 //       if (!row.loginId || !row.loginStatus) {
-//         koiMsgWarning("请选择需要修改的数据🌻");
+//         koiMsgWarning("请选择需要修改的数据");
 //         return;
 //       }
 //       try {
 //         await updateStatus(row.loginId, row.loginStatus);
-//         koiNoticeSuccess("修改成功🌻");
+//         koiNoticeSuccess("修改成功");
 //       } catch (error) {
 //         console.log(error);
 //         handleTableData();
-//         koiNoticeError("修改失败，请刷新重试🌻");
+//         koiNoticeError("修改失败，请刷新重试");
 //       }
 //     })
 //     .catch(() => {
-//       koiMsgError("已取消🌻");
+//       koiMsgError("已取消");
 //     });
 // };
 
@@ -356,7 +356,7 @@ const handleSelectionChange = (selection: any) => {
 const handleDelete = (row: any) => {
   const id = row.loginId;
   if (id == null || id == "") {
-    koiMsgWarning("请选择需要删除的数据🌻");
+    koiMsgWarning("请选择需要删除的数据");
     return;
   }
   koiMsgBox("您确认需要删除用户名称[" + row.loginName + "]么？")
@@ -364,22 +364,22 @@ const handleDelete = (row: any) => {
       try {
         await deleteById(id);
         handleTableData();
-        koiNoticeSuccess("删除成功🌻");
+        koiNoticeSuccess("删除成功");
       } catch (error) {
         console.log(error);
         handleTableData();
-        koiNoticeError("删除失败，请刷新重试🌻");
+        koiNoticeError("删除失败，请刷新重试");
       }
     })
     .catch(() => {
-      koiMsgError("已取消🌻");
+      koiMsgError("已取消");
     });
 };
 
 /** 批量删除 */
 const handleBatchDelete = () => {
   if (ids.value.length == 0) {
-    koiMsgInfo("请选择需要删除的数据🌻");
+    koiMsgInfo("请选择需要删除的数据");
     return;
   }
   koiMsgBox("您确认需要进行批量删除么？")
@@ -388,15 +388,15 @@ const handleBatchDelete = () => {
         // console.log("ids", ids.value);
         await batchDelete(ids.value);
         handleTableData();
-        koiNoticeSuccess("批量删除成功🌻");
+        koiNoticeSuccess("批量删除成功");
       } catch (error) {
         console.log(error);
-        koiNoticeError("批量删除失败，请刷新重试🌻");
+        koiNoticeError("批量删除失败，请刷新重试");
         handleTableData();
       }
     })
     .catch(() => {
-      koiMsgError("已取消🌻");
+      koiMsgError("已取消");
     });
 };
 </script>

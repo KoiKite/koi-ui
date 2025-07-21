@@ -76,7 +76,7 @@
         v-loading="loading"
         border
         :data="tableList.slice((searchParams.pageNo - 1) * searchParams.pageSize, searchParams.pageNo * searchParams.pageSize)"
-        empty-text="暂时没有数据哟🌻"
+        empty-text="暂时没有数据哟"
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" width="55" align="center" />
@@ -155,7 +155,7 @@
           v-auth="['system:role:update', 'system:role:delete']"
         >
           <template #default="{ row }">
-            <el-tooltip content="修改🌻" placement="top">
+            <el-tooltip content="修改" placement="top">
               <el-button
                 type="primary"
                 icon="Edit"
@@ -165,7 +165,7 @@
                 v-auth="['system:role:update']"
               ></el-button>
             </el-tooltip>
-            <el-tooltip content="删除🌻" placement="top">
+            <el-tooltip content="删除" placement="top">
               <el-button
                 type="danger"
                 icon="Delete"
@@ -565,7 +565,7 @@ const handleListPage = async () => {
   //   loading.value = false;
   // } catch (error) {
   //   console.log(error);
-  //   koiNoticeError("数据查询失败，请刷新重试🌻");
+  //   koiNoticeError("数据查询失败，请刷新重试");
   // }
 };
 
@@ -584,7 +584,7 @@ const handleTableData = async () => {
     total.value = res.data.total;
   } catch (error) {
     console.log(error);
-    koiNoticeError("数据查询失败，请刷新重试🌻");
+    koiNoticeError("数据查询失败，请刷新重试");
   }
 };
 
@@ -620,7 +620,7 @@ const handleDict1 = async () => {
     // userTypeOptions.value = res.data;
   } catch (error) {
     console.log(error);
-    koiMsgError("数据字典查询失败，请刷新重试🌻");
+    koiMsgError("数据字典查询失败，请刷新重试");
   }
 };
 
@@ -640,7 +640,7 @@ const handleDict2 = async () => {
     // userSexOptions.value = res.data;
   } catch (error) {
     console.log(error);
-    koiMsgError("数据字典查询失败，请刷新重试🌻");
+    koiMsgError("数据字典查询失败，请刷新重试");
   }
 };
 
@@ -660,7 +660,7 @@ const handleSelectionChange = (selection: any) => {
 const handleAdd = () => {
   // 打开对话框
   koiDrawerRef.value.koiOpen();
-  koiMsgSuccess("添加🌻");
+  koiMsgSuccess("添加");
   // 重置表单
   resetForm();
   // 标题
@@ -672,7 +672,7 @@ const handleAdd = () => {
 const handleEcho = async (id: any) => {
   console.log("回显数据ID", id);
   if (id == null || id == "") {
-    koiMsgWarning("请选择需要修改的数据🌻");
+    koiMsgWarning("请选择需要修改的数据");
     return;
   }
   try {
@@ -680,7 +680,7 @@ const handleEcho = async (id: any) => {
     console.log(res.data);
     form.value = res.data;
   } catch (error) {
-    koiNoticeError("数据获取失败，请刷新重试🌻");
+    koiNoticeError("数据获取失败，请刷新重试");
     console.log(error);
   }
 };
@@ -689,14 +689,14 @@ const handleEcho = async (id: any) => {
 const handleUpdate = async (row?: any) => {
   // 打开对话框
   koiDrawerRef.value.koiOpen();
-  koiMsgSuccess("修改🌻");
+  koiMsgSuccess("修改");
   // 重置表单
   resetForm();
   // 标题
   title.value = "用户修改";
   const userId = row ? row.userId : ids.value[0];
   if (userId == null || userId == "") {
-    koiMsgError("请选择需要修改的数据🌻");
+    koiMsgError("请选择需要修改的数据");
   }
   console.log(userId);
   // 回显数据
@@ -759,7 +759,7 @@ const handleConfirm = () => {
       if (form.value.userId != null && form.value.userId != "") {
         try {
           await update(form.value);
-          koiNoticeSuccess("修改成功🌻");
+          koiNoticeSuccess("修改成功");
           confirmLoading.value = false;
           koiDrawerRef.value.koiQuickClose();
           resetForm();
@@ -767,12 +767,12 @@ const handleConfirm = () => {
         } catch (error) {
           console.log(error);
           confirmLoading.value = false;
-          koiNoticeError("修改失败，请刷新重试🌻");
+          koiNoticeError("修改失败，请刷新重试");
         }
       } else {
         try {
           await add(form.value);
-          koiNoticeSuccess("添加成功🌻");
+          koiNoticeSuccess("添加成功");
           confirmLoading.value = false;
           koiDrawerRef.value.koiQuickClose();
           resetForm();
@@ -780,7 +780,7 @@ const handleConfirm = () => {
         } catch (error) {
           console.log(error);
           confirmLoading.value = false;
-          koiNoticeError("添加失败，请刷新重试🌻");
+          koiNoticeError("添加失败，请刷新重试");
         }
       }
 
@@ -788,14 +788,14 @@ const handleConfirm = () => {
       // setInterval(() => {
       //   loadingTime--;
       //   if (loadingTime === 0) {
-      //     koiNoticeSuccess("朕让你提交了么？信不信锤你🌻");
+      //     koiNoticeSuccess("朕让你提交了么？信不信锤你");
       //     confirmLoading.value = false;
       //     resetForm();
       //     koiDrawerRef.value.koiQuickClose();
       //   }
       // }, 1000);
     } else {
-      koiMsgError("验证失败，请检查填写内容🌻");
+      koiMsgError("验证失败，请检查填写内容");
       confirmLoading.value = false;
     }
   });
@@ -812,20 +812,20 @@ const handleSwitch = (row: any) => {
   koiMsgBox("确认要[" + text + "]-[" + row.userName + "]吗？")
     .then(async () => {
       if (!row.userId || !row.userStatus) {
-        koiMsgWarning("请选择需要修改的数据🌻");
+        koiMsgWarning("请选择需要修改的数据");
         return;
       }
       try {
         await updateStatus(row.userId, row.userStatus);
-        koiNoticeSuccess("修改成功🌻");
+        koiNoticeSuccess("修改成功");
       } catch (error) {
         console.log(error);
-        koiNoticeError("修改失败，请刷新重试🌻");
+        koiNoticeError("修改失败，请刷新重试");
         handleTableData();
       }
     })
     .catch(() => {
-      koiMsgError("已取消🌻");
+      koiMsgError("已取消");
     });
 };
 
@@ -879,7 +879,7 @@ const handleTransferChange = async (value: any) => {
   console.log(value);
   try {
     await assignUserRole(value);
-    koiNoticeSuccess("分配角色成功🌻");
+    koiNoticeSuccess("分配角色成功");
   } catch (error) {
     console.log(error);
     handleAssignRoles();
@@ -891,7 +891,7 @@ const handleTransferChange = async (value: any) => {
 const handleDelete = (row: any) => {
   const id = row.userId;
   if (id == null || id == "") {
-    koiMsgWarning("请选择需要删除的数据🌻");
+    koiMsgWarning("请选择需要删除的数据");
     return;
   }
   koiMsgBox("您确认需要删除用户名称[" + row.userTitle + "]么？")
@@ -899,22 +899,22 @@ const handleDelete = (row: any) => {
       try {
         await deleteById(id);
         handleTableData();
-        koiNoticeSuccess("删除成功🌻");
+        koiNoticeSuccess("删除成功");
       } catch (error) {
         console.log(error);
         handleTableData();
-        koiNoticeError("删除失败，请刷新重试🌻");
+        koiNoticeError("删除失败，请刷新重试");
       }
     })
     .catch(() => {
-      koiMsgError("已取消🌻");
+      koiMsgError("已取消");
     });
 };
 
 /** 批量删除 */
 const handleBatchDelete = () => {
   if (ids.value.length == 0) {
-    koiMsgInfo("请选择需要删除的数据🌻");
+    koiMsgInfo("请选择需要删除的数据");
     return;
   }
   koiMsgBox("您确认需要进行批量删除么？")
@@ -923,15 +923,15 @@ const handleBatchDelete = () => {
         console.log("ids", ids.value);
         await batchDelete(ids.value);
         handleTableData();
-        koiNoticeSuccess("批量删除成功🌻");
+        koiNoticeSuccess("批量删除成功");
       } catch (error) {
         console.log(error);
-        koiNoticeError("批量删除失败，请刷新重试🌻");
+        koiNoticeError("批量删除失败，请刷新重试");
         handleTableData();
       }
     })
     .catch(() => {
-      koiMsgError("已取消🌻");
+      koiMsgError("已取消");
     });
 };
 </script>

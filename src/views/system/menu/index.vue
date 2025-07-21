@@ -69,7 +69,7 @@
         :expand-row-keys="expandKey"
         row-key="menuId"
         :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
-        empty-text="暂时没有数据哟🌻"
+        empty-text="暂时没有数据哟"
       >
         <el-table-column type="selection" width="55" align="center" />
         <el-table-column label="序号" prop="menuId" width="80px" align="center" type="index"></el-table-column>
@@ -154,7 +154,7 @@
         <el-table-column label="显示顺序" prop="sorted" width="90px" align="center"></el-table-column>
         <el-table-column label="操作" align="center" width="120" fixed="right">
           <template #default="{ row }">
-            <el-tooltip content="修改🌻" placement="top">
+            <el-tooltip content="修改" placement="top">
               <el-button
                 type="primary"
                 icon="Edit"
@@ -164,7 +164,7 @@
                 v-auth="['system:role:update']"
               ></el-button>
             </el-tooltip>
-            <el-tooltip content="删除🌻" placement="top">
+            <el-tooltip content="删除" placement="top">
               <el-button
                 type="danger"
                 icon="Delete"
@@ -352,7 +352,7 @@ const showSearch = ref<boolean>(true); // 默认显示搜索条件
 const tableList = ref([
   {
     menuId: 1,
-    menuName: "系统管理🌻",
+    menuName: "系统管理",
     menuType: "1",
     icon: "Tools",
     auth: "system:menu:list",
@@ -365,7 +365,7 @@ const tableList = ref([
     children: [
       {
         menuId: 3,
-        menuName: "用户管理🌻",
+        menuName: "用户管理",
         menuType: "2",
         icon: "UserFilled",
         auth: "system:menu:list",
@@ -378,7 +378,7 @@ const tableList = ref([
       },
       {
         menuId: 4,
-        menuName: "角色管理🌻",
+        menuName: "角色管理",
         menuType: "2",
         icon: "CameraFilled",
         auth: "system:menu:list",
@@ -391,7 +391,7 @@ const tableList = ref([
       },
       {
         menuId: 9,
-        menuName: "菜单管理🌻",
+        menuName: "菜单管理",
         menuType: "2",
         icon: "Menu",
         auth: "system:menu:list",
@@ -406,7 +406,7 @@ const tableList = ref([
   },
   {
     menuId: 2,
-    menuName: "监控管理🌻",
+    menuName: "监控管理",
     menuType: "1",
     icon: "Search",
     auth: "system:menu:list",
@@ -419,7 +419,7 @@ const tableList = ref([
     children: [
       {
         menuId: 5,
-        menuName: "熊出没🌻",
+        menuName: "熊出没",
         menuType: "2",
         icon: "CameraFilled",
         auth: "system:menu:list",
@@ -432,7 +432,7 @@ const tableList = ref([
       },
       {
         menuId: 6,
-        menuName: "海绵宝宝🌻",
+        menuName: "海绵宝宝",
         menuType: "2",
         icon: "Menu",
         auth: "system:menu:list",
@@ -488,7 +488,7 @@ const handleTreeList = async () => {
   //   loading.value = false;
   // } catch (error) {
   //   console.log(error);
-  //   koiNoticeError("数据查询失败，请刷新重试🌻");
+  //   koiNoticeError("数据查询失败，请刷新重试");
   // }
 };
 
@@ -501,7 +501,7 @@ const handleTableData = async () => {
     tableList.value = handleTree(res.data, "menuId");
   } catch (error) {
     console.log(error);
-    koiNoticeError("数据查询失败，请刷新重试🌻");
+    koiNoticeError("数据查询失败，请刷新重试");
   }
 };
 
@@ -575,7 +575,7 @@ const handleCascader = async () => {
     });
   } catch (error) {
     console.log(error);
-    koiMsgError("菜单级联数据查询失败，请重试🌻");
+    koiMsgError("菜单级联数据查询失败，请重试");
   }
 };
 
@@ -597,7 +597,7 @@ const toggleExpandAll = () => {
 const handleAdd = () => {
   // 打开对话框
   koiDialogRef.value.koiOpen();
-  koiNoticeSuccess("添加🌻");
+  koiNoticeSuccess("添加");
   // 重置表单
   resetForm();
   // 重置图标
@@ -611,7 +611,7 @@ const handleAdd = () => {
 /** 回显数据 */
 const handleEcho = async (id: any) => {
   if (id == null || id == "") {
-    koiMsgWarning("请选择需要修改的数据🌻");
+    koiMsgWarning("请选择需要修改的数据");
     return;
   }
   try {
@@ -620,7 +620,7 @@ const handleEcho = async (id: any) => {
     form.value = res.data;
   } catch (error) {
     console.log(error);
-    koiNoticeError("数据获取失败，请刷新重试🌻");
+    koiNoticeError("数据获取失败，请刷新重试");
   }
 };
 
@@ -628,14 +628,14 @@ const handleEcho = async (id: any) => {
 const handleUpdate = async (row?: any) => {
   // 打开对话框
   koiDialogRef.value.koiOpen();
-  koiNoticeSuccess("修改🌻");
+  koiNoticeSuccess("修改");
   // 重置表单
   resetForm();
   // 标题
   title.value = "菜单修改";
   const id = row ? row.menuId : ids.value[0];
   if (id == null || id == "") {
-    koiMsgError("请选择需要修改的数据🌻");
+    koiMsgError("请选择需要修改的数据");
   }
   handleCascader();
   // 回显数据
@@ -702,7 +702,7 @@ const handleConfirm = () => {
       if (form.value.menuId != null && form.value.menuId != "") {
         try {
           await update(form.value);
-          koiNoticeSuccess("修改成功🌻");
+          koiNoticeSuccess("修改成功");
           confirmLoading.value = false;
           koiDialogRef.value.koiQuickClose();
           resetForm();
@@ -710,12 +710,12 @@ const handleConfirm = () => {
         } catch (error) {
           console.log(error);
           confirmLoading.value = false;
-          koiNoticeError("修改失败，请刷新重试🌻");
+          koiNoticeError("修改失败，请刷新重试");
         }
       } else {
         try {
           await add(form.value);
-          koiNoticeSuccess("添加成功🌻");
+          koiNoticeSuccess("添加成功");
           confirmLoading.value = false;
           koiDialogRef.value.koiQuickClose();
           resetForm();
@@ -723,11 +723,11 @@ const handleConfirm = () => {
         } catch (error) {
           console.log(error);
           confirmLoading.value = false;
-          koiNoticeError("添加失败，请刷新重试🌻");
+          koiNoticeError("添加失败，请刷新重试");
         }
       }
     } else {
-      koiMsgError("验证失败，请检查填写内容🌻");
+      koiMsgError("验证失败，请检查填写内容");
       confirmLoading.value = false;
     }
   });
@@ -744,35 +744,35 @@ const handleSwitch = (row: any) => {
   koiMsgBox("确认要[" + text + "]-[" + row.menuName + "]菜单吗？")
     .then(async () => {
       if (!row.menuId || !row.menuStatus) {
-        koiMsgWarning("请选择需要修改的数据🌻");
+        koiMsgWarning("请选择需要修改的数据");
         return;
       }
       try {
         await updateStatus(row.menuId, row.menuStatus);
-        koiNoticeSuccess("修改成功🌻");
+        koiNoticeSuccess("修改成功");
       } catch (error) {
         console.log(error);
-        koiNoticeError("修改失败，请刷新重试🌻");
+        koiNoticeError("修改失败，请刷新重试");
       }
     })
     .catch(() => {
-      koiMsgError("已取消🌻");
+      koiMsgError("已取消");
     });
 };
 
 /** 是否展开 */
 const handleIsSpread = async (row: any) => {
   if (!row.menuId || !row.isSpread) {
-    koiMsgWarning("请选择需要展开的数据🌻");
+    koiMsgWarning("请选择需要展开的数据");
     return;
   }
   try {
     await updateSpread(row.menuId, row.isSpread);
     handleTableData();
-    koiNoticeSuccess("操作成功🌻");
+    koiNoticeSuccess("操作成功");
   } catch (error) {
     console.log(error);
-    koiNoticeError("操作失败，请刷新重试🌻");
+    koiNoticeError("操作失败，请刷新重试");
   }
 };
 
@@ -780,42 +780,42 @@ const handleIsSpread = async (row: any) => {
 const handleDelete = (row: any) => {
   const id = row.menuId;
   if (id == null || id == "") {
-    koiMsgWarning("请选择需要删除的数据🌻");
+    koiMsgWarning("请选择需要删除的数据");
     return;
   }
   koiMsgBox("您确认需要删除菜单名称[" + row.menuName + "]么？")
     .then(async () => {
       try {
         await deleteById(id);
-        koiNoticeSuccess("删除成功🌻");
+        koiNoticeSuccess("删除成功");
         handleTableData();
       } catch (error) {
         console.log(error);
       }
     })
     .catch(() => {
-      koiMsgError("已取消🌻");
+      koiMsgError("已取消");
     });
 };
 
 /** 批量删除 */
 const handleBatchDelete = () => {
   if (ids.value.length == 0) {
-    koiMsgInfo("请选择需要删除的数据🌻");
+    koiMsgInfo("请选择需要删除的数据");
     return;
   }
   koiMsgBox("您确认需要进行批量删除么？删除后将无法进行恢复？")
     .then(async () => {
       try {
         await batchDelete(ids.value);
-        koiNoticeSuccess("批量删除成功🌻");
+        koiNoticeSuccess("批量删除成功");
         handleTableData();
       } catch (error) {
         console.log(error);
       }
     })
     .catch(() => {
-      koiMsgError("已取消🌻");
+      koiMsgError("已取消");
     });
 };
 </script>

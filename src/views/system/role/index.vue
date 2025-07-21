@@ -70,7 +70,7 @@
         v-loading="loading"
         border
         :data="tableList"
-        empty-text="暂时没有数据哟🌻"
+        empty-text="暂时没有数据哟"
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" width="55" align="center" />
@@ -110,7 +110,7 @@
         <el-table-column label="创建时间" prop="createTime" width="180px" align="center"></el-table-column>
         <el-table-column label="操作" align="center" width="150" fixed="right">
           <template #default="{ row }">
-            <el-tooltip content="修改🌻" placement="top">
+            <el-tooltip content="修改" placement="top">
               <el-button
                 type="primary"
                 icon="Edit"
@@ -120,7 +120,7 @@
                 v-auth="['system:role:update']"
               ></el-button>
             </el-tooltip>
-            <el-tooltip content="删除🌻" placement="top">
+            <el-tooltip content="删除" placement="top">
               <el-button
                 type="danger"
                 icon="Delete"
@@ -131,7 +131,7 @@
               ></el-button>
             </el-tooltip>
 
-            <el-tooltip content="分配菜单🌻" placement="top">
+            <el-tooltip content="分配菜单" placement="top">
               <el-button
                 type="info"
                 icon="Postcard"
@@ -257,7 +257,7 @@ const showSearch = ref<boolean>(true); // 默认显示搜索条件
 const tableList = ref<any>([
   {
     roleId: 1,
-    roleName: "YU-ADMIN🌻",
+    roleName: "YU-ADMIN",
     roleCode: "YU-ADMIN",
     roleStatus: "0",
     sorted: 1,
@@ -336,7 +336,7 @@ const handleListPage = async () => {
   //   loading.value = false;
   // } catch (error) {
   //   console.log(error);
-  //   koiNoticeError("数据查询失败，请刷新重试🌻");
+  //   koiNoticeError("数据查询失败，请刷新重试");
   // }
 };
 
@@ -349,7 +349,7 @@ const handleTableData = async () => {
     total.value = res.data.total;
   } catch (error) {
     console.log(error);
-    koiNoticeError("数据查询失败，请刷新重试🌻");
+    koiNoticeError("数据查询失败，请刷新重试");
   }
 };
 
@@ -374,7 +374,7 @@ const handleSelectionChange = (selection: any) => {
 const handleAdd = () => {
   // 打开对话框
   koiDialogRef.value.koiOpen();
-  koiNoticeSuccess("添加🌻");
+  koiNoticeSuccess("添加");
   // 重置表单
   resetForm();
   // 标题
@@ -385,7 +385,7 @@ const handleAdd = () => {
 /** 回显数据 */
 const handleEcho = async (id: any) => {
   if (id == null || id == "") {
-    koiMsgWarning("请选择需要修改的数据🌻");
+    koiMsgWarning("请选择需要修改的数据");
     return;
   }
   try {
@@ -394,7 +394,7 @@ const handleEcho = async (id: any) => {
     form.value = res.data;
   } catch (error) {
     console.log(error);
-    koiNoticeError("数据获取失败，请刷新重试🌻");
+    koiNoticeError("数据获取失败，请刷新重试");
   }
 };
 
@@ -402,14 +402,14 @@ const handleEcho = async (id: any) => {
 const handleUpdate = async (row?: any) => {
   // 打开对话框
   koiDialogRef.value.koiOpen();
-  koiNoticeSuccess("修改🌻");
+  koiNoticeSuccess("修改");
   // 重置表单
   resetForm();
   // 标题
   title.value = "角色修改";
   const roleId = row ? row.roleId : ids.value[0];
   if (roleId == null || roleId == "") {
-    koiMsgError("请选择需要修改的数据🌻");
+    koiMsgError("请选择需要修改的数据");
   }
   console.log(roleId);
   // 回显数据
@@ -487,7 +487,7 @@ const handleConfirm = () => {
       if (form.value.roleId != null && form.value.roleId != "") {
         try {
           await update(form.value);
-          koiNoticeSuccess("修改成功🌻");
+          koiNoticeSuccess("修改成功");
           confirmLoading.value = false;
           koiDialogRef.value.koiQuickClose();
           resetForm();
@@ -495,12 +495,12 @@ const handleConfirm = () => {
         } catch (error) {
           console.log(error);
           confirmLoading.value = false;
-          koiNoticeError("修改失败，请刷新重试🌻");
+          koiNoticeError("修改失败，请刷新重试");
         }
       } else {
         try {
           await add(form.value);
-          koiNoticeSuccess("添加成功🌻");
+          koiNoticeSuccess("添加成功");
           confirmLoading.value = false;
           koiDialogRef.value.koiQuickClose();
           resetForm();
@@ -508,21 +508,21 @@ const handleConfirm = () => {
         } catch (error) {
           console.log(error);
           confirmLoading.value = false;
-          koiNoticeError("添加失败，请刷新重试🌻");
+          koiNoticeError("添加失败，请刷新重试");
         }
       }
       // let loadingTime = 1;
       // setInterval(() => {
       //   loadingTime--;
       //   if (loadingTime === 0) {
-      //     koiNoticeSuccess("朕让你提交了么？信不信锤你🌻");
+      //     koiNoticeSuccess("朕让你提交了么？信不信锤你");
       //     confirmLoading.value = false;
       //     resetForm();
       //     koiDialogRef.value.koiQuickClose();
       //   }
       // }, 1000);
     } else {
-      koiMsgError("验证失败，请检查填写内容🌻");
+      koiMsgError("验证失败，请检查填写内容");
       confirmLoading.value = false;
     }
   });
@@ -539,20 +539,20 @@ const handleSwitch = (row: any) => {
   koiMsgBox("确认要[" + text + "]-[" + row.roleName + "]角色吗？")
     .then(async () => {
       if (!row.roleId || !row.roleStatus) {
-        koiMsgWarning("请选择需要修改的数据🌻");
+        koiMsgWarning("请选择需要修改的数据");
         return;
       }
       try {
         await updateStatus(row.roleId, row.roleStatus);
-        koiNoticeSuccess("修改成功🌻");
+        koiNoticeSuccess("修改成功");
       } catch (error) {
         console.log(error);
         handleTableData();
-        koiNoticeError("修改失败，请刷新重试🌻");
+        koiNoticeError("修改失败，请刷新重试");
       }
     })
     .catch(() => {
-      koiMsgError("已取消🌻");
+      koiMsgError("已取消");
     });
 };
 
@@ -560,7 +560,7 @@ const handleSwitch = (row: any) => {
 const handleDelete = (row: any) => {
   const id = row.roleId;
   if (id == null || id == "") {
-    koiMsgWarning("请选择需要删除的数据🌻");
+    koiMsgWarning("请选择需要删除的数据");
     return;
   }
   koiMsgBox("您确认需要删除角色名称[" + row.roleName + "]么？")
@@ -568,22 +568,22 @@ const handleDelete = (row: any) => {
       try {
         await deleteById(id);
         handleTableData();
-        koiNoticeSuccess("删除成功🌻");
+        koiNoticeSuccess("删除成功");
       } catch (error) {
         console.log(error);
-        koiNoticeError("删除失败，请刷新重试🌻");
+        koiNoticeError("删除失败，请刷新重试");
         handleTableData();
       }
     })
     .catch(() => {
-      koiMsgError("已取消🌻");
+      koiMsgError("已取消");
     });
 };
 
 /** 批量删除 */
 const handleBatchDelete = () => {
   if (ids.value.length == 0) {
-    koiMsgInfo("请选择需要删除的数据🌻");
+    koiMsgInfo("请选择需要删除的数据");
     return;
   }
   koiMsgBox("您确认需要进行批量删除么？")
@@ -592,15 +592,15 @@ const handleBatchDelete = () => {
         // console.log("ids",ids.value)
         await batchDelete(ids.value);
         handleTableData();
-        koiNoticeSuccess("批量删除成功🌻");
+        koiNoticeSuccess("批量删除成功");
       } catch (error) {
         console.log(error);
-        koiNoticeError("批量删除失败，请刷新重试🌻");
+        koiNoticeError("批量删除失败，请刷新重试");
         handleTableData();
       }
     })
     .catch(() => {
-      koiMsgError("已取消🌻");
+      koiMsgError("已取消");
     });
 };
 
@@ -669,12 +669,12 @@ const roleId = ref();
 
 /** 分配菜单 */
 const handleAssignMenu = async (row?: any) => {
-  title.value = "分配菜单🌻";
+  title.value = "分配菜单";
   // 置空
   treeRef.value?.setCheckedKeys([], false);
   roleId.value = row?.roleId || ids.value[0];
   if (roleId.value == null || roleId.value == "") {
-    koiMsgWarning("请选择需要分配菜单的数据🌻");
+    koiMsgWarning("请选择需要分配菜单的数据");
     return;
   }
   // 查询所有的菜单权限
@@ -687,7 +687,7 @@ const handleAssignMenu = async (row?: any) => {
     expandedKey.value = res.data.spreadList;
   } catch (error) {
     console.log(error);
-    koiMsgError("菜单资源加载失败🌻");
+    koiMsgError("菜单资源加载失败");
   }
 
   // 通过key设置反选角色拥有的菜单权限(只能查询子节点，查询父节点将直接选择全部下的子节点)
@@ -700,7 +700,7 @@ const handleAssignMenu = async (row?: any) => {
     }
   } catch (error) {
     console.log(error);
-    koiMsgError("角色菜单资源加载失败🌻");
+    koiMsgError("角色菜单资源加载失败");
   }
 };
 
@@ -720,12 +720,12 @@ const handleMenuConfirm = async () => {
   try {
     await saveRoleMenu(roleId.value, finalKey);
     confirmLoading.value = false;
-    koiNoticeSuccess("角色菜单保存成功🌻");
+    koiNoticeSuccess("角色菜单保存成功");
     // 刷新页面菜单信息
     window.location.reload;
   } catch (error) {
     console.log(error);
-    koiMsgError("角色菜单保存失败🌻");
+    koiMsgError("角色菜单保存失败");
   }
 };
 

@@ -42,7 +42,7 @@ const handleKoiDrawer = () => {
   // 标题
   title.value = "二次封装Dialog模版";
   koiDrawerRef.value.koiOpen();
-  koiNoticeSuccess("Dialog模版🌻");
+  koiNoticeSuccess("Dialog模版");
 };
 
 // 添加 OR 修改对话框Ref 
@@ -82,10 +82,10 @@ const handleConfirm = () => {
   confirmLoading.value = true;
   (formRef.value as any).validate(async (valid: any) => {
     if (valid) {
-      koiMsgSuccess("验证成功🌻");
+      koiMsgSuccess("验证成功");
       confirmLoading.value = false;
     } else {
-      koiMsgError("验证失败，请检查填写内容🌻");
+      koiMsgError("验证失败，请检查填写内容");
       confirmLoading.value = false;
     }
   });
@@ -94,7 +94,7 @@ const handleConfirm = () => {
   // if (form.value.noticeId != null && form.value.noticeId != "") {
   //   try {
   //     await update(form.value);
-  //     koiNoticeSuccess("修改成功🌻");
+  //     koiNoticeSuccess("修改成功");
   //     confirmLoading.value = false;
   //     koiDrawerRef.value.koiQuickClose();
   //     resetForm();
@@ -102,12 +102,12 @@ const handleConfirm = () => {
   //   } catch (error) {
   //     console.log(error);
   //     confirmLoading.value = false;
-  //     koiNoticeError("修改失败，请刷新重试🌻");
+  //     koiNoticeError("修改失败，请刷新重试");
   //   }
   // } else {
   //   try {
   //     await add(form.value);
-  //     koiNoticeSuccess("添加成功🌻");
+  //     koiNoticeSuccess("添加成功");
   //     confirmLoading.value = false;
   //     koiDrawerRef.value.koiQuickClose();
   //     resetForm();
@@ -115,7 +115,7 @@ const handleConfirm = () => {
   //   } catch (error) {
   //     console.log(error);
   //     confirmLoading.value = false;
-  //     koiNoticeError("添加失败，请刷新重试🌻");
+  //     koiNoticeError("添加失败，请刷新重试");
   //   }
   // }
 
@@ -124,7 +124,7 @@ const handleConfirm = () => {
   // setInterval(() => {
   //   loadingTime--;
   //   if (loadingTime === 0) {
-  //     koiNoticeSuccess("朕让你提交了么？信不信锤你🌻");
+  //     koiNoticeSuccess("朕让你提交了么？信不信锤你");
   //     confirmLoading.value = false;
   //     resetForm();
   //     koiDrawerRef.value.koiQuickClose();

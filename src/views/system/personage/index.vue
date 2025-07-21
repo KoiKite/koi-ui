@@ -146,7 +146,7 @@ import { koiMsgError, koiMsgSuccess } from "@/utils/koi.ts";
 // 个人信息
 const mine = ref({
   avatar: "https://pic4.zhimg.com/v2-702a23ebb518199355099df77a3cfe07_b.webp",
-  loginName: "YU-ADMIN🌻",
+  loginName: "YU-ADMIN",
   userName: "于金金",
   phone: "18593114301",
   email: "yuxintao6@163.com",
@@ -196,9 +196,9 @@ const handleMineSave = () => {
   if (!mineFormRef.value) return;
   (mineFormRef.value as any).validate(async (valid: any) => {
     if (valid) {
-      koiMsgSuccess("保存成功🌻");
+      koiMsgSuccess("保存成功");
     } else {
-      koiMsgError("验证失败，请检查填写内容🌻");
+      koiMsgError("验证失败，请检查填写内容");
     }
   });
 };
@@ -243,9 +243,9 @@ const handlePwdSave = () => {
   if (!pwdFormRef.value) return;
   (pwdFormRef.value as any).validate(async (valid: any) => {
     if (valid) {
-      koiMsgSuccess("保存成功🌻");
+      koiMsgSuccess("保存成功");
     } else {
-      koiMsgError("验证失败，请检查填写内容🌻");
+      koiMsgError("验证失败，请检查填写内容");
     }
   });
 };

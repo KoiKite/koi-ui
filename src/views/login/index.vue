@@ -180,7 +180,7 @@ const handleCaptcha = async () => {
   //   loginForm.captchaPicture = res.data.captchaPicture;
   // } catch (error) {
   //   console.log(error);
-  //   koiMsgError("验证码获取失败🌻");
+  //   koiMsgError(t("msg.yzmFail"));
   // }
 };
 
@@ -230,7 +230,7 @@ const handleKoiLogin = () => {
         if (userStore?.token) {
           await initDynamicRouter();
         } else {
-          koiMsgWarning("请重新登录🌻");
+          koiMsgWarning(t("msg.logIn"));
           router.replace(LOGIN_URL);
           return;
         }
@@ -252,7 +252,7 @@ const handleKoiLogin = () => {
       }
     } else {
       console.log("登录校验失败", fields);
-      koiMsgError("校验失败，信息填写有误🌻");
+      koiMsgError(t("msg.validFail"));
     }
   });
 };

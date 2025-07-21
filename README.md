@@ -2,7 +2,7 @@
   <img src="https://pic4.zhimg.com/v2-702a23ebb518199355099df77a3cfe07_b.webp" width="200" height="200" />
 </p>
 
-<h1 align="center">KOI-UI🌻</h1>
+<h1 align="center">KOI-UI</h1>
 
 <p align="center">一款<b>开箱即用</b>的 Vue3 中后台管理系统框架[纯前端]</p>
 
@@ -46,7 +46,7 @@
 
 ## 1、简介
 
-KOI-UI🌻 是一款开源企业级别的中后台管理平台模板，基于 Vue3、Vite、TypeScript、Pinia、Pinia持久化插件、Unocss 和 ElementPlus等前端最新技术栈。相较于其他比较流行的后台管理模板，更加简洁、快捷和容易理解，对萌新小白十分友好。此项目学习成本非常低含有相关代码注释以及大量的案例，非常适合企业级项目、中小型项目、个人项目以及毕业设计。后续将用户、角色、菜单、字典管理和通用管理平台页面依次编写，做到直接对接后端接口即可，使之快速开发。常见的组件有小伙伴提供可提issus会依次封装进去展示。
+KOI-UI 是一款开源企业级别的中后台管理平台模板，基于 Vue3、Vite、TypeScript、Pinia、Pinia持久化插件、Unocss 和 ElementPlus等前端最新技术栈。相较于其他比较流行的后台管理模板，更加简洁、快捷和容易理解，对萌新小白十分友好。此项目学习成本非常低含有相关代码注释以及大量的案例，非常适合企业级项目、中小型项目、个人项目以及毕业设计。后续将用户、角色、菜单、字典管理和通用管理平台页面依次编写，做到直接对接后端接口即可，使之快速开发。常见的组件有小伙伴提供可提issus会依次封装进去展示。
 
 ## 2、特点
 
@@ -62,7 +62,7 @@ KOI-UI🌻 是一款开源企业级别的中后台管理平台模板，基于 Vu
 - 🌈 集成 `unocss`，antfu 开源的原子 css 解决方案，非常轻量。
 - 🐟 集成多环境配置，dev、测试、生产环境。
 - 🌼 集成 `eslint + prettier`，代码约束和格式化统一。
-- 🌻 集成 `stylelint`，代码约束scss、less、css规范化。
+-  集成 `stylelint`，代码约束scss、less、css规范化。
 - 👻 集成 `mock` 接口服务。
 - 🏡 集成 `iconify` 图标，支持自定义 svg 图标, 优雅使用icon。
 
@@ -91,7 +91,7 @@ KOI-UI🌻 是一款开源企业级别的中后台管理平台模板，基于 Vu
       "isHide": "1",
       "isLink": "",
       "isKeepAlive": "0",
-      "isFull": "1",
+      "isTag": "1",
       "isAffix": "1",
       "redirect": "/system/user"
     },
@@ -107,7 +107,7 @@ KOI-UI🌻 是一款开源企业级别的中后台管理平台模板，基于 Vu
       "isHide": "1",
       "isLink": "",
       "isKeepAlive": "0",
-      "isFull": "1",
+      "isTag": "1",
       "isAffix": "1",
       "redirect": ""
     },
@@ -143,7 +143,7 @@ KOI-UI🌻 是一款开源企业级别的中后台管理平台模板，基于 Vu
 
 ## 5、支持
 
-如果觉得 KOI-ADMIN🌻这个框架不错，或者已经在使用了，希望你可以在 **Github** 或者 **Gitee(码云)** 帮我点个 ⭐ ，这将对我是极大的鼓励。
+如果觉得 KOI-ADMIN这个框架不错，或者已经在使用了，希望你可以在 **Github** 或者 **Gitee(码云)** 帮我点个 ⭐ ，这将对我是极大的鼓励。
 
 ## 6、快速开始
 
