@@ -7,7 +7,8 @@ import useAuthStore from "@/stores/modules/auth.ts";
 import { LOGIN_URL, ROUTER_WHITE_LIST } from "@/config/index.ts";
 import { koiMsgWarning } from "@/utils/koi.ts";
 import { initDynamicRouter } from "@/routers/modules/dynamicRouter.ts";
-import useGlobalStore from "@/stores/modules/global.ts";
+import { getMenuLanguage } from "@/utils/index.ts";
+import i18n from '@/languages/index.ts';
 
 // .env配置文件读取
 const mode = import.meta.env.VITE_ROUTER_MODE;
@@ -35,29 +36,23 @@ const router = createRouter({
 
 /**
  * @description 前置路由
- * */
+ */
 router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
   const userStore = useUserStore();
   const authStore = useAuthStore();
-  const globalStore = useGlobalStore();
 
   // 1、NProgress 开始
   nprogress.start();
+  // 2、标题切换，没有放置后置路由，是因为页面路径不存在，title会变成undefined
+  document.title = getMenuLanguage(to.meta?.title as string) || "KOI-ADMIN";
 
-  // 2、标题切换，没有防止后置路由，是因为页面路径不存在，title会变成undefined
-  if (globalStore.language === 'en') {
-    document.title = to.meta.enName || import.meta.env.VITE_WEB_EN_TITLE;
-  } else {
-    document.title = to.meta.title || import.meta.env.VITE_WEB_TITLE;
-  }
-  
   // 3、判断是访问登陆页，有Token访问当前页面，token过期访问接口，axios封装则自动跳转登录页面，没有Token重置路由到登陆页。
   if (to.path.toLocaleLowerCase() === LOGIN_URL) {
     // 有Token访问当前页面
     if (userStore.token) {
       return next(from.fullPath);
     } else {
-      koiMsgWarning("账号身份已过期，请重新登录🌻");
+      koiMsgWarning(i18n.global.t("msg.confirmLogin"));
     }
     // 没有Token重置路由到登陆页。
     resetRouter();
@@ -73,8 +68,7 @@ router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormali
   // 6、如果没有菜单列表[一级扁平化路由 OR 递归菜单路由数据判断是否存在都阔以]，就重新请求菜单列表并添加动态路由。
   if (!authStore.getMenuList.length) {
     // 注意：authStore.getMenuList，不能持久化菜单数据，否则这里一直有值，就不会走这里，而且持久化之后还会被篡改数据。
-    // 获取相关菜单数据 && 按钮数据 && 角色数据 && 用户信息。
-    // console.log("刷新页面");
+    // 获取相关菜单数据 && 按钮数据 && 角色数据[to.meta.roles获取角色信息进行判断] && 用户信息。
     await initDynamicRouter();
     return next({ ...to, replace: true }); // ...to 保证路由添加完了再进入页面 (可以理解为重进一次) replace: true 重进一次, 不保留重复历史
   }

@@ -60,28 +60,10 @@ export const getDayText = () => {
   // 获取当前小时
   let hours = timeNow.getHours();
   if (hours >= 6 && hours <= 10) return `早上好⛅，今天依旧是开心的一天！`;
-  if (hours >= 10 && hours <= 14) return `中午好🌻，此刻吃饭、睡觉、打豆豆。`;
+  if (hours >= 10 && hours <= 14) return `中午好，此刻吃饭、睡觉、打豆豆。`;
   if (hours >= 14 && hours <= 18) return `下午好🌞，尽情享受今天的美好时光。`;
   if (hours >= 18 && hours <= 24) return `晚上好🌇，注意早点休息哟！`;
   if (hours >= 0 && hours <= 6) return `凌晨好🌃，注意不要熬夜哟！`;
 };
 
 /** ElementPlus 前端假数据分页，:data="tableList.slice((searchParams.pageNo - 1) * searchParams.pageSize, searchParams.pageNo * searchParams.pageSize)" */
-
-/** 菜单固钉数据格式 与 首页效果一致 */
-// {
-//   "menuId": 66,
-//   "menuName": "工作台",
-//   "parentId": 0,
-//   "menuType": "2",
-//   "path": "/workbench/index",
-//   "name": "workbenchPage",
-//   "component": "workbench/index",
-//   "icon": "Histogram",
-//   "isHide": "1",
-//   "isLink": "",
-//   "isKeepAlive": "0",
-//   "isFull": "1",
-//   "isAffix": "0",
-//   "redirect": ""
-// },

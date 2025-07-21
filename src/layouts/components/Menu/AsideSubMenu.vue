@@ -4,19 +4,27 @@
     <!-- 非叶子节点 -->
     <el-sub-menu v-if="item.children?.length" :index="item.path">
       <template #title>
-        <KoiGlobalIcon v-if="item.meta.icon" :name="item.meta.icon" size="18"></KoiGlobalIcon>
-        <el-tooltip :content="getLanguage(globalStore.language, item.meta?.title, item.meta?.enName)" :show-after="2000" placement="right">
-          <span class="menu-ellipsis" v-text="getLanguage(globalStore.language, item.meta?.title, item.meta?.enName)"></span>
+        <!-- 图标容器 - 负责偏移 -->
+        <div class="icon-container">
+          <!-- 图标本身 - 负责动画 -->
+          <KoiGlobalIcon v-if="item.meta.icon" :name="item.meta.icon" size="18" class="menu-icon"></KoiGlobalIcon>
+        </div>
+        <el-tooltip :content="getMenuLanguage(item.meta?.title)" :show-after="2000" placement="right">
+          <span class="menu-ellipsis" v-text="getMenuLanguage(item.meta?.title)"></span>
         </el-tooltip>
       </template>
       <AsideSubMenu :menuList="item.children" />
     </el-sub-menu>
     <!-- 叶子节点[功能节点] -->
     <el-menu-item v-else :index="item.path" @click="handleMenuRouter(item)">
-      <KoiGlobalIcon v-if="item.meta.icon" :name="item.meta.icon" size="18"></KoiGlobalIcon>
+      <!-- 图标容器 - 负责偏移 -->
+      <div class="icon-container">
+        <!-- 图标本身 - 负责动画 -->
+        <KoiGlobalIcon v-if="item.meta.icon" :name="item.meta.icon" size="18" class="menu-icon"></KoiGlobalIcon>
+      </div>
       <template #title>
-        <el-tooltip :content="getLanguage(globalStore.language, item.meta?.title, item.meta?.enName)" :show-after="2000" placement="right">
-          <span class="menu-ellipsis" v-text="getLanguage(globalStore.language, item.meta?.title, item.meta?.enName)"></span>
+        <el-tooltip :content="getMenuLanguage(item.meta?.title)" :show-after="2000" placement="right">
+          <span class="menu-ellipsis" v-text="getMenuLanguage(item.meta?.title)"></span>
         </el-tooltip>
       </template>
     </el-menu-item>
@@ -27,10 +35,8 @@
 import AsideSubMenu from "@/layouts/components/Menu/AsideSubMenu.vue";
 import { koiMsgWarning } from "@/utils/koi.ts";
 import { useRouter } from "vue-router";
-import { getLanguage } from "@/utils/index.ts";
-import useGlobalStore from "@/stores/modules/global.ts";
+import { getMenuLanguage } from "@/utils/index.ts";
 
-const globalStore = useGlobalStore();
 const router = useRouter();
 
 // 获取父组件传递过来的数据
@@ -57,105 +63,113 @@ const handleMenuRouter = (value: any) => {
   text-overflow: ellipsis;
   white-space: nowrap;
   position: relative;
+  transform: translate($aside-menu-font-icon-translate); // 文字偏移保持不变
 }
+
+/** 图标容器 - 只负责偏移 */
+.icon-container {
+  display: inline-block;
+  transform: translate($aside-menu-font-icon-translate); // 图标容器偏移
+}
+
+/** 图标本身 - 负责动画 */
+.menu-icon {
+  display: block;
+  transition: transform 0.3s ease;
+}
+
 /** 父节点 */
 .el-menu-item {
   height: $aside-menu-height !important;
   margin-bottom: $aside-menu-margin-bottom;
   font-weight: $aside-menu-font-weight;
   --el-menu-item-height: $aside-menu-height;
-  // color: #000000;
-  user-select: none;
-  // border-left: $aside-menu-border-left solid transparent;
-  border-radius: $aside-menu-border-left;
-
-  // @apply dark:c-#E5E3FA;
   color: var(--el-menu-text-color);
-  i {
-    transform: translate($aside-menu-font-icon-translate); // 图标偏移
-  }
-  span {
-    transform: translate($aside-menu-font-icon-translate); // 文字偏移
-  }
+  user-select: none;
+  border-radius: $aside-menu-border-left;
 
   // 设置鼠标悬停时el-menu-item的样式
   &:hover {
-    // color: var(--el-color-primary);
     color: var(--el-menu-hover-text-color);
-    // background: var(--el-color-primary-light-8);
     background: var(--el-menu-hover-bg-color);
-    // border-left: $aside-menu-border-left solid var(--el-menu-border-left-color);
-
-    // & 含义 .el-menu-item
     border-radius: $aside-menu-border-left;
 
-    // 实现鼠标悬停时icon变色
-    i {
-      // color: var(--el-color-primary);
+    // 实现鼠标悬停时icon变色和动画
+    .menu-icon {
       color: var(--el-menu-hover-text-color);
+      animation: koi-icon-scale 0.6s ease-in-out forwards;
     }
   }
 
   // 设置选择el-menu-item时的样式
   &.is-active {
-    // color: var(--el-color-primary);
     color: var(--el-menu-active-text-color);
-    // background: var(--el-color-primary-light-8);
     background: var(--el-menu-active-bg-color);
-    // border-left: $aside-menu-border-left solid var(--el-color-primary);
-    // border-left: $aside-menu-border-left solid var(--el-menu-border-left-color);
-  }
 
-  &.is-active::before {
-    border-left: $aside-menu-border-left solid var(--el-menu-border-left-color);
-    z-index: auto;
-    content: "";
-    background-color: transparent;
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    pointer-events: none;
-    border-radius: $aside-menu-border-left;
-    transition: background-color .3s ease-in-out;
+    &::before {
+      border-left: $aside-menu-border-left solid var(--el-menu-border-left-color);
+      z-index: auto;
+      content: "";
+      background-color: transparent;
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      pointer-events: none;
+      border-radius: $aside-menu-border-left;
+      transition: background-color .3s ease-in-out;
+    }
+    
+    .menu-icon {
+      color: var(--el-menu-active-text-color);
+    }
   }
 }
 
 /** 子节点 */
 :deep(.el-sub-menu__title) {
   height: $aside-menu-height;
-  padding-right: 0; // 去除collapse缩小多余的边框
+  padding-right: 0;
   margin-bottom: $aside-menu-margin-bottom;
   font-weight: $aside-menu-font-weight;
-  // color: #000000;
-  user-select: none;
-  // border-left: $aside-menu-border-left solid transparent;
-  border-radius: $aside-menu-border-left;
-
-  // @apply dark:c-#E5E3FA;
   color: var(--el-menu-text-color);
-  i {
-    transform: translate($aside-menu-font-icon-translate); // 图标偏移
+  user-select: none;
+  border-radius: $aside-menu-border-left;
+  
+  .icon-container {
+    transform: translate($aside-menu-font-icon-translate); // 子菜单图标偏移
   }
-  span {
-    transform: translate($aside-menu-font-icon-translate); // 文字偏移
-  }
+  
   &:hover {
-    // color: var(--el-color-primary);
     color: var(--el-menu-hover-text-color);
-    // background: var(--el-color-primary-light-8);
     background: var(--el-menu-hover-bg-color);
-    // border-left: $aside-menu-border-left solid var(--el-color-primary);
-    // border-left: $aside-menu-border-left solid var(--el-menu-border-left-color);
+    
+    .menu-icon {
+      animation: koi-icon-scale 0.6s ease-in-out forwards;
+      color: var(--el-menu-hover-text-color);
+    }
   }
+  
   &:active {
-    // color: var(--el-color-primary);
     color: var(--el-menu-active-text-color);
-    // background: var(--el-color-primary-light-8);
     background: var(--el-menu-active-bg-color);
-    // border-left: $aside-menu-border-left solid var(--el-color-primary);
-    // border-left: $aside-menu-border-left solid var(--el-menu-border-left-color);
+  }
+}
+
+/** 纯缩放动画 - 不受偏移影响 */
+@keyframes koi-icon-scale {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(255, 204, 0, 0);
+  }
+  70% {
+    transform: scale(1.12);
+    box-shadow: 0 0 0 15px rgba(255, 204, 0, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(255, 204, 0, 0);
   }
 }
 </style>
@@ -163,13 +177,10 @@ const handleMenuRouter = (value: any) => {
 <style lang="scss">
 /** 子级菜单字体高亮，父级菜单也高亮 */
 .el-sub-menu.is-active > .el-sub-menu__title {
-  // color: var(--el-color-primary) !important;
   color: var(--el-menu-active-text-color) !important;
-}
-
-/** icon图标也跟着变 */
-.el-sub-menu.is-active > .el-sub-menu__title i {
-  // color: var(--el-color-primary) !important;
-  color: var(--el-menu-active-text-color) !important;
+  
+  .menu-icon {
+    color: var(--el-menu-active-text-color) !important;
+  }
 }
 </style>

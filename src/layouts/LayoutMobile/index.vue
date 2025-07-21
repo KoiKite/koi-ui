@@ -2,7 +2,7 @@
   <el-container class="layout-container">
     <el-header class="layout-header flex flex-items-center flex-justify-between">
       <div class="w-30px flex flex-items-center">
-        <KoiSvgIcon name="koi-mobile-menu" width="30" height="30" @click="mobileDrawer = true"></KoiSvgIcon>
+        <KoiSvgIcon name="koi-mobile-menu" width="22" height="22" @click="mobileDrawer = true"></KoiSvgIcon>
       </div>
       <div class="flex flex-items-center h-100%">
         <!-- 明亮/暗黑模式图标 -->

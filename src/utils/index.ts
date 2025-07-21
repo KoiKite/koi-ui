@@ -240,27 +240,36 @@ export const getUrlWithParams = () => {
  * @returns {String}
  */
 export const getBrowserLang = () => {
-  // @ts-ignore
-  let browserLang = navigator.language ? navigator.language : navigator.browserLanguage;
-  let defaultBrowserLang = "";
-  if (["cn", "zh", "zh-cn"].includes(browserLang.toLowerCase())) {
-    defaultBrowserLang = "zh";
-  } else {
-    defaultBrowserLang = "en";
+  // 检查是否在浏览器环境中
+  if (typeof window !== 'undefined' && typeof navigator !== 'undefined') {
+    const browserLang = navigator.language || (navigator as any).browserLanguage;
+    const lang = browserLang?.toLowerCase() || '';
+    
+    if (["cn", "zh", "zh-cn"].includes(lang)) {
+      return "zh";
+    }
   }
-  return defaultBrowserLang;
+  // 默认返回英文或根据需求调整
+  return "en";
 }
 
 /**
- * @description 获取匹配语言
+ * @description 数字转换为 K单位
  */
-export const getLanguage = (language: string, zhName: string, enName?: any) => {
-  switch (language) {
-    case "zh":
-      return zhName || "中文管理";
-    case "en":
-      return enName || "English Manage";
-    default:
-      return zhName || "中文管理";
+export const getFormatToK = (num: number): string  =>{
+  if (num >= 1000) {
+      return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
   }
+  return String(num);
 };
+
+import i18n from '@/languages/index.ts';
+
+/**
+ * @description i18n语言切换菜单标题[zh.ts en.ts等前端进行控制]
+ * @param title 菜单标题，可以是 i18n 的 key，也可以是字符串
+ */
+export const getMenuLanguage = (title: string): string => {
+  if (!title) return '';
+  return title.startsWith('menu.') ? i18n.global.t(title) : title;
+}

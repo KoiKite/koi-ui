@@ -4,6 +4,7 @@
     ref="koiDrawerRef"
     title="主题配置"
     :footerHidden="true"
+    :closeOnClickModel="true"
   >
     <template #content>
       <el-row>

@@ -1,6 +1,6 @@
 <template>
   <!-- 搜索菜单 -->
-  <div class="menu-search-dialog hover:bg-[rgba(0,0,0,0.06)] w-32px h-100% flex flex-justify-center">
+  <div class="menu-search-dialog hover:bg-[rgba(0,0,0,0.06)] hover:dark-bg-[rgba(255,255,255,0.1)] koi-icon w-36px h-36px rounded-md flex flex-justify-center flex-items-center">
     <el-tooltip content="搜索菜单">
       <el-icon class="koi-icon" :size="20" @click="handleMenuOpen"><Search /></el-icon>
     </el-tooltip>
@@ -9,7 +9,7 @@
         ref="koiMenuRef"
         v-model="searchMenu"
         value-key="path"
-        placeholder="菜单搜索：支持菜单名称、路径🌻"
+        placeholder="菜单搜索：支持菜单名称、路径"
         :fetch-suggestions="searchMenuList"
         @select="handleClickMenu"
         @click.stop

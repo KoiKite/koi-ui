@@ -24,52 +24,60 @@ const tabsStore = defineStore("tabs", {
   actions: {
     // 添加选项卡数据
     async addTab(tab: any) {
+      // 获取 keepAliveStore 实例
       const keepAliveStore = useKeepAliveStore();
+      // 添加前打印 keepAliveStore 状态
+      // console.log("添加前 keepAliveName:", keepAliveStore.keepAliveName);
+      // 如果满足条件，添加到 keepAlive
+      if (tab.isKeepAlive == "0" && tab.name && !keepAliveStore.keepAliveName.includes(tab.name)) {
+        keepAliveStore.addKeepAliveName(tab.name);
+        // 添加后打印 keepAliveStore 状态
+        // console.log("添加后 keepAliveName:", keepAliveStore.keepAliveName);
+      }   
       // 判断是否已经添加过此条数据，只要数组中有一个元素满足条件，就返回 true。
       const isTab = this.tabList.some((item: any) => {
         return item.path === tab.path;
       });
       if (isTab) {
         return;
-      } else {
-        if (!keepAliveStore.keepAliveName.includes(tab.name) && tab.isKeepAlive == "0") {
-          if (tab.name) {
-            keepAliveStore.addKeepAliveName(tab.name);
-          }
-        }
-        this.tabList.push(tab);
       }
+      // 添加选项卡到列表
+      this.tabList.push(tab);   
     },
     // 删除选项卡数据，tabPath: 右键选择的path，selectedPath：当前选项卡被选择的path
     async removeTab(tabPath: string, isCurrent: boolean = true, selectedPath?: string) {
       // 如果关闭的是首页，直接返回，不进行操作
       if (tabPath == HOME_URL) {
-        koiMsgWarning("首页禁止关闭🌻");
+        koiMsgWarning("禁止关闭");
         return;
       }
       const keepAliveStore = useKeepAliveStore();
-      // 删除选项卡路由缓存
+      // 查找要删除的选项卡项
       const tabItem = this.tabList.find(item => item.path === tabPath);
-      tabItem?.isKeepAlive && keepAliveStore.removeKeepAliveName(tabItem.name);
-      const oldTabList = this.tabList;
-      // 将这个需要删除的选项卡过滤掉，重新赋值给选项卡数组。
+      // 删除路由缓存
+      if (tabItem?.isKeepAlive) {
+        keepAliveStore.removeKeepAliveName(tabItem.name);
+      }
+      // 保存当前选项卡列表的副本，使用旧数据，是因为删除选项卡数据索引会被改变
+      const oldTabList = [...this.tabList];
+      // 将这个需要删除的选项卡过滤掉，重新赋值给选项卡数组
       this.tabList = this.tabList.filter(item => item.path !== tabPath);
-      if (isCurrent) {
-        // 如果关闭的不是选项卡被选择的，则依旧选择被选择的选项卡。
+      if (isCurrent) { // 如果关闭的选项卡是已经被选中的，则选择上一个或下一个选项卡
+        oldTabList.forEach((item, index) => {
+          if (item.path !== tabPath) return;
+          // 找到下一个选项卡或上一个选项卡[优先下一个，其次上一个]。通过计算索引值可以得到下一个选项卡的位置，即 this.tabList[index + 1]；如果不存在下一个选项卡，则返回上一个选项卡的位置，即 this.tabList[index - 1]
+          const nextTab = oldTabList[index + 1] || oldTabList[index - 1];
+          if (!nextTab) return;
+          // 如果找到了下一个或上一个选项卡，则使用路由导航方法[假设是 router.push]将页面跳转到该选项卡对应的路径
+          router.push(nextTab.path || HOME_URL);
+        });
+      } else {
+        // 如果关闭的不是已经被选中的选项卡，则依旧选择已经被选中的选项卡
         const matchingPathObject = this.tabList.find((item: any) => item.path == selectedPath);
         if (matchingPathObject) {
           router.push(matchingPathObject?.path || HOME_URL);
           return;
         }
-        // 如果关闭的是选项卡被选择的，则选择上一个或下一个。
-        oldTabList.forEach((item, index) => {
-          if (item.path !== tabPath) return;
-          // 找到下一个选项卡或上一个选项卡。通过计算索引值可以得到下一个选项卡的位置，即 this.tabList[index + 1]；如果不存在下一个选项卡，则返回上一个选项卡的位置，即 this.tabList[index - 1]。
-          const nextTab = oldTabList[index + 1] || oldTabList[index - 1];
-          if (!nextTab) return;
-          // 如果找到了下一个或上一个选项卡，则使用路由导航方法[假设是 router.push]将页面跳转到该选项卡对应的路径。
-          router.push(nextTab.path);
-        });
       }
     },
     // 用来清空Tabs缓存
@@ -91,11 +99,11 @@ const tabsStore = defineStore("tabs", {
       if (currentIndex !== -1) {
         const range = type === "left" ? [0, currentIndex] : [currentIndex + 1, this.tabList.length];
         this.tabList = this.tabList.filter((item, index) => {
-          return index < range[0] || index >= range[1] || !item.closeIcon;
+          return index < range[0] || index >= range[1] || !item.closable;
         });
 
         const closeTab = this.tabList.filter((item: any) => {
-          return !item.closeIcon;
+          return !item.closable;
         });
 
         if (type === "left") { 
@@ -116,17 +124,17 @@ const tabsStore = defineStore("tabs", {
     async closeManyTabs(tabValue?: string) {
       const keepAliveStore = useKeepAliveStore();
       this.tabList = this.tabList.filter(item => {
-        return item.path === tabValue || !item.closeIcon;
+        return item.path === tabValue || !item.closable;
       });
       // 重新设置路由缓存，将新的tabList的name覆盖keepAliveList
       const keepAliveList = this.tabList.filter(item => item.isKeepAlive);
       keepAliveStore.setKeepAliveName(keepAliveList.map(item => item.name));
     },
     // 选项卡是否固钉
-    async replaceIsAffix(tabPath?: string, closeIcon?: boolean) {
+    async replaceIsAffix(tabPath?: string, closable?: boolean) {
       this.tabList.forEach(item => {
         if (item.path == tabPath) {
-          item.closeIcon = closeIcon;
+          item.closable = closable;
         }
       });
     }

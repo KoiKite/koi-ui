@@ -1,8 +1,8 @@
 <template>
   <el-tooltip placement="left" :content="$t('header.language')">
-    <div class="hover:bg-[rgba(0,0,0,0.06)] koi-icon w-32px h-100% flex flex-justify-center flex-items-center">
+    <div class="hover:bg-[rgba(0,0,0,0.06)] hover:dark-bg-[rgba(255,255,255,0.1)] w-36px h-36px rounded-md flex flex-justify-center flex-items-center koi-bounce-i">
       <el-dropdown @command="handleChangeLanguage">
-        <el-icon class="koi-icon" :size="20"><SwitchFilled /></el-icon>
+        <KoiGlobalIcon name="koi-translate" size="18" class="koi-icon" />
         <template #dropdown>
           <el-dropdown-menu>
             <el-dropdown-item
@@ -21,11 +21,14 @@
 </template>
 
 <script setup lang="ts">
-import { useI18n } from "vue-i18n";
 import { ref, onMounted, watch, computed } from "vue";
 import useGlobalStore from "@/stores/modules/global.ts";
 import { LanguageType } from "@/stores/interface/index.ts";
+import { useRoute } from "vue-router";
+import { useI18n } from "vue-i18n";
 
+const { t } = useI18n();
+const route = useRoute();
 const i18n = useI18n();
 const globalStore = useGlobalStore();
 const language = computed(() => globalStore.language);
@@ -38,17 +41,11 @@ onMounted(() => {
 
 const handleSwitchLanguage = () => {
   // 当 language 变化时，手动触发 dimensionList 的更新
-  if (globalStore.language === "en") {
-    languageList.value = [
-    { label: "Chinese", value: "zh" },
-    { label: "English", value: "en" }
-    ];
-  } else {
-    languageList.value = [
-      { label: "简体中文", value: "zh" },
-      { label: "英文", value: "en" }
-    ];
-  }
+  languageList.value = [
+    { label: t("header.languageList.chinese"), value: "zh" },
+    { label: t("header.languageList.english"), value: "en" }
+  ];
+  document.title = t(String(route?.meta?.title));
 };
 
 /** 监听 globalStore.language 的变化 */

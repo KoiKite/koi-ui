@@ -1,10 +1,10 @@
 <template>
   <el-dialog v-model="dialogVisible" :title="koiParams.title" :destroy-on-close="true" width="580px" draggable>
     <el-form label-width="100px">
-      <el-form-item label="模板下载：">
+      <el-form-item label="模板下载">
         <el-button type="primary" :icon="Download" @click="handleTemplateExcel">点击下载</el-button>
       </el-form-item>
-      <el-form-item label="文件上传：">
+      <el-form-item label="文件上传">
         <el-upload
           action="#"
           class="upload"

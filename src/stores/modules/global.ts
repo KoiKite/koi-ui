@@ -1,4 +1,4 @@
-// 定义全局主题配置小仓库[选择式Api写法]
+// 定义是否折叠小仓库[选择式Api写法]
 import { defineStore } from "pinia";
 import { CACHE_PREFIX, DEFAULT_THEME } from "@/config/index.ts";
 
@@ -42,7 +42,11 @@ const globalStore = defineStore("global", {
       // 侧边栏反转
       asideInverted: false,
       // 头部反转
-      headerInverted: false
+      headerInverted: false,
+      // md-editer-v3 预览主题
+      previewTheme: "smart-blue",
+      // md-editer-v3 代码块内容颜色主题
+      codeTheme: "github"
     };
   },
   actions: {

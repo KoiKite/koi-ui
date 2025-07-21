@@ -223,28 +223,29 @@ const updateChart = () => {
 
 /** 图表自适应 */
 const screenAdapter = () => {
+  const titleFontSize = Math.max(9, Math.round(refChart.value?.offsetWidth / 136));
   const adapterOption = {
     title: {
       textStyle: {
-        fontSize: 16
+        fontSize: titleFontSize
       }
     },
     // 圆点分类标题
     legend: {
       textStyle: {
-        fontSize: 12
+        fontSize: titleFontSize
       }
     },
     xAxis: {
       //  改变x轴字体颜色和大小
       axisLabel: {
-        fontSize: 12
+        fontSize: titleFontSize
       }
     },
     yAxis: {
       //  改变y轴字体颜色和大小
       axisLabel: {
-        fontSize: 12
+        fontSize: titleFontSize
       }
     }
   };

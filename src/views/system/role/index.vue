@@ -41,7 +41,7 @@
       <!-- 表格头部按钮 -->
       <el-row :gutter="10">
         <el-col :span="1.5" v-auth="['system:role:add']">
-          <el-button type="primary" icon="plus" plain @click="handleAdd()">新增</el-button>
+          <el-button type="primary" icon="plus" plain @click="handleAdd()">添加</el-button>
         </el-col>
         <el-col :span="1.5" v-auth="['system:role:update']">
           <el-button type="success" icon="edit" plain @click="handleUpdate()" :disabled="single">修改</el-button>

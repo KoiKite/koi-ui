@@ -14,21 +14,20 @@ export function generateRoutes(data: any[], parentId: any) {
     if (data[i] && !router.hasRoute(data[i].path)) {
       if (data[i].parentId === parentId) {
         // console.log("component", data[i].component);
-        const componentTemplate = data[i].component;
+        const componentTemplate = data[i]?.component;
         const route: any = {
-          path: `${data[i].path}`,
+          path: `${data[i].path.startsWith("/") ? data[i].path : `/${data[i].path}`}`,
           name: `${data[i].name}`,
           // 这里modules[`/src/views/${componentTemplate}.vue`] 一定要用绝对定位
           component: data[i]?.component ? modules[`/src/views/${componentTemplate}.vue`] : Layout,
           meta: {
-            menuId: data[i].menuId,
-            title: data[i]?.menuName,
-            enName: data[i]?.enName,
+            menuId: String(data[i].menuId),
+            title: String(data[i]?.menuName),
             icon: data[i]?.icon,
             isHide: data[i]?.isHide,
             isKeepAlive: data[i]?.isKeepAlive,
             isLink: data[i]?.isLink,
-            isFull: data[i]?.isFull,
+            isTag: data[i]?.isTag,
             isAffix: data[i]?.isAffix,
             activeMenu: data[i]?.activeMenu
           }
@@ -59,22 +58,21 @@ export function generateFlattenRoutes(data: any[]) {
   const routes: any = [];
   for (var i = 0; i < data.length; i++) {
     // console.log("component", data[i].component)
-    const componentTemplate = data[i].component;
+    const componentTemplate = data[i]?.component;
     const route: any = {
-      path: `${data[i].path}`,
+      path: `${data[i].path.startsWith("/") ? data[i].path : `/${data[i].path}`}`,
       name: `${data[i].name}`,
       // 这里modules[`/src/views/${componentTemplate}.vue`] 一定要用绝对定位
       component: data[i]?.component ? modules[`/src/views/${componentTemplate}.vue`] : Layout,
       meta: {
-        parentId: data[i].parentId,
-        menuId: data[i].menuId,
+        parentId: String(data[i].parentId),
+        menuId: String(data[i].menuId),
         title: data[i].menuName,
-        enName: data[i]?.enName,
         icon: data[i]?.icon,
         isHide: data[i]?.isHide,
         isKeepAlive: data[i]?.isKeepAlive,
         isLink: data[i]?.isLink,
-        isFull: data[i]?.isFull,
+        isTag: data[i]?.isTag,
         isAffix: data[i]?.isAffix,
         activeMenu: data[i]?.activeMenu
       }

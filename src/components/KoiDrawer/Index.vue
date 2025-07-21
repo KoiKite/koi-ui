@@ -17,9 +17,9 @@
         </div>
         <div class="footer" v-if="!footerHidden">
           <el-button type="primary" loading-icon="Eleme" :loading="confirmLoading" v-throttle="koiConfirm">{{
-            confirmText
+            confirmText || $t("button.confirm")
           }}</el-button>
-          <el-button type="danger" @click="koiCancel">{{ cancelText }}</el-button>
+          <el-button type="danger" @click="koiCancel">{{ cancelText || $t("button.cancel") }}</el-button>
         </div>
       </div>
     </el-drawer>
@@ -28,8 +28,11 @@
 
 <script setup lang="ts">
 import { ref, toRefs } from "vue";
-// @ts-ignore
-import { koiMsgWarning, koiMsgBox } from "@/utils/koi.ts";
+import { koiMsgWarning } from "@/utils/koi.ts";
+import { ElMessageBox } from "element-plus";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 // 定义参数的类型
 interface IDrawerProps {
@@ -48,13 +51,13 @@ interface IDrawerProps {
 // 子组件接收父组件的值
 // withDefaults：设置默认值  defineProps：接收父组件的参数
 const props = withDefaults(defineProps<IDrawerProps>(), {
-  title: "朕很中意你KoiDrawer",
+  title: "KoiDrawer",
   visible: false,
   size: "450",
   closeOnClickModel: false,
   destroyOnClose: false,
-  confirmText: "确定",
-  cancelText: "取消",
+  confirmText: "",
+  cancelText: "",
   direction: "rtl",
   loading: false,
   footerHidden: false
@@ -73,16 +76,22 @@ const koiOpen = () => {
 
 /** 关闭抽屉 */
 const koiClose = () => {
-  koiMsgBox("您确认进行关闭么？")
-    .then(() => {
-      visible.value = false;
-      koiMsgWarning("已关闭🌻");
+  if (!props.closeOnClickModel) {
+    ElMessageBox.confirm(t("msg.closeTips"), t("msg.remind"), {
+      confirmButtonText: t("button.confirm"),
+      cancelButtonText: t("button.cancel"),
+      type: "warning"
     })
-    .catch(() => {
-      // 用户点击了取消按钮或关闭抽屉
-      // 执行取消操作或不做任何操作
-      koiMsgWarning("已取消🌻");
-    });
+      .then(() => {
+        visible.value = false;
+        koiMsgWarning(t("msg.closed"));
+      })
+      .catch(() => {
+        koiMsgWarning(t("msg.cancelled"));
+      });
+  } else {
+    visible.value = false;
+  }
 };
 
 /** 确认提交后关闭抽屉 */
@@ -103,7 +112,7 @@ const koiCancel = () => {
 // 当前组件获取父组件传递的事件方法，然后点击确认和提交是触发父组件传递过来的事件
 const emits = defineEmits(["koiConfirm", "koiCancel"]);
 
-// defineExpose是vue3新增的一个api，放在<script setup>下使用的，
+// defineExpose是vue3添加的一个api，放在<script setup>下使用的，
 // 目的是把属性和方法暴露出去，可以用于父子组件通信，子组件把属性暴露出去，
 // 父组件用ref获取子组件DOM，子组件暴露的方法或属性可以用dom获取。
 defineExpose({

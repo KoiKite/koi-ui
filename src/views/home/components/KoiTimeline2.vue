@@ -9,7 +9,7 @@
 <script setup lang="ts">
 const activities = [
   {
-    content: "舔狗日记🌻",
+    content: "舔狗日记",
     timestamp: "2023-11-23 18:00:00",
     type: "primary"
   },

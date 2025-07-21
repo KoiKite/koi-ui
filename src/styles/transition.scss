@@ -77,3 +77,195 @@
   opacity: 0;
   transform: scale(1.06);
 }
+
+/* 动画定义 Begin */
+/* 缩放动画 */
+.koi-scale:hover {
+  animation: koi-scale 0.6s forwards;
+}
+
+.koi-scale-i:hover i {
+  animation: koi-scale 0.6s forwards;
+}
+
+@keyframes koi-scale {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* 旋转动画 */
+.koi-rotate:hover {
+  animation: koi-rotate 0.8s forwards;
+}
+
+.koi-rotate-i:hover i {
+  animation: koi-rotate 0.8s forwards;
+}
+
+@keyframes koi-rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* 抖动动画 */
+.koi-shake:hover {
+  animation: koi-shake 0.5s forwards;
+}
+
+.koi-shake-i:hover i {
+  animation: koi-shake 0.5s forwards;
+}
+
+@keyframes koi-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translateX(-5px);
+  }
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translateX(5px);
+  }
+}
+
+/* 摇摆动画 */
+.koi-swing:hover {
+  animation: koi-swing 1s forwards;
+}
+
+.koi-swing-i:hover i {
+  animation: koi-swing 1s forwards;
+}
+
+@keyframes koi-swing {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(15deg);
+  }
+  50% {
+    transform: rotate(-10deg);
+  }
+  75% {
+    transform: rotate(5deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+/* 弹跳动画 */
+.koi-bounce:hover {
+  animation: koi-bounce 0.8s forwards;
+}
+
+.koi-bounce-i:hover i {
+  animation: koi-bounce 0.8s forwards;
+}
+
+@keyframes koi-bounce {
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-20px);
+  }
+  60% {
+    transform: translateY(-10px);
+  }
+}
+
+/* 脉动动画 */
+.koi-pulse:hover {
+  animation: koi-pulse 1s infinite;
+}
+
+.koi-pulse-i:hover i {
+  animation: koi-pulse 1s infinite;
+}
+
+@keyframes koi-pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(255, 204, 0, 0);
+  }
+  70% {
+    transform: scale(1.12);
+    box-shadow: 0 0 0 15px rgba(255, 204, 0, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(255, 204, 0, 0);
+  }
+}
+
+/* 翻转动画 */
+.koi-flip:hover {
+  animation: koi-flip 0.8s forwards;
+}
+
+.koi-flip-i:hover i {
+  animation: koi-flip 0.8s forwards;
+}
+
+@keyframes koi-flip {
+  0% {
+    transform: perspective(800px) rotateY(0);
+  }
+  50% {
+    transform: perspective(800px) rotateY(180deg);
+  }
+  100% {
+    transform: perspective(800px) rotateY(360deg);
+  }
+}
+
+/* 波浪动画 */
+.koi-wave:hover {
+  animation: koi-wave 0.8s forwards;
+}
+
+.koi-wave-i:hover i {
+  animation: koi-wave 0.8s forwards;
+}
+
+@keyframes koi-wave {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0);
+  }
+  25% {
+    transform: translateY(-15px) rotate(5deg);
+  }
+  50% {
+    transform: translateY(0) rotate(0);
+  }
+  75% {
+    transform: translateY(-10px) rotate(-5deg);
+  }
+}
+/* 动画定义 End */

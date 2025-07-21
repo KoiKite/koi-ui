@@ -1,16 +1,12 @@
 <template>
-  <div class="hover:bg-[rgba(0,0,0,0.06)] w-32px h-100% flex flex-justify-center flex-items-center" @click="handleSwitchDark">
+  <div class="hover:bg-[rgba(0,0,0,0.06)] hover:dark-bg-[rgba(255,255,255,0.1)] koi-icon w-36px h-36px rounded-md flex flex-justify-center flex-items-center koi-scale-i" @click="handleSwitchDark">
     <!-- 明亮模式 -->
-    <el-tooltip :content="$t('header.lightMode')" v-if="!globalStore.isDark">
-      <el-icon class="koi-icon" :size="size">
-        <Sunny />
-      </el-icon>
+    <el-tooltip :content="$t('header.darkMode')" v-if="!globalStore.isDark">
+      <KoiGlobalIcon name="koi-moon-side" size="18" />
     </el-tooltip>
     <!-- 暗黑模式 -->
-    <el-tooltip :content="$t('header.darkMode')" v-if="globalStore.isDark">
-      <el-icon class="koi-icon" :size="size">
-        <Moon />
-      </el-icon>
+    <el-tooltip :content="$t('header.lightMode')" v-if="globalStore.isDark">
+      <KoiGlobalIcon name="koi-sun-side" size="18" />
     </el-tooltip>
   </div>
 </template>

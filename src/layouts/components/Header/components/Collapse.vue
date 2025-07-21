@@ -1,8 +1,8 @@
 <template>
-  <div class="hover:bg-[rgba(0,0,0,0.06)] koi-icon w-36px h-36px rounded-md flex flex-justify-center flex-items-center" @click="changeCollapseIcon">
+  <div class="hover:bg-[rgba(0,0,0,0.06)] hover:dark-bg-[rgba(255,255,255,0.1)] koi-icon w-36px h-36px rounded-md flex flex-justify-center flex-items-center" @click="changeCollapseIcon">
     <el-icon :size="20">
-      <KoiSvgIcon name="koi-menu-left" width="20px" height="20px" v-if="!globalStore.isCollapse"></KoiSvgIcon>
-      <KoiSvgIcon name="koi-menu-right" width="20px" height="20px" v-if="globalStore.isCollapse"></KoiSvgIcon>
+      <KoiSvgIcon name="koi-left" width="20px" height="20px" v-if="!globalStore.isCollapse"></KoiSvgIcon>
+      <KoiSvgIcon name="koi-right" width="20px" height="20px" v-if="globalStore.isCollapse"></KoiSvgIcon>
     </el-icon>
   </div>
 </template>

@@ -1,6 +1,6 @@
 // 全局默认配置项
 // 首页地址[默认]
-export const HOME_URL: string = "/home/index";
+export const HOME_URL: string = "/home";
 
 // 跳转子页面静态路由父级节点
 export const STATIC_URL: string = "/system/static";

@@ -6,7 +6,7 @@
     2、将需要触发的方法绑定在指令上
   
   使用：给 Dom 加上 v-throttle 及回调函数即可
-  <el-button type="danger" icon="refresh" plain v-throttle="resetSearch">重置</el-button>
+  <el-button type="danger" icon="refresh" plain @click="resetSearch()">重置</el-button>
 */
 // @ts-nocheck
 import type { Directive, DirectiveBinding } from "vue";

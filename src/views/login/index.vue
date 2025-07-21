@@ -10,36 +10,42 @@
         <div class="absolute text-center select-none">
           <el-image class="w-400px h-360px mb-50px animate-float <md:hidden <lg:w-360px h-320px" :src="bg" />
           <div class="font-bold text-3xl chroma-text mb-6px text-center <lg:text-2xl <md:hidden">
-            {{ $t("login.welcome") }} {{ loginTitle || "KOI-ADMIN 管理平台" }}
+            {{ $t("menu.login.welcome") }} {{ $t("menu.login.title") || "KOI-ADMIN 管理平台" }}
           </div>
-          <div class="chroma-text text-lg text-center <md:hidden">{{ $t("login.description") }}</div>
+          <div class="chroma-text text-lg text-center <md:hidden">{{ $t("menu.login.description") }}</div>
         </div>
         <!-- 备案号-->
-        <div class="beianhao select-none <md:hidden">
+        <div class="beiAnHao select-none <md:hidden">
           <a class="chroma-text" href="https://beian.miit.gov.cn/" target="_blank"
-            >{{ $t("login.beianhao") }}：豫ICP备2022022094号-1</a
+            >{{ $t("menu.login.beiAnHao") }}：豫ICP备2022022094号-1</a
           >
         </div>
       </el-col>
-      <el-col :lg="8" :md="12" :sm="9" :xs="24" class="dark:bg-#161616 bg-gray-100 flex flex-items-center flex-justify-center flex-col">
+      <el-col
+        :lg="8"
+        :md="12"
+        :sm="9"
+        :xs="24"
+        class="dark:bg-#161616 bg-gray-100 flex flex-items-center flex-justify-center flex-col"
+      >
         <div class="flex flex-items-center">
           <el-image class="rounded-full w-36px h-36px" :src="logo" />
-          <div class="ml-6px font-bold text-xl">{{ loginTitle || "KOI-ADMIN 管理平台" }}</div>
+          <div class="ml-6px font-bold text-xl">{{ $t("menu.login.title") || "KOI-ADMIN 管理平台" }}</div>
         </div>
         <div class="flex flex-items-center space-x-3 text-gray-400 mt-16px mb-16px">
           <span class="h-1px w-16 bg-gray-300 inline-block"></span>
-          <span class="text-center">{{ $t("login.account") }}</span>
+          <span class="text-center">{{ $t("menu.login.account") }}</span>
           <span class="h-1px w-16 bg-gray-300 inline-block"></span>
         </div>
         <!-- 输入框盒子 -->
         <el-form ref="loginFormRef" :model="loginForm" :rules="loginRules" class="w-260px">
           <el-form-item prop="loginName">
-            <el-input type="text" :placeholder="$t('login.loginName')" :suffix-icon="User" v-model="loginForm.loginName" />
+            <el-input type="text" :placeholder="$t('menu.login.form.loginName')" :suffix-icon="User" v-model="loginForm.loginName" />
           </el-form-item>
           <el-form-item prop="password">
             <el-input
               type="password"
-              :placeholder="$t('login.password')"
+              :placeholder="$t('menu.login.form.password')"
               show-password
               :suffix-icon="Lock"
               v-model="loginForm.password"
@@ -48,7 +54,7 @@
           <el-form-item prop="securityCode">
             <el-input
               type="text"
-              :placeholder="$t('login.security')"
+              :placeholder="$t('menu.login.form.securityCode')"
               :suffix-icon="Open"
               v-model="loginForm.securityCode"
               @keydown.enter="handleKoiLogin"
@@ -56,8 +62,8 @@
           </el-form-item>
           <el-form-item>
             <el-image class="w-100px h-30px" :src="loginForm.captchaPicture" @click="handleCaptcha" />
-            <el-button text size="small" class="ml-6px" @click="handleCaptcha">
-              <div class="text-gray-400 hover:text-#8B5CF6 select-none">{{ $t("login.blur") }}</div>
+            <el-button text size="small" class="m-l-6px" @click="handleCaptcha">
+              <div class="text-gray-400 hover:text-#8B5CF6 select-none">{{ $t("menu.login.picture") }}</div>
             </el-button>
           </el-form-item>
           <!-- 登录按钮 -->
@@ -68,17 +74,17 @@
               class="w-245px bg-[--el-color-primary]"
               round
               v-throttle:3000="handleKoiLogin"
-              >{{ $t("login.in") }}</el-button
+              >{{ $t("menu.login.in") }}</el-button
             >
             <el-button type="primary" v-else class="w-245px bg-[--el-color-primary]" round :loading="loading">{{
-              $t("login.center")
+              $t("menu.login.loading")
             }}</el-button>
           </el-form-item>
         </el-form>
         <!-- 备案号-->
-        <div class="beianhao select-none lg:hidden">
+        <div class="beiAnHao select-none lg:hidden">
           <a class="chroma-text" href="https://beian.miit.gov.cn/" target="_blank"
-            >{{ $t("login.beianhao") }}：豫ICP备2022022094号-1</a
+            >{{ $t("menu.login.beiAnHao") }}：豫ICP备2022022094号-1</a
           >
         </div>
       </el-col>
@@ -105,27 +111,17 @@ import { initDynamicRouter } from "@/routers/modules/dynamicRouter.ts";
 import useTabsStore from "@/stores/modules/tabs.ts";
 import logo from "@/assets/images/logo/logo.webp";
 import bg from "@/assets/images/login/bg.png";
-import settings from "@/settings";
 import KoiDark from "./components/KoiDark.vue";
 import KoiLoading from "./components/KoiLoading.vue";
 import KoiLanguage from "./components/KoiLanguage.vue";
-import { getLanguage } from "@/utils/index.ts";
-import useGlobalStore from "@/stores/modules/global.ts";
+import { useI18n } from "vue-i18n";
 
 
-// 标题语言切换
-const loginTitle = ref(settings.loginTitle);
-
-loginTitle.value = computed(() => {
-  return getLanguage(globalStore.language, settings.loginTitle, settings.loginEnTitle);
-});
-
-const globalStore = useGlobalStore();
+const { t } = useI18n();
 const userStore = useUserStore();
 const tabsStore = useTabsStore();
 const keepAliveStore = useKeepAliveStore();
 const router = useRouter();
-
 const loginFormRef = ref<FormInstance>();
 const loading = ref(false);
 
@@ -139,27 +135,41 @@ interface ILoginUser {
 
 const loginForm = reactive<ILoginUser>({
   loginName: "yuadmin",
-  password: "123456",
+  password: "yuadmin123",
   securityCode: "1234",
   codeKey: "",
   captchaPicture: ""
 });
 
-let loginRules: any = reactive<FormRules<ILoginUser>>({});
-loginRules = computed(() => {
-  if (globalStore.language === "en") {
-    return reactive<FormRules<ILoginUser>>({
-      loginName: [{ required: true, message: "The user name cannot be empty", trigger: "blur" }],
-      password: [{ required: true, message: "The password cannot be empty", trigger: "blur" }],
-      securityCode: [{ required: true, message: "The verification code cannot be empty", trigger: "blur" }]
-    });
-  } else {
-    return reactive<FormRules<ILoginUser>>({
-      loginName: [{ required: true, message: "用户名不能为空", trigger: "blur" }],
-      password: [{ required: true, message: "密码不能为空", trigger: "blur" }],
-      securityCode: [{ required: true, message: "验证码不能为空", trigger: "blur" }]
-    });
-  }
+const loginRules: any = reactive<FormRules<ILoginUser>>({
+  loginName: [
+    { required: true, message: t("menu.login.rules.loginName.required"), trigger: "blur" },
+    {
+      validator: (_rule: any, value: any, callback: any) => {
+        if (!/^[a-zA-Z0-9]+$/.test(value)) {
+          callback(new Error(t("menu.login.rules.loginName.validator")));
+        } else {
+          callback();
+        }
+      },
+      trigger: "blur"
+    }
+  ],
+  password: [
+    { required: true, message: t("menu.login.rules.password.required"), trigger: "blur" },
+    { min: 6, max: 20, message: t("menu.login.rules.password.validator1"), trigger: "blur" },
+    {
+      validator: (_rule: any, value: any, callback: any) => {
+        if (!/^(?=.*\d)(?=.*[a-zA-Z]).+$/.test(value)) {
+          callback(new Error(t("menu.login.rules.password.validator2")));
+        } else {
+          callback();
+        }
+      },
+      trigger: "blur"
+    }
+  ],
+  securityCode: [{ required: true, message: t("menu.login.rules.securityCode.required"), trigger: "blur" }]
 });
 
 /** 获取验证码 */
@@ -250,7 +260,7 @@ const handleKoiLogin = () => {
 
 <style lang="scss" scoped>
 /** 备案号 */
-.beianhao {
+.beiAnHao {
   position: absolute;
   bottom: 10px;
   left: auto;

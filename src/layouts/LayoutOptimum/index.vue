@@ -4,11 +4,10 @@
     <el-aside
       class="layout-aside transition-all"
       :style="{ width: !globalStore.isCollapse ? globalStore.menuWidth + 'px' : settings.columnMenuCollapseWidth }"
-      v-if="subMenuList.length != 0"
+      v-if="currentSubMenuTree.length > 0"
     >
       <Logo :isCollapse="globalStore.isCollapse" :layout="globalStore.layout"></Logo>
       <el-scrollbar class="layout-scrollbar">
-        <!-- :unique-opened="true" 子菜单不能同时展开 -->
         <el-menu
           :default-active="activeMenu"
           :collapse="globalStore.isCollapse"
@@ -17,7 +16,7 @@
           :router="false"
           :class="menuAnimate"
         >
-          <ColumnSubMenu :menuList="subMenuList"></ColumnSubMenu>
+          <ColumnSubMenu :menuList="currentSubMenuTree"></ColumnSubMenu>
         </el-menu>
       </el-scrollbar>
     </el-aside>
@@ -28,20 +27,20 @@
             <!-- 左侧菜单展开和折叠图标 -->
             <Collapse></Collapse>
             <div class="layout-row m-l-12px">
-              <el-scrollbar class="horizontal-scrollbar">
+              <el-scrollbar class="horizontal-scrollbar" ref="horizontalScrollbarRef">
                 <div class="horizontal-menu">
                   <div
-                    v-for="item in menuList"
-                    :key="item.path"
+                    v-for="item in topLevelMenus"
+                    :key="item.meta.menuId"
                     class="left-row line-clamp-1"
                     :class="{
-                      'is-active': columnActive === item.path || `/${columnActive.split('/')[1]}` === item.path
+                      'is-active': activeTopMenuId == item.meta?.menuId
                     }"
-                    @click="handleSubMenu(item)"
+                    @click="handleTopMenuClick(item)"
                   >
                     <KoiGlobalIcon v-if="item.meta.icon" :name="item.meta.icon" size="18"></KoiGlobalIcon>
-                    <el-tooltip :content="getLanguage(globalStore.language, item.meta?.title, item.meta?.enName)" :show-after="2000" placement="right">
-                      <span class="title" v-text="getLanguage(globalStore.language, item.meta?.title, item.meta?.enName)"></span>
+                    <el-tooltip :content="getMenuLanguage(item.meta?.title)" :show-after="2000" placement="right">
+                      <span class="title" v-text="getMenuLanguage(item.meta?.title)"></span>
                     </el-tooltip>
                   </div>
                 </div>
@@ -65,87 +64,252 @@ import Collapse from "@/layouts/components/Header/components/Collapse.vue";
 import Toolbar from "@/layouts/components/Header/components/Toolbar.vue";
 import ColumnSubMenu from "@/layouts/components/Menu/ColumnSubMenu.vue";
 import Main from "@/layouts/components/Main/index.vue";
-import { ref, computed, watch, onMounted } from "vue";
+import { ref, computed, watch, onMounted, onBeforeUnmount } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import useAuthStore from "@/stores/modules/auth.ts";
-import { getLanguage } from "@/utils/index.ts";
+import { getMenuLanguage } from "@/utils/index.ts";
 import useGlobalStore from "@/stores/modules/global.ts";
+import { HOME_URL } from "@/config/index.ts";
+import { koiMsgError } from "@/utils/koi";
 
 const route = useRoute();
 const router = useRouter();
 const authStore = useAuthStore();
 const globalStore = useGlobalStore();
 
-console.log("上左布局左侧动态路由", authStore.showMenuList);
-
 // 动态绑定左侧菜单animate动画
 const menuAnimate = ref(settings.menuAnimate);
 
-/** 隐藏静态路由中isHide == '1'的数据 */
-const menuList = computed(() => authStore.showMenuList.filter((item: any) => item.meta.isHide == "1"));
+// 获取所有顶级菜单[第一层级]
+const topLevelMenus = computed(() => authStore.showMenuList.filter((item: any) => item.meta?.isHide == "1"));
 
-const columnActive = ref("");
-const subMenuList = ref([]);
+// 当前激活的顶级菜单ID
+const activeTopMenuId = ref<any>();
+// 当前显示的子菜单树[包含所有层级]
+const currentSubMenuTree = ref<any[]>([]);
+// 当前激活的子菜单路径
+const activeMenu = computed(() => (route.meta?.activeMenu ? route.meta?.activeMenu : route.path) as string);
 
-watch(
-  () => [menuList, route],
-  () => {
-    // 当前菜单没有数据直接 return
-    if (!menuList.value.length) return;
-    columnActive.value = route.path;
-    const menuItem = menuList.value.filter((item: any) => {
-      // 刷新浏览器，一级路由就会变成点击的二级路由，所以需要加上`/${route.path.split("/")[1]}` 进行获取，否则就没有默认选择的颜色。
-      return route.path === item.path || `/${route.path.split("/")[1]}` === item.path;
-    });
-    // 若获取的路由没有子菜单，则赋值为空。
-    if (!menuItem[0].children?.length) return (subMenuList.value = []);
-    // 若有子菜单则赋值给子菜单变量。
-    subMenuList.value = menuItem[0].children;
-  },
-  {
-    deep: true,
-    immediate: true
+/** 递归检查菜单项是否匹配 */
+const containsActiveMenu = (menu: any, activeMenu: string): boolean => {
+  // 检查当前菜单是否匹配
+  if (menu.path == String(activeMenu)) {
+    return true;
   }
-);
 
-/** 点击加载子菜单数据 */
-const handleSubMenu = (item: any) => {
-  columnActive.value = item.path;
-  if (item.children?.length) {
-    // 该一级菜单，若是有子菜单，就会给第二个分栏菜单赋值。
-    // router.push(item.path); // 加这个，点击最左侧菜单会重定向第一个子菜单。
-    subMenuList.value = item.children;
-    return;
+  // 递归检查子菜单
+  if (menu.children && menu.children.length > 0) {
+    for (const child of menu.children) {
+      if (containsActiveMenu(child, activeMenu)) {
+        return true;
+      }
+    }
   }
-  // 若是没有子菜单，则给子菜单变量赋值为空，并且跳转路由。例如：首页。
-  subMenuList.value = [];
-  router.push(item.path);
+  return false;
 };
 
-const activeMenu = computed(() => (route.meta.activeMenu ? route.meta.activeMenu : route.path) as string);
+/**
+ * @description 查找最顶级菜单对象
+ * @param routes 菜单递归数据
+ * @param activeMenu 选中路由 或 menuId
+ */
+const findMenuByActiveMenu = (routes: any[], activeMenu: any) => {
+  // 遍历所有顶级菜单
+  for (const route of routes) {
+    // 检查当前顶级菜单是否匹配
+    if (route.path == String(activeMenu)) {
+      return route;
+    }
 
-/** 添加鼠标滚轮控制横向滚动功能 */
-const handleWheelScroll = (event: WheelEvent) => {
-  const container = document.querySelector('.horizontal-scrollbar .el-scrollbar__wrap');
-  if (container) {
-    // 阻止默认的垂直滚动行为
-    event.preventDefault();
-    
-    // 计算滚动距离
-    const scrollAmount = event.deltaY > 0 ? 100 : -100;
-    
-    // 平滑滚动
-    container.scrollTo({
-      left: container.scrollLeft + scrollAmount,
-      behavior: 'smooth'
+    // 检查子菜单是否包含匹配项
+    if (route.children && route.children.length > 0) {
+      if (containsActiveMenu(route, activeMenu)) {
+        return route;
+      }
+    }
+  }
+
+  return null; // 未找到匹配项
+};
+
+/**
+ * @description 根据 menuId 查找顶级父菜单（排除自身）
+ * @param routes 菜单数据[无限层级结构]
+ * @param menuId 要查找的菜单 ID
+ * @returns 顶级父菜单对象，未找到或目标菜单是顶级菜单时返回 null
+ */
+const findTopMenuByMenuId = (routes: any[], targetMenuId: any): any => {
+  // 转换目标菜单ID为字符串
+  const targetId = String(targetMenuId);
+
+  // 创建菜单ID到菜单对象的映射
+  const menuMap = new Map();
+
+  // 递归构建菜单映射并添加父菜单关系
+  const buildMenuMap = (menuList: any, parentId?: any) => {
+    for (const menu of menuList) {
+      if (menu.meta?.menuId) {
+        const menuId = String(menu.meta.menuId);
+
+        // 添加父菜单关系
+        menu.parentId = parentId;
+        menuMap.set(menuId, menu);
+      }
+
+      // 递归处理子菜单
+      if (menu.children && menu.children.length > 0) {
+        const currentParentId = menu.meta?.menuId ? String(menu.meta.menuId) : parentId;
+        buildMenuMap(menu.children, currentParentId);
+      }
+    }
+  };
+
+  // 构建映射
+  buildMenuMap(routes);
+
+  // 检查菜单是否存在
+  if (!menuMap.has(targetId)) {
+    return null;
+  }
+
+  // 查找顶层菜单的递归函数
+  const findTopMenu: any = (menuId: any) => {
+    const menu = menuMap.get(menuId);
+
+    // 如果菜单没有父菜单或自身就是顶级菜单，返回null
+    if (!menu.parentId) {
+      return null;
+    }
+
+    // 递归查找父菜单的顶层菜单
+    const parentTopMenu = findTopMenu(menu.parentId);
+
+    return parentTopMenu || menuMap.get(menu.parentId);
+  };
+
+  // 查找目标菜单的顶层菜单
+  return findTopMenu(targetId);
+};
+
+/**
+ * 根据顶级菜单ID获取其完整的子菜单树
+ * @param {number|string} topMenuId 顶级菜单ID
+ * @returns {Array} 完整的子菜单树
+ */
+const getSubMenuTree = (topMenuId: number | string) => {
+  const topMenu = topLevelMenus.value.find((item: any) => item.meta.menuId === topMenuId);
+  return topMenu?.children || [];
+};
+
+/**
+ * 点击顶级菜单处理
+ * @param {Object} item 菜单项
+ */
+const handleTopMenuClick = (route: any) => {
+  if (!route?.children) {
+    // 更新当前激活的顶级菜单
+    activeTopMenuId.value = route.meta?.menuId;
+    currentSubMenuTree.value = [];
+    router.push({
+      path: route.path || HOME_URL
     });
+    return;
+  }
+
+  // 更新当前激活的顶级菜单
+  activeTopMenuId.value = route.meta?.menuId;
+
+  // 获取该顶级菜单的子菜单树
+  currentSubMenuTree.value = getSubMenuTree(route.meta?.menuId);
+};
+
+/**
+ * 初始化菜单状态
+ */
+const initMenu = () => {
+  if (!topLevelMenus.value.length) return;
+
+  const { menuId, activeMenu } = route.meta || {};
+
+  // 情况一：没有提供 menuId 或 activeMenu，默认选第一个顶级菜单
+  if (!menuId && !activeMenu) {
+    activeTopMenuId.value = topLevelMenus.value[0];
+    return;
+  }
+
+  // 情况二：menuId 存在，activeMenu 不存在
+  if (menuId && !activeMenu) {
+    const topLevelMenu: any = findTopMenuByMenuId(authStore.showMenuList, String(menuId));
+
+    if (!topLevelMenu) {
+      // 未找到父级，说明是顶级菜单，直接赋值
+      activeTopMenuId.value = menuId;
+      currentSubMenuTree.value = [];
+    } else {
+      // 找到父级，设置为激活项，并加载子菜单
+      activeTopMenuId.value = topLevelMenu.meta?.menuId;
+      currentSubMenuTree.value = getSubMenuTree(activeTopMenuId.value);
+    }
+
+    router.push(route.path); // 同步路径
+    return;
+  }
+
+  // 情况三：activeMenu 存在通过 activeMenu 查找父级菜单
+  if (activeMenu) {
+    const topLevelMenu: any = findMenuByActiveMenu(authStore.showMenuList, activeMenu);
+
+    if (topLevelMenu) {
+      activeTopMenuId.value = topLevelMenu.meta?.menuId;
+      currentSubMenuTree.value = getSubMenuTree(activeTopMenuId.value);
+      router.push(route.path);
+    } else {
+      koiMsgError("The menu data configuration is error");
+    }
   }
 };
 
 onMounted(() => {
-  const scrollContainer: any = document.querySelector('.horizontal-scrollbar .el-scrollbar__wrap');
-  if (scrollContainer) {
-    scrollContainer.addEventListener('wheel', handleWheelScroll, { passive: false });
+  initMenu();
+  // 添加滚轮事件监听
+  const scrollbarElement = horizontalScrollbarRef.value?.$el;
+  if (scrollbarElement) {
+    scrollbarElement.addEventListener('wheel', handleWheel);
+  }
+});
+
+// 监听路由变化
+watch(
+  () => route,
+  () => {
+    initMenu();
+  },
+  { deep: true }
+);
+
+// 添加水平滚动条的引用
+const horizontalScrollbarRef = ref<any>(null);
+
+// 处理鼠标滚轮事件
+const handleWheel = (e: WheelEvent) => {
+  if (!horizontalScrollbarRef.value) return;
+  
+  // 获取滚动容器元素
+  const scrollbarWrap = horizontalScrollbarRef.value.$el.querySelector('.el-scrollbar__wrap');
+  if (!scrollbarWrap) return;
+  
+  // 阻止默认的垂直滚动
+  e.preventDefault();
+  
+  // 应用水平滚动[调整系数0.5控制滚动速度]
+  scrollbarWrap.scrollLeft += (e.deltaY + e.deltaX) * 0.5;
+};
+
+// 移除事件监听
+onBeforeUnmount(() => {
+  const scrollbarElement = horizontalScrollbarRef.value?.$el;
+  if (scrollbarElement) {
+    scrollbarElement.removeEventListener('wheel', handleWheel);
   }
 });
 </script>
@@ -155,66 +319,57 @@ onMounted(() => {
   display: flex;
   justify-content: space-between;
   height: $aside-header-height;
-  
+
   .header-left {
     display: flex;
     align-items: center;
-    flex: 1; /* 关键修改：占据剩余空间 */
-    min-width: 0; /* 防止溢出 */
+    flex: 1;
+    min-width: 0;
   }
 }
 
 .layout-row {
   display: flex;
   height: 100%;
-  flex: 1; /* 关键修改：占据剩余空间 */
-  min-width: 0; /* 防止溢出 */
+  flex: 1;
+  min-width: 0;
   user-select: none;
   background-color: var(--el-header-bg-color);
 }
 
 .horizontal-scrollbar {
-  width: 100%; /* 占据全部可用宽度 */
+  width: 100%;
   height: calc(100% - 4px);
   overflow: hidden;
   margin-top: 2px;
 
   :deep(.el-scrollbar__wrap) {
-    /* 关键修改：强制隐藏垂直滚动 */
     overflow-x: auto !important;
     overflow-y: hidden !important;
-    
-    /* 关键修改：防止内容换行 */
     white-space: nowrap;
-    
-    /* 关键修改：禁用垂直滚动 */
     height: 100% !important;
-    
-    /* 关键修改：隐藏垂直滚动条 */
+    padding-bottom: 0 !important;
+
     .el-scrollbar__view {
       height: 100% !important;
     }
-    
-    /* 关键修改：移除底部内边距 */
-    padding-bottom: 0 !important;
   }
-  
+
   :deep(.el-scrollbar__bar) {
     &.is-horizontal {
       height: 8px;
       bottom: 2px;
     }
-    
-    /* 关键修改：隐藏垂直滚动条 */
+
     &.is-vertical {
       display: none !important;
     }
-    
+
     .el-scrollbar__thumb {
       background-color: rgba(144, 147, 153, 0.5);
       border-radius: 4px;
       transition: background-color 0.3s;
-      
+
       &:hover {
         background-color: rgba(144, 147, 153, 0.7);
       }
@@ -222,19 +377,16 @@ onMounted(() => {
   }
 }
 
-/* 水平菜单容器 */
 .horizontal-menu {
-  display: inline-flex; /* 关键修改：内联flex */
-  height: 100%; /* 关键修改：高度100%填充 */
-  min-width: 100%; /* 确保内容足够宽 */
+  display: inline-flex;
+  height: 100%;
+  min-width: 100%;
   user-select: none;
-  /* 关键修改：确保容器高度不会超出 */
   box-sizing: border-box;
 }
 
-/* 菜单项样式 */
 .left-row {
-  display: inline-flex; /* 关键修改：内联flex */
+  display: inline-flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -247,7 +399,7 @@ onMounted(() => {
   border: 1px solid transparent;
   color: var(--el-header-optimum-color);
   transition: all 0.3s ease;
-  
+
   .title {
     margin-top: 8px;
     font-size: 12px;
@@ -260,19 +412,20 @@ onMounted(() => {
     max-width: 100%;
     letter-spacing: 1px;
   }
-  
+
   &:hover {
     color: var(--el-header-optimum-hover-color);
     background: var(--el-header-optimum-hover-bg-color);
     border: 1px solid var(--el-header-optimum-border-color);
     border-radius: 4px;
   }
-  
+
   &.is-active {
     color: var(--el-header-optimum-active-color);
     background: var(--el-header-optimum-active-bg-color);
     border: 1px solid var(--el-header-optimum-border-color);
     border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
 }
 
@@ -280,18 +433,21 @@ onMounted(() => {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
+
   .layout-aside {
-    z-index: $layout-aside-z-index; // 左侧菜单层级
-    padding-right: $column-menu-padding-right; // 左侧布局右边距[用于悬浮和选择更明显]
-    padding-left: $column-menu-padding-left; // 左侧布局左边距[用于悬浮和选择更明显]
+    z-index: $layout-aside-z-index;
+    padding-right: $column-menu-padding-right;
+    padding-left: $column-menu-padding-left;
     background-color: var(--el-menu-bg-color);
     border-right: none;
-    box-shadow: $aside-menu-box-shadow; // 双栏左侧布局菜单右边框阴影
+    box-shadow: $aside-menu-box-shadow;
   }
+
   .layout-header {
     height: $aside-header-height;
     background-color: var(--el-header-bg-color);
   }
+
   .layout-main {
     box-sizing: border-box;
     padding: 0;
@@ -299,13 +455,19 @@ onMounted(() => {
     background-color: var(--el-bg-color);
   }
 }
+
 .layout-scrollbar {
   width: 100%;
   height: calc(100vh - $aside-header-height);
 }
 
-/** 去除菜单右侧边框 */
 .el-menu {
   border-right: none;
+}
+</style>
+
+<style lang="scss">
+.el-menu--collapse {
+  width: calc(var(--el-menu-icon-width) + var(--el-menu-base-level-padding)) !important;
 }
 </style>

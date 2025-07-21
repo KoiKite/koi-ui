@@ -5,7 +5,7 @@
     :title="title"
     :width="width"
     :center="center"
-    :close-on-click-modal="false"
+    :close-on-click-modal="closeOnClickModel"
     append-to-body
     draggable
     :destroy-on-close="destroyOnClose"
@@ -22,9 +22,9 @@
     <template #footer v-if="!footerHidden">
       <span class="dialog-footer">
         <el-button type="primary" loading-icon="Eleme" :loading="confirmLoading" v-throttle="koiConfirm">{{
-          confirmText
+          confirmText || $t("button.confirm")
         }}</el-button>
-        <el-button type="danger" @click="koiCancel">{{ cancelText }}</el-button>
+        <el-button type="danger" @click="koiCancel">{{ cancelText || $t("button.cancel") }}</el-button>
       </span>
     </template>
   </el-dialog>
@@ -33,8 +33,11 @@
 <!-- 此弹窗封装将使用 defineExpose，通过ref进行使用 -->
 <script setup lang="ts">
 import { ref, toRefs } from "vue";
-// @ts-ignore
-import { koiMsgWarning, koiMsgBox } from "@/utils/koi.ts";
+import { koiMsgWarning } from "@/utils/koi.ts";
+import { ElMessageBox } from "element-plus";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 // 定义参数的类型
 interface IDialogProps {
@@ -43,6 +46,7 @@ interface IDialogProps {
   width?: number;
   center?: boolean;
   height?: number;
+  closeOnClickModel?: boolean;
   confirmText?: string;
   cancelText?: string;
   destroyOnClose?: boolean;
@@ -53,15 +57,15 @@ interface IDialogProps {
 
 // 子组件接收父组件的值
 // withDefaults：设置默认值  defineProps：接收父组件的参数
-// @ts-ignore
 const props = withDefaults(defineProps<IDialogProps>(), {
-  title: "朕很中意你KoiDialog",
+  title: "KoiDialog",
   height: 300,
   width: 650,
   center: true,
   visible: false,
-  confirmText: "确定",
-  cancelText: "取消",
+  closeOnClickModel: false,
+  confirmText: "",
+  cancelText: "",
   destroyOnClose: false,
   fullscreen: false,
   loading: false,
@@ -82,16 +86,22 @@ const koiOpen = () => {
 
 /** 取消对话框 */
 const koiClose = () => {
-  koiMsgBox("您确认进行关闭么？")
-    .then(() => {
-      visible.value = false;
-      koiMsgWarning("已关闭🌻");
+  if (!props.closeOnClickModel) {
+    ElMessageBox.confirm(t("msg.closeTips"), t("msg.remind"), {
+      confirmButtonText: t("button.confirm"),
+      cancelButtonText: t("button.cancel"),
+      type: "warning"
     })
-    .catch(() => {
-      // 用户点击了取消按钮或关闭对话框
-      // 执行取消操作或不做任何操作
-      koiMsgWarning("已取消🌻");
-    });
+      .then(() => {
+        visible.value = false;
+        koiMsgWarning(t("msg.closed"));
+      })
+      .catch(() => {
+        koiMsgWarning(t("msg.cancelled"));
+      });
+  } else {
+    visible.value = false;
+  }
 };
 
 /** 确认提交后关闭对话框 */
@@ -107,12 +117,12 @@ const koiConfirm = () => {
   emits("koiConfirm");
 };
 
-/** 对话框的取消事件 */ 
+/** 对话框的取消事件 */
 const koiCancel = () => {
   emits("koiCancel");
 };
 
-/** 暴露给父组件方法 */ 
+/** 暴露给父组件方法 */
 defineExpose({
   koiOpen,
   koiClose,
@@ -121,7 +131,7 @@ defineExpose({
 </script>
 
 <style lang="scss" scoped>
-// .dialog-container { 
+// .dialog-container {
 //   overflow-x: initial;
 //   overflow-y: auto; // 超出部分则滚动
 // }

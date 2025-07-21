@@ -1,12 +1,22 @@
 <template>
-  <el-tabs v-model="activeTab" type="card" class="koi-tabs" @tab-remove="removeTab" @tab-click="clickToggleTab" @contextmenu.prevent="handleTabsMenuParent($event)">
+  <el-tabs
+    v-model="activeTab"
+    type="card"
+    class="koi-tabs"
+    @tab-remove="removeTab"
+    @tab-click="handleTabClick"
+    @contextmenu.prevent="handleTabsMenuParent($event)"
+  >
     <!-- :closable="true" 显示关闭图标 -->
-    <el-tab-pane v-for="item in tabList" :key="item.path" :label="item.title" :name="item.path" :closable="item.closeIcon">
+    <el-tab-pane v-for="item in tabList" :key="item.path" :label="item.title" :name="item.path" :closable="item.closable">
       <!-- 加载图标 -->
       <template #label>
-        <div class="flex flex-justify-center flex-items-center select-none" @contextmenu.prevent="handleTabsMenuChildren(item.path, $event)">
+        <div
+          class="flex flex-justify-center flex-items-center select-none"
+          @contextmenu.prevent="handleTabsMenuChildren(item.path, $event)"
+        >
           <KoiGlobalIcon class="m-r-2px" v-show="item.icon" :name="item.icon" size="16"></KoiGlobalIcon>
-          <div>{{ getLanguage(globalStore.language, item?.title, item?.enName) }}</div>
+          <div>{{ getMenuLanguage(item?.title) }}</div>
         </div>
       </template>
     </el-tab-pane>
@@ -19,20 +29,18 @@
 
 <script setup lang="ts">
 import TabMenu from "@/layouts/components/Tabs/components/TabMenu.vue";
-// @ts-ignore
 import Sortable from "sortablejs";
-import { koiMsgWarning } from "@/utils/koi.ts";
+import { koiMsgWarning, koiMsgError } from "@/utils/koi.ts";
 import { TabsPaneContext } from "element-plus";
-import { ref, watch, computed, onMounted } from "vue";
+import { nextTick, ref, watch, computed, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { HOME_URL } from "@/config/index.ts";
+import { useI18n } from "vue-i18n";
 
+const { t } = useI18n();
 import useTabsStore from "@/stores/modules/tabs.ts";
 import useAuthStore from "@/stores/modules/auth.ts";
-import { getLanguage } from "@/utils/index.ts";
-import useGlobalStore from "@/stores/modules/global.ts";
-
-const globalStore = useGlobalStore();
+import { getMenuLanguage } from "@/utils/index.ts";
 
 // 获取当前路由
 const route = useRoute();
@@ -48,14 +56,18 @@ onMounted(() => {
   addTab(); // 添加选项卡[进入根页面，立即添加首页]
   setActiveTab(); // 设置激活选项卡[进入根页面，立即激活首页]
   initTabs(); // 进入根页面，初始化需要固定的页面
-  tabsDrop(); // 初始化拖拽功能
+  // 使用 nextTick 等待 DOM 渲染完成
+  nextTick(() => {
+    // 初始化拖拽功能
+    tabsDrop();
+  });
 });
 
 /** 监听当前路由，路由path发生变化添加选项卡数据 */
 watch(
   () => route.fullPath,
   () => {
-    if (route.meta.isFull == "0") return;
+    // if (route.meta.isFull == "0") return;
     // 2、激活选择的选项卡
     setActiveTab();
     // 3、添加选项卡
@@ -66,14 +78,13 @@ watch(
 /** 1、初始化需要固定的 tabs[isAffix[配置固定tabs项]，在进入系统的时候，获取对应权限菜单数据，如果里面有固定tabs配置项，则进行添加] */
 const initTabs = () => {
   authStore.menuList.forEach((item: any) => {
-    if (item.meta.isAffix == "0" && item.meta.isHide == "1" && item.meta.isFull == "1") {
+    if (item.meta.isAffix == "0" && item.meta.isHide == "1") {
       const tabsParams = {
         icon: item.meta.icon,
         title: item.meta.title,
-        enName: item.meta?.enName,
         path: item.path,
         name: item.name,
-        closeIcon: false,
+        closable: false,
         isKeepAlive: item.meta.isKeepAlive
       };
       tabsStore.addTab(tabsParams);
@@ -100,15 +111,14 @@ const addTab = () => {
   const tab = {
     icon: meta.icon,
     title: meta.title as string,
-    enName: meta?.enName as string,
     path: fullPath,
     name: route.name as string,
-    closeIcon: route.meta.isAffix == "1", // true则显示关闭图标
+    closable: route.meta.isAffix == "1", // true则显示关闭图标
     isKeepAlive: route.meta.isKeepAlive
   };
   if (fullPath == HOME_URL) {
     // 如果是首页的话，就固定不可关闭。
-    tab.closeIcon = false;
+    tab.closable = false;
   }
   // 添加到选项卡仓库里面
   tabsStore.addTab(tab);
@@ -119,14 +129,14 @@ const removeTab = (fullPath: any) => {
   // 最后一个选项卡不被允许关闭
   const ObjectNumber = tabsStore.tabList.filter((item: any) => typeof item === "object").length;
   if (ObjectNumber == 1) {
-    koiMsgWarning("到我的底线了，哼🌻");
+    koiMsgWarning("到我的底线了，哼");
     return;
   }
-  tabsStore.removeTab(fullPath as string, fullPath == route.fullPath, "NULL");
+  tabsStore.removeTab(fullPath as string, fullPath == route.fullPath, route.fullPath);
 };
 
 /** 5、点击切换选项卡 */
-const clickToggleTab = (tab: TabsPaneContext) => {
+const handleTabClick = (tab: TabsPaneContext) => {
   const { props } = tab;
   // console.log(props.name); // 打印路由path
   // 将切换的选项卡进行添加路由操作
@@ -135,10 +145,15 @@ const clickToggleTab = (tab: TabsPaneContext) => {
 
 /** 6、tabs 拖拽排序 */
 const tabsDrop = () => {
+  const el = document.querySelector(".el-tabs__nav");
+  if (!el) {
+    console.warn("Sortable 元素未找到，可能未渲染完成");
+    return;
+  }
+
   Sortable.create(document.querySelector(".el-tabs__nav") as HTMLElement, {
     draggable: ".el-tabs__item",
     animation: 300,
-    // @ts-ignore
     onEnd({ newIndex, oldIndex }) {
       const tabsList = [...tabsStore.tabList];
       // 获取当前移动的索引的数据
@@ -157,7 +172,7 @@ const handleTabsMenuParent = (value: any) => {
   if (tabMenuRef.value) {
     tabMenuRef.value.handleKoiMenuParent(value);
   } else {
-    koiMsgWarning("右键获取属性失败，请刷新页面重试🌻");
+    koiMsgError(t("msg.fail"));
   }
 };
 
@@ -165,7 +180,7 @@ const handleTabsMenuChildren = (path: any, value: any) => {
   if (tabMenuRef.value) {
     tabMenuRef.value.handleKoiMenuChildren(path, value);
   } else {
-    koiMsgWarning("右键获取属性失败，请刷新页面重试🌻");
+    koiMsgError(t("msg.fail"));
   }
 };
 </script>
@@ -195,7 +210,7 @@ const handleTabsMenuChildren = (path: any, value: any) => {
   margin-top: 1px;
   font-size: 14px;
   font-weight: 500;
-  color: #1F1F1F;
+  color: #1f1f1f;
   @apply dark:text-#E0E0E0;
   border: 1px solid #d1d1da;
   border-radius: 4px;
@@ -214,7 +229,7 @@ const handleTabsMenuChildren = (path: any, value: any) => {
   // 设置鼠标选择的样式[可用来定制不同配色的主题]
   &.is-active {
     color: var(--el-color-primary);
-    background: var(--el-color-primary-light-8);
+    background: var(--el-color-primary-light-9);
 
     // 边框选择颜色
     border: 1px solid var(--el-color-primary) !important;

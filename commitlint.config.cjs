@@ -139,11 +139,11 @@ module.exports = {
       //   emoji: "🏡"
       // }
       // 中文版
-      { value: "feat", name: "特性:   👻  新增功能", emoji: "👻" },
+      { value: "feat", name: "特性:   👻  添加功能", emoji: "👻" },
       { value: "fix", name: "修复:   🌈  修复缺陷", emoji: "🌈" },
       { value: "docs", name: "文档:   🍊  文档变更", emoji: "🍊" },
       { value: "style", name: "格式:   🌻  代码格式[不影响功能，例如空格、分号等格式修正]", emoji: "🌻" },
-      { value: "refactor", name: "重构:   🎃  代码重构[不包括 bug 修复、功能新增]", emoji: "🎃" },
+      { value: "refactor", name: "重构:   🎃  代码重构[不包括 bug 修复、功能添加]", emoji: "🎃" },
       { value: "perf", name: "性能:    ⚡️  性能优化", emoji: "⚡️" },
       { value: "test", name: "测试:   ✅  添加疏漏测试或已有测试改动", emoji: "✅" },
       { value: "build", name: "构建:   📦️  构建流程、外部依赖变更[如升级 npm 包、修改 webpack 配置等]", emoji: "📦️" },

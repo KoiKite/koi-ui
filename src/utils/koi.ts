@@ -1,10 +1,11 @@
 // 工具类提示信息
 import { ElNotification, ElMessageBox, ElMessage } from "element-plus";
+import i18n from '@/languages/index.ts';
 
 type MessageType = "info" | "success" | "error" | "warning";
 
 /** 封装任意提示类型通知，默认info */
-export function koiNotice(message: any, title = "温馨提示", duration = 2000, type: MessageType = "info", parseHtml = false) {
+export function koiNotice(message: any, title = i18n.global.t("msg.remind"), duration = 2000, type: MessageType = "info", parseHtml = false) {
   ElNotification.closeAll();
   ElNotification({
     message,
@@ -19,7 +20,7 @@ export function koiNotice(message: any, title = "温馨提示", duration = 2000,
 /** 封装提示通知，默认success */
 export function koiNoticeSuccess(
   message: any,
-  title = "温馨提示",
+  title = i18n.global.t("msg.remind"),
   duration = 2000,
   type: MessageType = "success",
   parseHtml = false
@@ -38,7 +39,7 @@ export function koiNoticeSuccess(
 /** 封装提示通知，默认error */
 export function koiNoticeError(
   message: any,
-  title = "温馨提示",
+  title = i18n.global.t("msg.remind"),
   duration = 2000,
   type: MessageType = "error",
   parseHtml = false
@@ -57,7 +58,7 @@ export function koiNoticeError(
 /** 封装提示通知，默认warning */
 export function koiNoticeWarning(
   message: any,
-  title = "温馨提示",
+  title = i18n.global.t("msg.remind"),
   duration = 2000,
   type: MessageType = "warning",
   parseHtml = false
@@ -74,7 +75,7 @@ export function koiNoticeWarning(
 }
 
 /** 封装提示通知，默认info */
-export function koiNoticeInfo(message: any, title = "温馨提示", duration = 2000, type: MessageType = "info", parseHtml = false) {
+export function koiNoticeInfo(message: any, title = i18n.global.t("msg.remind"), duration = 2000, type: MessageType = "info", parseHtml = false) {
   ElNotification.closeAll();
   ElNotification({
     message,

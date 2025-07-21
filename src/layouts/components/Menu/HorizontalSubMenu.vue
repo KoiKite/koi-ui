@@ -5,7 +5,7 @@
     <el-sub-menu v-if="item.children?.length" :index="item.path">
       <template #title>
         <KoiGlobalIcon v-if="item.meta.icon" :name="item.meta.icon" size="18"></KoiGlobalIcon>
-        <span v-text="getLanguage(globalStore.language, item.meta?.title, item.meta?.enName)"></span>
+        <span v-text="getMenuLanguage(item.meta?.title)"></span>
       </template>
       <HorizontalSubMenu :menuList="item.children" />
     </el-sub-menu>
@@ -13,7 +13,7 @@
     <el-menu-item v-else :index="item.path" @click="handleMenuRouter(item)">
       <KoiGlobalIcon v-if="item.meta.icon" :name="item.meta.icon" size="18"></KoiGlobalIcon>
       <template #title>
-        <span v-text="getLanguage(globalStore.language, item.meta?.title, item.meta?.enName)"></span>
+        <span v-text="getMenuLanguage(item.meta?.title)"></span>
       </template>
     </el-menu-item>
   </template>
@@ -22,12 +22,10 @@
 <script setup lang="ts">
 import HorizontalSubMenu from "@/layouts/components/Menu/HorizontalSubMenu.vue";
 import { koiMsgWarning } from "@/utils/koi.ts";
+import { getMenuLanguage } from "@/utils/index.ts";
 import { useRouter } from "vue-router";
-const router = useRouter();
-import { getLanguage } from "@/utils/index.ts";
-import useGlobalStore from "@/stores/modules/global.ts";
 
-const globalStore = useGlobalStore();
+const router = useRouter();
 
 // 获取父组件传递过来的数据
 defineProps(["menuList"]);
@@ -87,14 +85,14 @@ const handleMenuRouter = (value: any) => {
 }
 
 .el-popper.is-pure {
-  border-radius: 12px;
+  border-radius: 8px;
 }
 
 // 菜单折叠 hover 弹窗样式
 .el-menu--vertical,
 .el-menu--popup-container {
   .el-menu--popup {
-    border-radius: 12px !important;
+    border-radius: 8px !important;
     // box-shadow: none !important;
     padding: 6px !important;
     background: var(--el-header-bg-color) !important;

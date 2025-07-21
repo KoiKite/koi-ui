@@ -25,8 +25,10 @@ import Toolbar from "@/layouts/components/Header/components/Toolbar.vue";
   .header-left {
     display: flex;
     align-items: center;
-    overflow: hidden;
+    overflow: hidden; /* 保留hidden防止内容溢出 */
     white-space: nowrap;
+    flex: 1; /* 允许左侧区域伸缩 */
+    min-width: 0; /* 重要：允许内容溢出 */
   }
 }
 </style>

@@ -12,7 +12,7 @@
               <el-sub-menu v-if="item.children?.length" :index="item.path + 'el-sub-menu'" :key="item.path">
                 <template #title>
                   <KoiGlobalIcon v-if="item.meta.icon" :name="item.meta.icon" size="18"></KoiGlobalIcon>
-                  <span v-text="item.meta.title"></span>
+                  <span v-text="getMenuLanguage(item.meta.title)"></span>
                 </template>
                 <HorizontalSubMenu :menuList="item.children" />
               </el-sub-menu>
@@ -20,7 +20,7 @@
               <el-menu-item v-else :index="item.path" :key="item.path + 'el-menu-item'" @click="handleMenuRouter(item)">
                 <KoiGlobalIcon v-if="item.meta.icon" :name="item.meta.icon" size="18"></KoiGlobalIcon>
                 <template #title>
-                  <span v-text="item.meta.title"></span>
+                  <span v-text="getMenuLanguage(item.meta.title)"></span>
                 </template>
               </el-menu-item>
             </template>
@@ -44,6 +44,7 @@ import { computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import useAuthStore from "@/stores/modules/auth.ts";
 import useGlobalStore from "@/stores/modules/global.ts";
+import { getMenuLanguage } from "@/utils/index.ts";
 
 const route = useRoute();
 const router = useRouter();

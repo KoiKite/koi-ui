@@ -1,13 +1,11 @@
 <template>
   <!-- 刷新 -->
   <div
-    class="hover:bg-[rgba(0,0,0,0.06)] w-32px h-100% flex flex-justify-center flex-items-center"
+    class="hover:bg-[rgba(0,0,0,0.06)] hover:dark-bg-[rgba(255,255,255,0.1)] koi-icon w-36px h-36px rounded-md flex flex-justify-center flex-items-center koi-rotate-i"
     @click="handleRefresh"
   >
     <el-tooltip :content="$t('header.refreshCache')">
-      <el-icon class="koi-icon" :size="20">
-        <RefreshRight />
-      </el-icon>
+      <KoiGlobalIcon name="koi-refresh-arrow" size="18" />
     </el-tooltip>
   </div>
 </template>
@@ -21,7 +19,7 @@ import { koiSessionStorage, koiLocalStorage } from "@/utils/storage.ts";
 const handleRefresh = () => {
   koiSessionStorage.clear();
   koiLocalStorage.clear();
-  koiMsgSuccess("刷新本地缓存成功🌻");
+  koiMsgSuccess("刷新本地缓存成功");
   // 必须使用这个把页面缓存刷掉
   window.location.replace(LOGIN_URL);
 };

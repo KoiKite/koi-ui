@@ -25,7 +25,7 @@ const cardList = reactive([
   { title1: "上月支付订单", unit: "月", value1: 6600, title2: "总订单数量", value2: 7000 },
   { title1: "上月退款订单", unit: "月", value1: 400, title2: "退款金额", value2: 8000 },
   { title1: "上月利润", unit: "月", value1: 66000, title2: "盈利", value2: 6666 },
-  { title1: "上月新增用户", unit: "月", value1: 66, title2: "上月登录用户", value2: 300 }
+  { title1: "上月添加用户", unit: "月", value1: 66, title2: "上月登录用户", value2: 300 }
 ]);
 </script>
 

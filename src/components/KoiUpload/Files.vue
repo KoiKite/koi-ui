@@ -166,7 +166,7 @@ const handleChange = async (file: any) => {
         emits("fileSuccess", fileMap);
         // 调用 el-form 内部的校验方法[可自动校验]
         formItemContext?.prop && formContext?.validateField([formItemContext.prop as string]);
-        koiNoticeSuccess("文件上传成功🌻");
+        koiNoticeSuccess("文件上传成功");
       })
       .catch(error => {
         console.log("文件上传", error);
@@ -177,7 +177,7 @@ const handleChange = async (file: any) => {
         });
         emits("update:fileList", fileList.value);
         loadingInstance.close();
-        koiNoticeError("上传失败，亲，您的文件不支持上传🌻");
+        koiNoticeError("上传失败，亲，您的文件不支持上传");
       });
   }
   return true;
@@ -278,12 +278,12 @@ const handleRemove = (url: string) => {
 /** 下载文件 */
 const handleDownLoad = async (url: string, name: string) => {
   if (!url && !name) {
-    koiMsgError("文件获取失败，请刷新重试🌻");
+    koiMsgError("文件获取失败，请刷新重试");
   }
   try {
     const response = await fetch(url);
     if (!response.ok) {
-      koiMsgError("网络异常，请刷新重试🌻");
+      koiMsgError("网络异常，请刷新重试");
       return;
     }
     // 创建 Blob 对象
@@ -304,7 +304,7 @@ const handleDownLoad = async (url: string, name: string) => {
     window.URL.revokeObjectURL(downloadUrl);
   } catch (error) {
     console.error("下载失败：", error);
-    koiNoticeError("下载失败，请刷新重试🌻");
+    koiNoticeError("下载失败，请刷新重试");
   }
 };
 </script>

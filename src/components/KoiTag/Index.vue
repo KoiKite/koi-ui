@@ -3,18 +3,20 @@
     <template v-for="item in tagOptions">
       <el-tag
         v-if="value != null && value.toString() === item.dictValue.toString()"
-        :disable-transitions="true"
+        :disable-transitions="disableTransitions"
         :key="item.dictLabel"
         :type="item.dictTag"
         :index="item.dictLabel + item.dictValue.toString()"
-        :effect="item.dictColor.length === 0 ? effect : 'dark'"
+        :effect="effect"
         :size="size"
+        :round="round"
         :style="{
-            'border-color': item.dictColor,
-            background: item.dictColor
-          }"
+          'background': (item.dictClass || '').split(' ')[0],
+          'border-color': (item.dictClass || '').split(' ')[1],
+          'color': (item.dictClass || '').split(' ')[2]
+        }"
       >
-        {{ item.dictLabel }}
+        {{ item.dictLabel || 'ERROR' }}
       </el-tag>
     </template>
   </div>
@@ -27,15 +29,19 @@ interface ITagProps {
   value?: any;
   size?: any;
   effect?: any;
+  round?: any;
+  disableTransitions?: any;
 }
 
 // 子组件接收父组件的值
 // withDefaults：设置默认值  defineProps：接收父组件的参数
 withDefaults(defineProps<ITagProps>(), {
-  tagOptions: [],
+  tagOptions: () => [],
   value: "",
   size: "default",
-  effect: "light"
+  effect: "light",
+  round: false,
+  disableTransitions: true
 });
 </script>
 

@@ -19,7 +19,9 @@ const userStore = defineStore("keepAlive", {
   actions: {
     // 该方法用于向 keepAliveName 数组中添加新的名称。如果数组中已经存在相同的名称，则不会重复添加。
     async addKeepAliveName(name: string) {
-      !this.keepAliveName.includes(name) && this.keepAliveName.push(name);
+      if (name && !this.keepAliveName.includes(name)) {
+        this.keepAliveName.push(name);
+      }
     },
     // 该方法用于从 keepAliveName 数组中移除指定的名称。使用 filter 方法过滤出不等于指定名称的元素，重新赋值给 keepAliveName 数组。
     async removeKeepAliveName(name: string) {

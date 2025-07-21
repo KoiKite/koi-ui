@@ -86,7 +86,7 @@ export const useTheme = () => {
   const changeThemeColor = (val: string | null) => {
     if (!val) {
       val = DEFAULT_THEME;
-      ElMessage({ type: "success", message: `主题颜色已重置为默认主题🌻` });
+      ElMessage({ type: "success", message: `主题颜色已重置为默认主题` });
     }
     // 计算主题颜色变化
     document.documentElement.style.setProperty("--el-color-primary", val);

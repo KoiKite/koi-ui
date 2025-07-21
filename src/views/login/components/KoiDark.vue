@@ -1,12 +1,12 @@
 <template>
   <div>
     <!-- 明亮模式 -->
-    <el-tooltip :content="$t('header.lightMode')" v-if="!globalStore.isDark">
-      <KoiSvgIcon name="koi-menu-sun" width="32" height="32" class="rounded-full p-6px bg-[rgba(50,50,50,0.06)] dark:bg-[rgba(255,255,255,0.06)] m-r-10px border-none outline-none" @click="handleSwitchDark"></KoiSvgIcon>
+    <el-tooltip :content="$t('header.darkMode')" v-if="!globalStore.isDark">
+      <KoiSvgIcon name="koi-moon" width="32" height="32" class="rounded-full p-6px bg-[rgba(50,50,50,0.06)] dark:bg-[rgba(255,255,255,0.06)] m-r-10px border-none outline-none" @click="handleSwitchDark"></KoiSvgIcon>
     </el-tooltip>
     <!-- 暗黑模式 -->
-    <el-tooltip :content="$t('header.darkMode')" v-if="globalStore.isDark">
-      <KoiSvgIcon name="koi-menu-moon" width="32" height="32" class="rounded-full p-6px bg-[rgba(50,50,50,0.06)] dark:bg-[rgba(255,255,255,0.06)] m-r-10px border-none outline-none" @click="handleSwitchDark"></KoiSvgIcon>
+    <el-tooltip :content="$t('header.lightMode')" v-if="globalStore.isDark">
+      <KoiSvgIcon name="koi-sun" width="32" height="32" class="rounded-full p-6px bg-[rgba(50,50,50,0.06)] dark:bg-[rgba(255,255,255,0.06)] m-r-10px border-none outline-none" @click="handleSwitchDark"></KoiSvgIcon>
     </el-tooltip>
   </div>
 </template>
@@ -33,19 +33,19 @@ const handleSwitchDark = async (event: MouseEvent) => {
   const endRadius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
   // @ts-ignore
   if (document.startViewTransition == undefined) {
-    /** 明亮和暗黑模式核心逻辑 */
+    /** 明亮和暗黑模式核心逻辑 Begin */
     // 定义图标切换变量(true-月亮，false-太阳)
     globalStore.setGlobalState("isDark", !globalStore.isDark);
     switchDark();
-    /** 明亮和暗黑模式核心逻辑 */
+    /** 明亮和暗黑模式核心逻辑 End */
   } else {
     // @ts-ignore
     const transition = document.startViewTransition(() => {
-      /** 明亮和暗黑模式核心逻辑 */
+      /** 明亮和暗黑模式核心逻辑 Begin */
       // 定义图标切换变量(true-月亮，false-太阳)
       globalStore.setGlobalState("isDark", !globalStore.isDark);
       switchDark();
-      /** 明亮和暗黑模式核心逻辑 */
+      /** 明亮和暗黑模式核心逻辑 End */
     });
     await transition.ready;
     const clipPath = [`circle(0px at ${x}px ${y}px)`, `circle(${endRadius}px at ${x}px ${y}px)`];

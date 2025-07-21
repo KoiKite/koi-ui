@@ -1,5 +1,6 @@
 <!-- 这里是一次性加载 LayoutComponents -->
 <template>
+  <!-- 全局水印：v-waterMarker="{ text: 'KOI-ADMIN', textColor: '#D9D9D9', isGlobal: true }" -->
   <div>
     <!-- 同级进行选择不同布局时就不会被关闭 -->
     <component :is="ThemeConfig" />

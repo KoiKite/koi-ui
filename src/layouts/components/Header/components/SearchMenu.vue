@@ -1,14 +1,14 @@
 <template>
   <!-- 搜索菜单 -->
-  <div class="search-menu hover:bg-[rgba(0,0,0,0.06)] w-32px h-100% flex flex-justify-center" @click="handleMenuOpen">
+  <div class="search-menu hover:bg-[rgba(0,0,0,0.06)] hover:dark-bg-[rgba(255,255,255,0.1)] koi-icon w-36px h-36px rounded-md flex flex-justify-center flex-items-center koi-pulse-i" @click="handleMenuOpen">
     <el-tooltip :content="$t('header.searchMenu')">
-      <el-icon :size="20" class="koi-icon"><Search /></el-icon>
+      <KoiGlobalIcon name="koi-search" size="18" />
     </el-tooltip>
     <el-dialog class="search-dialog" v-model="isShowSearch" :width="600" :show-close="false" top="10vh">
       <el-input
         v-model="searchMenu"
         ref="menuInputRef"
-        placeholder="菜单搜索：支持菜单名称、路径🌻"
+        :placeholder="$t('header.menuSearch')"
         size="large"
         clearable
         :prefix-icon="Search"
@@ -30,7 +30,7 @@
           <el-icon :size="20" @click="handleMenuOpen"><Search /></el-icon>
         </div>
       </div>
-      <el-empty v-else class="mt20 mb20" :image-size="100" description="暂无菜单" />
+      <el-empty v-else class="m-t-80px m-b-80px" :image-size="100" :description="$t('msg.null')" />
     </el-dialog>
   </div>
 </template>

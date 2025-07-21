@@ -110,7 +110,7 @@ watch(
 const beforeUpload: UploadProps["beforeUpload"] = rawFile => {
   const imgSize = rawFile.size / 1024 / 1024 < props.fileSize;
   const imgType = props.fileType.includes(rawFile.type);
-  if (!imgType) koiNoticeWarning("上传图片不符合所需的格式🌻");
+  if (!imgType) koiNoticeWarning("上传图片不符合所需的格式");
   if (!imgSize)
     setTimeout(() => {
       koiNoticeWarning(`上传图片大小不能超过 ${props.fileSize}M！`);
@@ -156,7 +156,7 @@ const uploadSuccess = (response: string | undefined, uploadFile: UploadFile) => 
   emit("update:fileList", _fileList.value);
   // 调用 el-form 内部的校验方法[可自动校验]
   formItemContext?.prop && formContext?.validateField([formItemContext.prop as string]);
-  koiNoticeSuccess("图片上传成功🌻");
+  koiNoticeSuccess("图片上传成功");
 };
 
 /**
@@ -164,13 +164,13 @@ const uploadSuccess = (response: string | undefined, uploadFile: UploadFile) => 
  * @param file 删除的文件
  * */
 const handleRemove = (file: UploadFile) => {
-  _fileList.value = _fileList.value.filter(item => item.url !== file.url || item.name !== file.name);
+  _fileList.value = _fileList.value.filter(item => item.url !== file.url || item?.name !== file.name);
   emit("update:fileList", _fileList.value);
 };
 
 /** 图片上传错误 */
 const uploadError = () => {
-  koiNoticeError("图片上传失败，请您重新上传🌻");
+  koiNoticeError("图片上传失败，请您重新上传");
 };
 
 /** 文件数超出 */

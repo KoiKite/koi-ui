@@ -1,10 +1,10 @@
 <template>
   <div>
     <!-- 语言翻译 -->
-    <el-tooltip :content="$t('header.language')">
+    <el-tooltip placement="left" :content="$t('header.language')">
       <el-dropdown @command="handleChangeLanguage" style="vertical-align: baseline;">
         <KoiSvgIcon
-          name="koi-menu-earth"
+          name="koi-earth"
           width="32"
           height="32"
           class="rounded-full p-6px bg-[rgba(50,50,50,0.06)] dark:bg-[rgba(255,255,255,0.06)] m-r-10px border-none outline-none"
@@ -27,11 +27,14 @@
 </template>
 
 <script setup lang="ts">
-import { useI18n } from "vue-i18n";
 import { ref, onMounted, watch, computed } from "vue";
 import useGlobalStore from "@/stores/modules/global.ts";
 import { LanguageType } from "@/stores/interface/index.ts";
+import { useRoute } from "vue-router";
+import { useI18n } from "vue-i18n";
 
+const { t } = useI18n();
+const route = useRoute();
 const i18n = useI18n();
 const globalStore = useGlobalStore();
 const language = computed(() => globalStore.language);
@@ -44,17 +47,11 @@ onMounted(() => {
 
 const handleSwitchLanguage = () => {
   // 当 language 变化时，手动触发 dimensionList 的更新
-  if (globalStore.language === "en") {
-    languageList.value = [
-    { label: "Chinese", value: "zh" },
-    { label: "English", value: "en" }
-    ];
-  } else {
-    languageList.value = [
-      { label: "简体中文", value: "zh" },
-      { label: "英文", value: "en" }
-    ];
-  }
+  languageList.value = [
+    { label: t("header.languageList.chinese"), value: "zh" },
+    { label: t("header.languageList.english"), value: "en" }
+  ];
+  document.title = t(String(route?.meta?.title));
 };
 
 /** 监听 globalStore.language 的变化 */

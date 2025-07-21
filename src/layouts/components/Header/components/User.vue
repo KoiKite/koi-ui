@@ -1,6 +1,6 @@
 <template>
   <!-- 头像 -->
-  <el-image class="w-34px h-34px rounded-full select-none user-avatar" :src="avatar">
+  <el-image class="w-34px h-34px rounded-full select-none user-avatar m-l-6px" :src="avatar">
     <template #error>
       <el-image class="w-34px h-34px rounded-full select-none user-avatar" :src="errorAvatar"></el-image>
     </template>

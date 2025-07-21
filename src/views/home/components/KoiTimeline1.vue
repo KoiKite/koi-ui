@@ -9,7 +9,7 @@
 <script setup lang="ts">
 const activities = [
   {
-    content: "KOI-ADMIN🌻 开启了崭新的人生！",
+    content: "KOI-ADMIN 开启了崭新的人生！",
     timestamp: "2023-11-23 18:00:00",
     type: "primary"
   },
@@ -29,12 +29,12 @@ const activities = [
     type: "info"
   },
   {
-    content: "欢迎大家star和fork，喜欢的可以捐献哟🌻",
+    content: "欢迎大家star和fork，喜欢的可以捐献哟",
     timestamp: "2023-11-23 18:00:00",
     type: "danger"
   },
   {
-    content: "欢迎大家star和fork，喜欢的可以捐献哟🌻",
+    content: "欢迎大家star和fork，喜欢的可以捐献哟",
     timestamp: "2023-11-23 18:00:00",
     type: "danger"
   }
