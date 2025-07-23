@@ -47,8 +47,8 @@ const hasLeft = ref();
 const hasRight = ref();
 const handleKoiMenuParent = (e: any) => {
   const tabList = tabsStore.tabList;
-  
-  if(e.srcElement?.id) {
+
+  if (e.srcElement?.id) {
     choosePath.value = e.srcElement.id.split("-")[1];
     const tabsMenu = getMenuPositionAndClosable(tabList, choosePath.value);
     isCurrent.value = tabsMenu?.closable;
@@ -126,31 +126,31 @@ const handleKoiMenuChildren = (path: any, e: any) => {
 const getMenuPositionAndClosable = (tabsList: any, targetPath: string) => {
   // 1、查找目标菜单项的索引
   const index = tabsList.findIndex((item: any) => item.path == targetPath);
-  
+
   // 未找到目标路径
   if (index === -1) return null;
-  
+
   // 2、获取目标菜单项
   const menuItem = tabsList[index];
   // 3、检查左侧是否存在可关闭的菜单项
   const hasClosableLeft = tabsList.slice(0, index).some((item: any) => item.closable);
-  
+
   // 4、检查右侧是否存在可关闭的菜单项
   const hasClosableRight = tabsList.slice(index + 1).some((item: any) => item.closable);
   // 5、计算位置信息
-  const hasLeft = index > 0 && hasClosableLeft;  // 左侧是否有菜单项
-  const hasRight = index < tabsList.length - 1 && hasClosableRight;  // 右侧是否有菜单项
+  const hasLeft = index > 0 && hasClosableLeft; // 左侧是否有菜单项
+  const hasRight = index < tabsList.length - 1 && hasClosableRight; // 右侧是否有菜单项
   // 6、计算 isAlone: 先过滤掉所有可关闭的菜单项，然后判断是否只剩一个
   const unclosableTabsList = tabsList.filter((item: any) => item.closable);
-  const isAlone = unclosableTabsList.length === 1 ? false : true;  // 是否只有当前这一个菜单项
-  
+  const isAlone = unclosableTabsList.length <= 1 ? false : true; // 是否只有当前这一个菜单项
+
   return {
-    hasLeft,      // 左侧是否有其他菜单项
-    hasRight,     // 右侧是否有其他菜单项
-    isAlone,      // 当前是否只剩下这一个菜单项
-    closable: menuItem.closable  // 关闭状态
+    hasLeft, // 左侧是否有其他菜单项
+    hasRight, // 右侧是否有其他菜单项
+    isAlone, // 当前是否只剩下这一个菜单项
+    closable: menuItem.closable // 关闭状态
   };
-}
+};
 
 /** 刷新当前页 */
 const refreshCurrentPage: Function = inject("refresh") as Function;
@@ -252,18 +252,18 @@ defineExpose({
 
 @keyframes koi-scale {
   0% {
-      transform: scale(1); /* 初始状态为原始大小 */
-      -webkit-transform: scale(1);
-      transform-origin: center;
-      -webkit-transform-origin: center;
+    transform: scale(1); /* 初始状态为原始大小 */
+    -webkit-transform: scale(1);
+    transform-origin: center;
+    -webkit-transform-origin: center;
   }
   50% {
-      transform: scale(1.16); /* 中间放大到1.16倍 */
-      -webkit-transform: scale(1.16);
+    transform: scale(1.16); /* 中间放大到1.16倍 */
+    -webkit-transform: scale(1.16);
   }
   100% {
-      transform: scale(1); /* 最终状态恢复到原始大小 */
-      -webkit-transform: scale(1);
+    transform: scale(1); /* 最终状态恢复到原始大小 */
+    -webkit-transform: scale(1);
   }
 }
 /** 右键点击选项结束 */
