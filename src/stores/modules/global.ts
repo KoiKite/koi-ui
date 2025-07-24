@@ -42,11 +42,7 @@ const globalStore = defineStore("global", {
       // 侧边栏反转
       asideInverted: false,
       // 头部反转
-      headerInverted: false,
-      // md-editer-v3 预览主题
-      previewTheme: "smart-blue",
-      // md-editer-v3 代码块内容颜色主题
-      codeTheme: "github"
+      headerInverted: false
     };
   },
   actions: {
@@ -56,7 +52,7 @@ const globalStore = defineStore("global", {
     },
     // 该函数没有上下文数据，所以获取state中的变量需要使用this
     setCollapse(value: boolean) {
-      this.isCollapse = !value;
+      this.isCollapse = value;
       return this.isCollapse;
     },
     // 设置左侧菜单宽度

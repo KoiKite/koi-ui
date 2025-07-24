@@ -2,7 +2,7 @@
   <el-tabs
     v-model="activeTab"
     type="card"
-    class="koi-tabs"
+    class="layout-tabs"
     @tab-remove="removeTab"
     @tab-click="handleTabClick"
     @contextmenu.prevent="handleTabsMenuParent($event)"
@@ -187,7 +187,7 @@ const handleTabsMenuChildren = (path: any, value: any) => {
 
 <style lang="scss" scoped>
 /** tabs选项卡的css开始 */
-.koi-tabs {
+.layout-tabs {
   border-bottom: 1px solid #d1d1da;
   @apply dark:border-#313233;
   // 色弱模式

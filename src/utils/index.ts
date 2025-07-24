@@ -253,16 +253,6 @@ export const getBrowserLang = () => {
   return "en";
 }
 
-/**
- * @description 数字转换为 K单位
- */
-export const getFormatToK = (num: number): string  =>{
-  if (num >= 1000) {
-      return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
-  }
-  return String(num);
-};
-
 import i18n from '@/languages/index.ts';
 
 /**
@@ -273,3 +263,23 @@ export const getMenuLanguage = (title: string): string => {
   if (!title) return '';
   return title.startsWith('menu.') ? i18n.global.t(title) : title;
 }
+
+/**
+ * 获取CSS变量值[别名函数]
+ * @param name CSS变量名
+ * @returns CSS变量值
+ */
+export function getCssVar(name: string): string {
+  return getComputedStyle(document.documentElement).getPropertyValue(name)
+}
+
+/**
+ * @description 数字转换为 K单位
+ */
+export const getFormatToK = (num: number): string  =>{
+  if (num >= 1000) {
+      return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
+  }
+  return String(num);
+};
+

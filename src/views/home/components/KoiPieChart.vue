@@ -4,7 +4,40 @@
 
 <script setup lang="ts">
 import * as echarts from "echarts";
-import { ref, onMounted, onUnmounted } from "vue";
+import { nextTick, ref, onMounted, onUnmounted } from "vue";
+import useGlobalStore from "@/stores/modules/global.ts";
+
+const globalStore = useGlobalStore();
+
+/** 菜单折叠图表自适应 */
+const handleChartResize = (chartInstance: any) => {
+  globalStore.$subscribe((mutation) => {
+    const events = Array.isArray(mutation.events) ? mutation.events : [mutation.events || mutation]; // 兼容不同结构
+
+    // 检查目标事件
+    const hasLayoutChange = events.some(event => ["layout"].includes(event?.key));
+
+    // 检查目标事件
+    const hasOtherChange = events.some(event => ["isCollapse", "themeColor", "isDark"].includes(event?.key));
+
+    if (hasLayoutChange) {
+      nextTick(() => {
+        const event = new Event("resize");
+        window.dispatchEvent(event);
+      });
+    }
+
+    if (hasOtherChange) {
+      nextTick(() => {
+        setTimeout(() => {
+          if (chartInstance.value) {
+            screenAdapter();
+          }
+        }, 150);
+      });
+    }
+  });
+};
 
 const refChart = ref();
 const chartInstance = ref();
@@ -17,8 +50,8 @@ const allData = ref([
   { value: 9, name: "YYXX故障" }
 ]);
 
-// tootip定时器
-const tootipTimer = ref();
+// tooltip定时器
+const tooltipTimer = ref();
 
 onMounted(() => {
   // 图表初始化
@@ -29,8 +62,9 @@ onMounted(() => {
   screenAdapter();
   // Echarts图表自适应
   window.addEventListener("resize", screenAdapter);
-  // Tootip刷新定时器
+  // tooltip刷新定时器
   getTootipTimer();
+  handleChartResize(chartInstance);
 });
 
 onUnmounted(() => {
@@ -38,8 +72,8 @@ onUnmounted(() => {
   chartInstance.value.dispose();
   chartInstance.value = null;
   // 清除局部刷新定时器
-  clearInterval(tootipTimer.value);
-  tootipTimer.value = null;
+  clearInterval(tooltipTimer.value);
+  tooltipTimer.value = null;
   // Echarts图表自适应销毁
   window.removeEventListener("resize", screenAdapter);
 });
@@ -94,7 +128,7 @@ const initChart = () => {
 
   // 鼠标移入停止定时器
   chartInstance.value.on("mouseover", () => {
-    clearInterval(tootipTimer.value);
+    clearInterval(tooltipTimer.value);
   });
 
   // 鼠标移入启动定时器
@@ -148,7 +182,7 @@ const screenAdapter = () => {
 /** 定时器 */ 
 const getTootipTimer = () => {
   let index = 0; // 播放所在下标
-  tootipTimer.value = setInterval(() => {
+  tooltipTimer.value = setInterval(() => {
     // echarts实现定时播放tooltip
     chartInstance.value.dispatchAction({
       type: "showTip",

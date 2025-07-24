@@ -49,7 +49,6 @@ watch(
   { deep: true, immediate: true }
 );
 
-
 const screenWidth = ref(0);
 const showTabs = ref(true);
 
@@ -58,11 +57,7 @@ const listeningWindow = useDebounceFn(() => {
   screenWidth.value = document.body.clientWidth;
   if (!globalStore.isCollapse && screenWidth.value < 1200) globalStore.setGlobalState("isCollapse", true);
   if (globalStore.isCollapse && screenWidth.value > 1200) globalStore.setGlobalState("isCollapse", false);
-  if (screenWidth.value < 520) {
-    showTabs.value = false;
-  } else {
-    showTabs.value = true;
-  }
+  showTabs.value = screenWidth.value >= 520;
 }, 100);
 
 window.addEventListener("resize", listeningWindow, false);

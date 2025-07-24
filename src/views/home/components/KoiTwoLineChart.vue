@@ -4,7 +4,40 @@
 
 <script setup lang="ts">
 import * as echarts from "echarts";
-import { ref, onMounted, onUnmounted } from "vue";
+import { nextTick, ref, onMounted, onUnmounted } from "vue";
+import useGlobalStore from "@/stores/modules/global.ts";
+
+const globalStore = useGlobalStore();
+
+/** 菜单折叠图表自适应 */
+const handleChartResize = (chartInstance: any) => {
+  globalStore.$subscribe((mutation) => {
+    const events = Array.isArray(mutation.events) ? mutation.events : [mutation.events || mutation]; // 兼容不同结构
+
+    // 检查目标事件
+    const hasLayoutChange = events.some(event => ["layout"].includes(event?.key));
+
+    // 检查目标事件
+    const hasOtherChange = events.some(event => ["isCollapse", "themeColor", "isDark"].includes(event?.key));
+
+    if (hasLayoutChange) {
+      nextTick(() => {
+        const event = new Event("resize");
+        window.dispatchEvent(event);
+      });
+    }
+
+    if (hasOtherChange) {
+      nextTick(() => {
+        setTimeout(() => {
+          if (chartInstance.value) {
+            screenAdapter();
+          }
+        }, 150);
+      });
+    }
+  });
+};
 
 const refChart = ref();
 const chartInstance = ref();
@@ -24,6 +57,7 @@ onMounted(() => {
   window.addEventListener("resize", screenAdapter);
   // 局部刷新定时器
   getDataTimer();
+  handleChartResize(chartInstance);
 });
 
 onUnmounted(() => {

@@ -59,7 +59,7 @@ const handleMenuRouter = (value: any) => {
   padding: 0 !important;
 
   .el-sub-menu__title {
-    padding: 0 30px 0 15px !important;
+    padding: 0 30px 0 10px !important;
 
     .el-sub-menu__icon-arrow {
       right: 10px !important;

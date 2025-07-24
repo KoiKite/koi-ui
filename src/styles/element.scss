@@ -1,10 +1,10 @@
-/* 当前页面最大化CSS，选项卡也行要去掉可以加上.el-tabs */
+/* 当前页面最大化CSS */
 .main-maximize {
-  .aside-split,
   .el-aside,
   .el-header,
   .el-footer,
-  .tabs-box {
+  .layout-column,
+  .layout-tabs {
     display: none !important;
   }
 }

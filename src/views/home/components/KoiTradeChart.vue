@@ -1,18 +1,53 @@
 <template>
-  <div class="flex flex-justify-center">
-    <el-segmented v-model="selectValue" :options="segmentedOptions" @change="getData" />
+  <div class="flex flex-col h-370px w-full">
+    <div class="flex flex-justify-center">
+      <el-segmented v-model="selectValue" :options="segmentedOptions" @change="getData" />
+    </div>
+    <div ref="refChart" class="w-full h-full"></div>
   </div>
-  <div ref="refChart" style="width: 100%; height: 360px"></div>
 </template>
 
 <script setup lang="ts">
 import * as echarts from "echarts";
-import { ref, onMounted, onUnmounted } from "vue";
+import { nextTick, ref, onMounted, onUnmounted } from "vue";
+import { getCssVar } from "@/utils/index.ts";
+import useGlobalStore from "@/stores/modules/global.ts";
 
-const selectValue = ref("边牧");
+const globalStore = useGlobalStore();
 
-const segmentedOptions = ["边牧", "金毛", "萨摩耶"];
+/** 菜单折叠图表自适应 */
+const handleChartResize = (chartInstance: any) => {
+  globalStore.$subscribe((mutation) => {
+    const events = Array.isArray(mutation.events) ? mutation.events : [mutation.events || mutation]; // 兼容不同结构
 
+    // 检查目标事件
+    const hasLayoutChange = events.some(event => ["layout"].includes(event?.key));
+
+    // 检查目标事件
+    const hasOtherChange = events.some(event => ["isCollapse", "themeColor", "isDark"].includes(event?.key));
+
+    if (hasLayoutChange) {
+      // console.log("检测到布局/主题变更", events);
+      nextTick(() => {
+        const event = new Event("resize");
+        window.dispatchEvent(event);
+      });
+    }
+
+    if (hasOtherChange) {
+      nextTick(() => {
+        setTimeout(() => {
+          if (chartInstance.value) {
+            screenAdapter();
+          }
+        }, 150);
+      });
+    }
+  });
+};
+
+const selectValue = ref("订单量");
+const segmentedOptions = ["订单量", "销售量", "退款量"];
 const refChart = ref();
 const chartInstance = ref();
 const xChartData = ref();
@@ -31,6 +66,7 @@ onMounted(() => {
   window.addEventListener("resize", screenAdapter);
   // 局部刷新定时器
   getDataTimer();
+  handleChartResize(chartInstance);
 });
 
 onUnmounted(() => {
@@ -44,14 +80,14 @@ onUnmounted(() => {
   window.removeEventListener("resize", screenAdapter);
 });
 
-/** 初始化加载图表 */ 
+/** 初始化加载图表 */
 const initChart = () => {
   chartInstance.value = echarts.init(refChart.value);
   const initOption = {
     grid: {
       top: "20%",
-      left: "2%",
-      bottom: "18%",
+      left: "30px",
+      bottom: "25%",
       right: "0"
     },
     tooltip: {
@@ -106,7 +142,7 @@ const initChart = () => {
         // 圆滑连接
         smooth: true,
         itemStyle: {
-          color: "#2992ff" // 线颜色
+          color: getCssVar("--el-color-primary") // 线颜色
         },
         markPoint: {
           data: [
@@ -125,11 +161,11 @@ const initChart = () => {
               // 渐变颜色
               {
                 offset: 0,
-                color: "#3e9dff"
+                color: getCssVar("--el-color-primary")
               },
               {
                 offset: 1,
-                color: "#d4e9ff"
+                color: getCssVar("--el-color-primary-light-7")
               }
             ],
             global: false
@@ -177,31 +213,19 @@ const getData = () => {
   updateChart();
 };
 
-/** 修改图表数据 */ 
+/** 修改图表数据 */
 const updateChart = () => {
   yChartData.value = [];
-  if (selectValue.value == "边牧") {
-    yChartData.value = [
-      72, 33, 66, 26, 77, 
-      36, 59, 35, 62, 27, 
-      55, 33, 69, 37, 52
-    ];
+  if (selectValue.value == "订单量") {
+    yChartData.value = [72, 33, 66, 26, 77, 36, 59, 35, 62, 27, 55, 33, 69, 37, 52];
   }
 
-  if (selectValue.value == "金毛") {
-    yChartData.value = [
-      66, 52, 36, 55, 75, 
-      48, 59, 73, 56, 66, 
-      45, 62, 70, 63, 65
-    ];
+  if (selectValue.value == "销售量") {
+    yChartData.value = [66, 52, 36, 55, 75, 48, 59, 73, 56, 66, 45, 62, 70, 63, 65];
   }
 
-  if (selectValue.value === "萨摩耶") {
-    yChartData.value = [
-      70, 62, 56, 60, 72, 
-      55, 61, 46, 58, 52, 
-      60, 54, 52, 59, 57
-    ];
+  if (selectValue.value === "退款量") {
+    yChartData.value = [70, 62, 56, 60, 72, 55, 61, 46, 58, 52, 60, 54, 52, 59, 57];
   }
   // 处理图表需要的数据
   const dataOption = {
@@ -247,7 +271,35 @@ const screenAdapter = () => {
       axisLabel: {
         fontSize: titleFontSize
       }
-    }
+    },
+    series: [
+      {
+        itemStyle: {
+          color: getCssVar("--el-color-primary") // 线颜色
+        },
+        areaStyle: {
+          color: {
+            type: "linear",
+            x: 0,
+            y: 0,
+            x2: 0,
+            y2: 1,
+            colorStops: [
+              // 渐变颜色
+              {
+                offset: 0,
+                color: getCssVar("--el-color-primary")
+              },
+              {
+                offset: 1,
+                color: getCssVar("--el-color-primary-light-7")
+              }
+            ],
+            global: false
+          }
+        }
+      }
+    ]
   };
   // 图表自适应变化配置
   chartInstance.value?.setOption(adapterOption);

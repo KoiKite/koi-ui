@@ -1,5 +1,5 @@
 <template>
-  <div class="overflow-x-hidden">
+  <div class="overflow-x-hidden home-screen">
     <el-card class="rounded-md" shadow="hover">
       <div class="flex flex-items-center" v-waterMarker="{ text: 'KOI-ADMIN', textColor: '#D9D9D9' }">
         <img class="w-60px h-60px rounded-full select-none user-avatar" :src="avatar" alt="avatar" />
@@ -14,10 +14,10 @@
       </div>
     </el-card>
 
-    <el-row :gutter="20" class="m-t-5px">
+    <el-row :gutter="10" class="m-t-5px">
       <KoiCard></KoiCard>
       <el-col :span="24" class="m-t-5px">
-        <el-card class="rounded-md" shadow="hover">
+        <el-card class="rounded-md w-full" shadow="hover">
           <template #header>
             <el-tag type="primary" effect="plain">日交易趋势</el-tag>
           </template>
@@ -41,7 +41,7 @@
         </el-card>
       </el-col>
     </el-row>
-    <el-row :gutter="20" class="m-t-5px">
+    <el-row :gutter="10" class="m-t-5px">
       <el-col :span="12" :lg="12" :md="12" :sm="24" :xs="24">
         <el-card class="rounded-md" shadow="hover">
           <KoiTimeline1></KoiTimeline1>
@@ -56,7 +56,8 @@
   </div>
 </template>
 
-<script setup lang="ts" name="homePage">
+<!--  name="homePage" -->
+<script setup lang="ts">
 import { getDayText } from "@/utils/random.ts";
 import { koiMsgSuccess } from "@/utils/koi.ts";
 import KoiCard from "./components/KoiCard.vue";
@@ -66,6 +67,7 @@ import KoiRightChart from "./components/KoiRightChart.vue";
 import KoiTimeline1 from "./components/KoiTimeline1.vue";
 import KoiTimeline2 from "./components/KoiTimeline2.vue";
 import { onMounted } from "vue";
+
 onMounted(() => {
   // 时间问候语
   koiMsgSuccess(getDayText());

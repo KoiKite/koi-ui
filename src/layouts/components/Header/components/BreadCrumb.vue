@@ -93,6 +93,11 @@ const handleBreadcrumb = (item: any, index: number) => {
 
 /** 点击下拉菜单项 */
 const handleDropdownCommand = ({ item }: any) => {
+  if (item.meta?.isLink) {
+    if (/^https?:\/\//.test(item.meta?.isLink)) {
+      return window.open(item.meta.isLink, "_blank");
+    }
+  }  
   router.push(item.path);
 };
 </script>
