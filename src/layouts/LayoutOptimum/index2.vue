@@ -253,7 +253,7 @@ onMounted(() => {
     margin-top: 8px;
     font-size: 12px;
     font-weight: $aside-menu-font-weight;
-    line-height: 14px;
+    line-height: 12px;
     text-align: center;
     white-space: nowrap;
     overflow: hidden;
