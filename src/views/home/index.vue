@@ -66,11 +66,19 @@ import KoiLeftChart from "./components/KoiLeftChart.vue";
 import KoiRightChart from "./components/KoiRightChart.vue";
 import KoiTimeline1 from "./components/KoiTimeline1.vue";
 import KoiTimeline2 from "./components/KoiTimeline2.vue";
-import { onMounted } from "vue";
+import { nextTick, onMounted } from "vue";
+
+/** 布局切换图表自适应 */
+const handleEventResize = () => {
+  nextTick(() => {
+    window.dispatchEvent(new Event("resize"));
+  });
+};
 
 onMounted(() => {
   // 时间问候语
   koiMsgSuccess(getDayText());
+  handleEventResize();
 });
 
 // 头像

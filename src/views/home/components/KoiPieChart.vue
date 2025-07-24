@@ -4,30 +4,18 @@
 
 <script setup lang="ts">
 import * as echarts from "echarts";
-import { nextTick, ref, onMounted, onUnmounted } from "vue";
+import { nextTick, ref, onMounted, onUnmounted, watch } from "vue";
+import { storeToRefs } from "pinia";
 import useGlobalStore from "@/stores/modules/global.ts";
 
 const globalStore = useGlobalStore();
+const { isCollapse, themeColor, isDark } = storeToRefs(globalStore);
 
 /** 菜单折叠图表自适应 */
 const handleChartResize = (chartInstance: any) => {
-  globalStore.$subscribe((mutation) => {
-    const events = Array.isArray(mutation.events) ? mutation.events : [mutation.events || mutation]; // 兼容不同结构
-
-    // 检查目标事件
-    const hasLayoutChange = events.some(event => ["layout"].includes(event?.key));
-
-    // 检查目标事件
-    const hasOtherChange = events.some(event => ["isCollapse", "themeColor", "isDark"].includes(event?.key));
-
-    if (hasLayoutChange) {
-      nextTick(() => {
-        const event = new Event("resize");
-        window.dispatchEvent(event);
-      });
-    }
-
-    if (hasOtherChange) {
+  watch(
+    [() => isCollapse.value, () => themeColor.value, () => isDark.value],
+    () => {
       nextTick(() => {
         setTimeout(() => {
           if (chartInstance.value) {
@@ -35,8 +23,9 @@ const handleChartResize = (chartInstance: any) => {
           }
         }, 150);
       });
-    }
-  });
+    },
+    { deep: true }
+  );
 };
 
 const refChart = ref();
