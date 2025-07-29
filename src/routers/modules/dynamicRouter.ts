@@ -22,7 +22,7 @@ export const initDynamicRouter = async () => {
     console.log("authStore.menuList", authStore.menuList);
     // Proxy对象转换为正常的JSON数据
     // const menuRouters = JSON.parse(JSON.stringify(authStore.menuList));
-    if (authStore.menuList == null || authStore.menuList?.length == 0) {
+    if (!authStore.menuList?.length) {
       userStore.setToken("");
       router.replace(LOGIN_URL);
       return;
@@ -43,16 +43,27 @@ export const initDynamicRouter = async () => {
     //   // }
     // });
 
-    // 3、添加动态路由[扁平化一级路由数据]，使用Promise.all批量添加路由
-    const addRoutePromises = authStore.menuList.map((item: any) => {
-      return new Promise<void>((resolve) => {
+    // 3、添加动态路由[扁平化一级路由数据]
+    authStore.menuList.forEach((item: any) => {
+      // 检查是否已存在同名路由
+      if (!router.hasRoute(item.name)) {
         router.addRoute("layout", item);
-        // 延迟确保注册完成
-        setTimeout(resolve, 10);
-      });
-    }); 
+      } else {
+        console.warn(`路由名称冲突: ${item.name}，跳过添加`);
+      }
+    });
 
-    await Promise.all(addRoutePromises);
+    // 4、检查所有路由是否都注册成功
+    // const allRoutes = router.getRoutes();
+    // const allRegistered = authStore.menuList.every((menu: any) => 
+    //   allRoutes.some(route => route.name === menu.name)
+    // );
+
+    // if (!allRegistered) {
+    //   console.log("路由注册失败，重新登录");
+    //   userStore.setToken("");
+    //   router.replace(LOGIN_URL);
+    // }
 
   } catch (error) {
     console.log(error);

@@ -52,7 +52,7 @@ onMounted(() => {
   // Echarts图表自适应
   window.addEventListener("resize", screenAdapter);
   // tooltip刷新定时器
-  getTootipTimer();
+  getTooltipTimer();
   handleChartResize(chartInstance);
 });
 
@@ -122,7 +122,7 @@ const initChart = () => {
 
   // 鼠标移入启动定时器
   chartInstance.value.on("mouseout", () => {
-    getTootipTimer();
+    getTooltipTimer();
   });
 };
 
@@ -169,7 +169,7 @@ const screenAdapter = () => {
 };
 
 /** 定时器 */ 
-const getTootipTimer = () => {
+const getTooltipTimer = () => {
   let index = 0; // 播放所在下标
   tooltipTimer.value = setInterval(() => {
     // echarts实现定时播放tooltip

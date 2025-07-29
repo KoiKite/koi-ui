@@ -1,7 +1,7 @@
 <template>
   <Maximize v-show="globalStore.maximize" />
   <Tabs v-if="showTabs"></Tabs>
-  <el-main class="layout-main">
+  <el-main class="overflow-x-hidden flex flex-col flex-1 p-0 m-0 bg-#F6F9FE dark:bg-black">
     <router-view v-slot="{ Component, route }">
       <transition :name="transition" mode="out-in" appear>
         <keep-alive :max="16" :include="keepAliveStore.keepAliveName">
@@ -70,12 +70,13 @@ onBeforeUnmount(() => {
 <style lang="scss" scoped>
 @use "../../../styles/transition.scss";
 
-.layout-main {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  padding: 5px 6px;
-  overflow-x: hidden;
-  @apply bg-[#F6F9FE] dark:bg-black;
-}
+// .layout-main {
+//   display: flex;
+//   flex-direction: column;
+//   flex: 1;
+//   margin: 0;
+//   padding: 0;
+//   overflow-x: hidden;
+//   @apply bg-[#F6F9FE] dark:bg-black;
+// }
 </style>

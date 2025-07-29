@@ -124,7 +124,7 @@ const initChart = () => {
           }
         },
         label: {
-          color: "#077EF8", // 设置顶部数字颜色
+          color: "#8BADDA", // 设置顶部数字颜色
           show: true, // 开启数字显示
           position: "top" // 在上方显示数字
         }
@@ -140,7 +140,7 @@ const initChart = () => {
         // 圆滑连接
         smooth: true,
         itemStyle: {
-          color: "#00f2f1" // 线颜色
+          color: "#6AC8FF" // 线颜色
         }
       }
     ]
@@ -176,10 +176,10 @@ const getData = () => {
 /** 修改图表数据 */ 
 const updateChart = () => {
   const colorArr = [
-    ["#0BA82C", "#4FF778"],
-    ["#2E72BF", "#23E5E5"],
-    ["#5052EE", "#AB6EE5"],
-    ["hotpink", "lightsalmon"]
+    ["#3A29D8", "#B5A7FF"],
+    ["#0A84FF", "#6AC8FF"],
+    ["#8BADDA", "#D0DAE5"],
+    ["#FF4439", "#FFA826"]
   ];
   // 处理图表需要的数据
   const dataOption = {

@@ -1,5 +1,5 @@
 <template>
-  <div class="overflow-x-hidden home-screen">
+  <div class="overflow-x-hidden m-x-6px m-y-5px">
     <el-card class="rounded-md" shadow="hover">
       <div class="flex flex-items-center" v-waterMarker="{ text: 'KOI-ADMIN', textColor: '#D9D9D9' }">
         <img class="w-60px h-60px rounded-full select-none user-avatar" :src="avatar" alt="avatar" />
