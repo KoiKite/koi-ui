@@ -1,10 +1,10 @@
 <template>
-  <div ref="refChart" class="w-full h-350px"></div>
+  <div ref="refChart" class="w-full h-350px" v-loading="dataLoading"></div>
 </template>
 
 <script setup lang="ts">
 import * as echarts from "echarts";
-import { nextTick, ref, onMounted, onUnmounted, watch } from "vue";
+import { nextTick, ref, shallowRef, onMounted, onUnmounted, watch } from "vue";
 import { storeToRefs } from "pinia";
 import useGlobalStore from "@/stores/modules/global.ts";
 
@@ -19,7 +19,7 @@ const handleChartResize = (chartInstance: any) => {
       nextTick(() => {
         setTimeout(() => {
           if (chartInstance.value) {
-            screenAdapter();
+            chartAdapter();
           }
         }, 150);
       });
@@ -28,8 +28,55 @@ const handleChartResize = (chartInstance: any) => {
   );
 };
 
+// 用于监听容器尺寸的ResizeObserver
+const resizeObserver = ref<ResizeObserver | null>(null);
+// 图表初始化状态
+const dataLoading = ref(false);
+
+/** 安全初始化图表 */
+const safeInitChart = () => {
+  dataLoading.value = true;
+  if (!refChart.value) {
+    console.warn("图表容器未找到，延迟初始化");
+    setTimeout(safeInitChart, 50);
+    return;
+  }
+
+  // 检查容器尺寸是否有效
+  const { clientWidth, clientHeight } = refChart.value;
+  if (clientWidth <= 0 || clientHeight <= 0) {
+    console.warn("图表容器尺寸无效，延迟初始化", { width: clientWidth, height: clientHeight });
+    setTimeout(safeInitChart, 50);
+    return;
+  }
+
+  // 如果已有图表实例，先销毁
+  if (chartInstance.value) {
+    chartInstance.value.dispose();
+    chartInstance.value = null;
+  }
+
+  // 初始化图表
+  chartInstance.value = echarts.init(refChart.value);
+  initChartOptions();
+  updateChart();
+
+  // 设置ResizeObserver监听容器变化
+  resizeObserver.value = new ResizeObserver(() => {
+    if (chartInstance.value) {
+      chartInstance.value.resize();
+    }
+  });
+
+  resizeObserver.value.observe(refChart.value);
+
+  setTimeout(() => {
+    dataLoading.value = false;
+  }, 1000);
+};
+
 const refChart = ref();
-const chartInstance = ref();
+const chartInstance = shallowRef();
 const allData = ref([
   {
     name: "河南",
@@ -133,36 +180,45 @@ const startValue = ref(-1);
 const endValue = ref(9);
 
 onMounted(() => {
-  // 图表初始化
-  initChart();
+  // 延迟初始化以确保容器尺寸已计算
+  setTimeout(() => {
+    safeInitChart();
+    // 图表自适应
+    chartAdapter();
+    window.addEventListener("resize", chartAdapter);
+    handleChartResize(chartInstance);
+    // 局部刷新定时器
+    getDataTimer();
+  }, 100);
+
   // 获取接口数据
   getData();
-  // 调用Echarts图表自适应方法
-  screenAdapter();
-  // 局部刷新定时器
-  getDataTimer();
-  // Echarts图表自适应触发
-  window.addEventListener("resize", screenAdapter);
-  handleChartResize(chartInstance);
 });
 
 onUnmounted(() => {
-  // 销毁Echarts图表
-  chartInstance.value.dispose();
-  chartInstance.value = null;
   // 清除局部刷新定时器
-  clearInterval(koiTimer.value);
+  clearInterval(koiTimer.value as any);
   koiTimer.value = null;
-  // Echarts图表自适应销毁
-  window.removeEventListener("resize", screenAdapter);
+
+  window.removeEventListener("resize", chartAdapter);
+
+  // 销毁ResizeObserver
+  if (resizeObserver.value && refChart.value) {
+    resizeObserver.value.unobserve(refChart.value);
+    resizeObserver.value.disconnect();
+  }
+
+  // 销毁Echarts图表
+  if (chartInstance.value) {
+    chartInstance.value.dispose();
+    chartInstance.value = null;
+  }
 });
 
-/** 初始化加载图表 */ 
-const initChart = () => {
-  // 覆盖默认主题
-  // echarts.registerTheme('myTheme', skin);
-  chartInstance.value = echarts.init(refChart.value);
-  // 初始化加载图标样式
+/** 初始化加载图表 */
+const initChartOptions = () => {
+  if (!chartInstance.value) return;
+
   const initOption = {
     // title: {
     //   text: "🐻地区异常订单排行",
@@ -173,7 +229,7 @@ const initChart = () => {
     //   }
     // },
     grid: {
-      top: "12%",
+      top: "10",
       left: "0",
       right: "0",
       bottom: "0",
@@ -186,7 +242,7 @@ const initChart = () => {
       type: "category"
     },
     yAxis: {
-      type: 'value',
+      type: "value",
       axisLine: {
         show: true
         // lineStyle: {
@@ -217,26 +273,36 @@ const initChart = () => {
   };
   // 图表初始化配置
   chartInstance.value?.setOption(initOption);
+  if (chartInstance.value) {
+    // 鼠标移入停止定时器
+    chartInstance.value.on("mouseover", () => {
+      if (koiTimer.value) {
+        clearInterval(koiTimer.value);
+        koiTimer.value = null;
+      }
+    });
 
-  // 鼠标移入停止定时器
-  chartInstance.value.on("mouseover", () => {
-    clearInterval(koiTimer.value);
-  });
-
-  // 鼠标移入启动定时器
-  chartInstance.value.on("mouseout", () => {
-    getDataTimer();
-  });
+    // 鼠标移入启动定时器
+    chartInstance.value.on("mouseout", () => {
+      // 只有当前没有定时器时才启动
+      if (!koiTimer.value) {
+        getDataTimer();
+      }
+    });
+  }
 };
 
 /** 获取接口数据 */
 const getData = () => {
-  // 调用接口方法
-  // getModuleData().then(res => {
-  //       allData.value = res.data;
-  //       updateChart();
-  //       // echarts查不到数据，将初始化echarts的方法全部放置到接口方法中即可。
-  // })
+  // 模拟API请求
+  // try {
+  //   const res: any = await listData();
+  //   dataApi.value = res.data;
+  //   updateChart();
+  // } catch (error){
+  //   console.log('接口请求失败', error);
+  // }
+
   // 获取服务器的数据, 对allData进行赋值之后, 调用updateChart方法更新图表
   allData.value = allData.value.sort((a, b) => {
     return b.value - a.value;
@@ -251,8 +317,10 @@ const getData = () => {
   updateChart();
 };
 
-/** 修改图表数据 */ 
+/** 修改图表数据 */
 const updateChart = () => {
+  if (!chartInstance.value) return;
+
   const colorArr = [
     ["#3A29D8", "#B5A7FF"],
     ["#0A84FF", "#6AC8FF"],
@@ -316,7 +384,9 @@ const updateChart = () => {
 };
 
 /** 图表自适应 */
-const screenAdapter = () => {
+const chartAdapter = () => {
+  if (!refChart.value || !chartInstance.value) return;
+
   const titleFontSize = ref(Math.round(refChart.value?.offsetWidth / 50));
   const adapterOption = {
     title: {

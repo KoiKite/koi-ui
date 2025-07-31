@@ -1,10 +1,10 @@
 <template>
-  <div ref="refChart" style="width: 100%; height: 350px"></div>
+  <div ref="refChart" style="width: 100%; height: 350px" v-loading="dataLoading"></div>
 </template>
 
 <script setup lang="ts">
 import * as echarts from "echarts";
-import { nextTick, ref, onMounted, onUnmounted, watch } from "vue";
+import { nextTick, ref, shallowRef, onMounted, onUnmounted, watch } from "vue";
 import { storeToRefs } from "pinia";
 import useGlobalStore from "@/stores/modules/global.ts";
 
@@ -19,7 +19,7 @@ const handleChartResize = (chartInstance: any) => {
       nextTick(() => {
         setTimeout(() => {
           if (chartInstance.value) {
-            screenAdapter();
+            chartAdapter();
           }
         }, 150);
       });
@@ -28,8 +28,54 @@ const handleChartResize = (chartInstance: any) => {
   );
 };
 
+// 用于监听容器尺寸的ResizeObserver
+const resizeObserver = ref<ResizeObserver | null>(null);
+// 图表初始化状态
+const dataLoading = ref(false);
+
+/** 安全初始化图表 */
+const safeInitChart = () => {
+  dataLoading.value = true;
+  if (!refChart.value) {
+    console.warn("图表容器未找到，延迟初始化");
+    setTimeout(safeInitChart, 50);
+    return;
+  }
+
+  // 检查容器尺寸是否有效
+  const { clientWidth, clientHeight } = refChart.value;
+  if (clientWidth <= 0 || clientHeight <= 0) {
+    console.warn("图表容器尺寸无效，延迟初始化", { width: clientWidth, height: clientHeight });
+    setTimeout(safeInitChart, 50);
+    return;
+  }
+
+  // 如果已有图表实例，先销毁
+  if (chartInstance.value) {
+    chartInstance.value.dispose();
+    chartInstance.value = null;
+  }
+
+  // 初始化图表
+  chartInstance.value = echarts.init(refChart.value);
+  initChartOptions();
+  updateChart();
+  // 设置ResizeObserver监听容器变化
+  resizeObserver.value = new ResizeObserver(() => {
+    if (chartInstance.value) {
+      chartInstance.value.resize();
+    }
+  });
+
+  resizeObserver.value.observe(refChart.value);
+
+  setTimeout(() => {
+    dataLoading.value = false;
+  }, 1000);
+};
+
 const refChart = ref();
-const chartInstance = ref();
+const chartInstance = shallowRef();
 // 接口数据
 const allData = ref([
   { value: 5, name: "AABB故障" },
@@ -43,33 +89,44 @@ const allData = ref([
 const tooltipTimer = ref();
 
 onMounted(() => {
-  // 图表初始化
-  initChart();
-  // 获取接口数据
+    // 延迟初始化以确保容器尺寸已计算
+  setTimeout(() => {
+    safeInitChart();
+    // 图表自适应
+    chartAdapter();
+    window.addEventListener("resize", chartAdapter);
+    handleChartResize(chartInstance);
+    // tooltip刷新定时器
+    getTooltipTimer();
+  }, 100);
+
   getData();
-  // 调用Echarts图表自适应方法
-  screenAdapter();
-  // Echarts图表自适应
-  window.addEventListener("resize", screenAdapter);
-  // tooltip刷新定时器
-  getTooltipTimer();
-  handleChartResize(chartInstance);
 });
 
 onUnmounted(() => {
-  // 销毁Echarts图表
-  chartInstance.value.dispose();
-  chartInstance.value = null;
   // 清除局部刷新定时器
-  clearInterval(tooltipTimer.value);
+  clearInterval(tooltipTimer.value as any);
   tooltipTimer.value = null;
-  // Echarts图表自适应销毁
-  window.removeEventListener("resize", screenAdapter);
+
+  window.removeEventListener("resize", chartAdapter);
+
+  // 销毁ResizeObserver
+  if (resizeObserver.value && refChart.value) {
+    resizeObserver.value.unobserve(refChart.value);
+    resizeObserver.value.disconnect();
+  }
+
+  // 销毁Echarts图表
+  if (chartInstance.value) {
+    chartInstance.value.dispose();
+    chartInstance.value = null;
+  }
 });
 
 /** 初始化加载图表 */ 
-const initChart = () => {
-  chartInstance.value = echarts?.init(refChart.value);
+const initChartOptions = () => {  
+  if (!chartInstance.value) return;
+
   const initOption = {
     tooltip: {
       confine: true,
@@ -128,18 +185,22 @@ const initChart = () => {
 
 /** 获取接口数据 */
 const getData = () => {
-  // 调用接口方法
-  // getData().then(res => {
-  //   xChartData.value = res.data;
+  // 模拟API请求
+  // try {
+  //   const res: any = await listData();
+  //   dataApi.value = res.data;
   //   updateChart();
-  //   // echarts查不到数据，将初始化echarts的方法全部放置到接口方法中即可。
-  // })
+  // } catch (error){
+  //   console.log('接口请求失败', error);
+  // }
   // 获取服务器的数据, 对xChartData进行赋值之后, 调用updateChart方法更新图表
   updateChart();
 };
 
 /** 修改图表数据 */
 const updateChart = () => {
+  if (!chartInstance.value) return;
+
   // 处理图表需要的数据
   const dataOption = {
     series: [
@@ -153,7 +214,9 @@ const updateChart = () => {
 };
 
 /** 图表自适应 */
-const screenAdapter = () => {
+const chartAdapter = () => {
+  if (!refChart.value || !chartInstance.value) return;
+
   const adapterOption = {
     // 圆点分类标题
     legend: {
@@ -170,6 +233,12 @@ const screenAdapter = () => {
 
 /** 定时器 */ 
 const getTooltipTimer = () => {
+  // 清除旧定时器
+  if (tooltipTimer.value) {
+    clearInterval(tooltipTimer.value);
+    tooltipTimer.value = null;
+  }
+
   let index = 0; // 播放所在下标
   tooltipTimer.value = setInterval(() => {
     // echarts实现定时播放tooltip

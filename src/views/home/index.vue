@@ -15,9 +15,9 @@
     </el-card>
 
     <el-row :gutter="10" class="m-t-5px">
-      <KoiCard></KoiCard>
+      <KoiNumberCard></KoiNumberCard>
       <el-col :span="24" class="m-t-5px">
-        <el-card class="rounded-md w-full" shadow="hover">
+        <el-card class="rounded-md w-full h-500px" shadow="hover">
           <template #header>
             <el-tag type="primary" effect="plain">日交易趋势</el-tag>
           </template>
@@ -25,7 +25,7 @@
         </el-card>
       </el-col>
       <el-col :span="12" :lg="12" :md="12" :sm="24" :xs="24" class="m-t-5px">
-        <el-card class="rounded-md" shadow="hover">
+        <el-card class="rounded-md h-450px" shadow="hover">
           <template #header>
             <el-tag type="primary" effect="plain">地区异常订单排行</el-tag>
           </template>
@@ -33,7 +33,7 @@
         </el-card>
       </el-col>
       <el-col :span="12" :lg="12" :md="12" :sm="24" :xs="24" class="m-t-5px">
-        <el-card class="rounded-md" shadow="hover">
+        <el-card class="rounded-md h-450px" shadow="hover">
           <template #header>
             <el-tag type="primary" effect="plain">近10日订单量</el-tag>
           </template>
@@ -56,29 +56,20 @@
   </div>
 </template>
 
-<!--  name="homePage" -->
-<script setup lang="ts">
+<script setup lang="ts" name="homePage">
 import { getDayText } from "@/utils/random.ts";
 import { koiMsgSuccess } from "@/utils/koi.ts";
-import KoiCard from "./components/KoiCard.vue";
+import KoiNumberCard from "./components/KoiCard.vue";
 import KoiTradeChart from "./components/KoiTradeChart.vue";
 import KoiLeftChart from "./components/KoiLeftChart.vue";
 import KoiRightChart from "./components/KoiRightChart.vue";
 import KoiTimeline1 from "./components/KoiTimeline1.vue";
 import KoiTimeline2 from "./components/KoiTimeline2.vue";
-import { nextTick, onMounted } from "vue";
-
-/** 布局切换图表自适应 */
-const handleEventResize = () => {
-  nextTick(() => {
-    window.dispatchEvent(new Event("resize"));
-  });
-};
+import { onMounted } from "vue";
 
 onMounted(() => {
   // 时间问候语
   koiMsgSuccess(getDayText());
-  handleEventResize();
 });
 
 // 头像

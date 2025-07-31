@@ -10,7 +10,7 @@ import { viteMockServe } from "vite-plugin-mock";
 // gzip压缩
 import viteCompression from "vite-plugin-compression";
 // 图片压缩
-import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
+import { ViteImageOptimizer } from "vite-plugin-image-optimizer";
 import path from "path";
 
 // https://vitejs.dev/config/
@@ -36,7 +36,7 @@ export default defineConfig(({ command, mode }: ConfigEnv): UserConfig => {
         enable: command === "serve", // 保证开发阶段可以使用mock接口
         // @ts-ignore
         supportTs: true, // 打开后，可以读取 ts 文件模块。 请注意，打开后将无法监视.js 文件。
-        watchFiles: true  // 监视文件更改 更改mock的时候，不需要重新启动编译
+        watchFiles: true // 监视文件更改 更改mock的时候，不需要重新启动编译
         // prodEnabled:true // 设置打包是否启用mock功能
       })
     ],
@@ -85,17 +85,6 @@ export default defineConfig(({ command, mode }: ConfigEnv): UserConfig => {
         "@vueuse/core",
         "echarts",
         "vue-i18n",
-        "element-plus/es/components/text/style/css",
-        "element-plus/es/components/collapse-item/style/css",
-        "element-plus/es/components/collapse/style/css",
-        "element-plus/es/components/space/style/css",
-        "element-plus/es/components/container/style/css",
-        "element-plus/es/components/aside/style/css",
-        "element-plus/es/components/main/style/css",
-        "element-plus/es/components/header/style/css",
-        "element-plus/es/components/button-group/style/css",
-        "element-plus/es/components/radio-button/style/css",
-        "element-plus/es/components/checkbox-group/style/css",
         "element-plus/es/components/form/style/css",
         "element-plus/es/components/form-item/style/css",
         "element-plus/es/components/button/style/css",
@@ -133,12 +122,39 @@ export default defineConfig(({ command, mode }: ConfigEnv): UserConfig => {
         "element-plus/es/components/pagination/style/css",
         "element-plus/es/components/tree/style/css",
         "element-plus/es/components/alert/style/css",
+        "element-plus/es/components/radio-button/style/css",
+        "element-plus/es/components/checkbox-group/style/css",
         "element-plus/es/components/checkbox/style/css",
-        "element-plus/es/components/date-picker/style/css",
-        "element-plus/es/components/transfer/style/css",
         "element-plus/es/components/tabs/style/css",
+        "element-plus/es/components/tab-pane/style/css",
+        "element-plus/es/components/rate/style/css",
+        "element-plus/es/components/date-picker/style/css",
+        "element-plus/es/components/notification/style/css",
         "element-plus/es/components/image/style/css",
-        "element-plus/es/components/tab-pane/style/css"
+        "element-plus/es/components/statistic/style/css",
+        "element-plus/es/components/watermark/style/css",
+        "element-plus/es/components/config-provider/style/css",
+        "element-plus/es/components/text/style/css",
+        "element-plus/es/components/drawer/style/css",
+        "element-plus/es/components/color-picker/style/css",
+        "element-plus/es/components/backtop/style/css",
+        "element-plus/es/components/message-box/style/css",
+        "element-plus/es/components/skeleton/style/css",
+        "element-plus/es/components/skeleton-item/style/css",
+        "element-plus/es/components/badge/style/css",
+        "element-plus/es/components/steps/style/css",
+        "element-plus/es/components/step/style/css",
+        "element-plus/es/components/avatar/style/css",
+        "element-plus/es/components/descriptions/style/css",
+        "element-plus/es/components/descriptions-item/style/css",
+        "element-plus/es/components/progress/style/css",
+        "element-plus/es/components/image-viewer/style/css",
+        "element-plus/es/components/empty/style/css",
+        "element-plus/es/components/segmented/style/css",
+        "element-plus/es/components/calendar/style/css",
+        "element-plus/es/components/message/style/css",
+        "element-plus/es/components/timeline/style/css",
+        "element-plus/es/components/timeline-item/style/css"
       ]
     }
   };

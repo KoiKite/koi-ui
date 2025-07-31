@@ -7,7 +7,6 @@ import debounceInput from "./modules/debounceInput";
 import throttle from "./modules/throttle";
 import throttleInput from "./modules/throttleInput";
 import adaptive from "./modules/adaptive";
-import adaptiveTree from "./modules/adaptiveTree";
 import copy from "./modules/copy";
 
 const directivesList: any = {
@@ -19,7 +18,6 @@ const directivesList: any = {
   throttle,
   throttleInput,
   adaptive,
-  adaptiveTree,
   copy
 };
 

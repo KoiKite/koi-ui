@@ -1,40 +1,74 @@
-import { Directive, DirectiveBinding } from "vue";
+import type { Directive, DirectiveBinding } from 'vue';
 
-// 自适应表格高度
-interface ExHTMLElement extends HTMLElement {
-  resizeListener: EventListener;
+// 扩展 HTMLElement 类型
+interface AdaptiveElement extends HTMLElement {
+  _resizeListener?: () => void;
 }
 
-/** 初始设置表格高度 */
-const setTableHeight = (el: ExHTMLElement, binding: DirectiveBinding) => {
-  const top = el.offsetTop;
-  const bottom = binding.value && typeof binding.value.bottom !== "undefined" ? binding.value.bottom : 80;
-  const pageHeight = window.innerHeight;
-  el.style.height = `${pageHeight - top - bottom}px`;
-  el.style.overflowY = "auto";
-};
+// 配置接口
+interface AdaptiveOptions {
+  height?: number; // 距离底部的距离，默认 80
+}
 
-const resizeDirective: Directive<ExHTMLElement> = {
-  mounted(el, binding) {
-    el.resizeListener = () => {
-      requestAnimationFrame(() => {
-        setTableHeight(el, binding);
-      });
+const DEFAULT_HEIGHT = 80;
+
+/**
+ * 自适应高度指令
+ * 用法：
+ * <div v-adaptive></div>
+ * <div v-adaptive="{ height: 60 }"></div>
+ */
+const vAdaptiveHeight: Directive<AdaptiveElement, AdaptiveOptions> = {
+  mounted(el, binding: DirectiveBinding<AdaptiveOptions>) {
+    // 获取配置
+    const config = binding.value || {};
+    const bottomHeight = typeof config.height === 'number' ? config.height : DEFAULT_HEIGHT;
+
+    // 设置高度
+    const updateHeight = () => {
+      const rect = el.getBoundingClientRect();
+      const top = rect.top; // 更准确
+      const pageHeight = window.innerHeight;
+      el.style.height = `${pageHeight - top - bottomHeight}px`;
+      el.style.overflowY = 'auto';
     };
 
-    setTableHeight(el, binding);
-    // 监听窗口大小变化事件
-    window.addEventListener("resize", el.resizeListener);
+    // 防抖：避免频繁触发
+    let resizeTimer: number;
+    const onResize = () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(() => {
+        requestAnimationFrame(updateHeight);
+      }, 100);
+    };
+
+    // 保存监听器，用于销毁
+    el._resizeListener = onResize;
+
+    // 初始设置
+    updateHeight();
+
+    // 监听 resize
+    window.addEventListener('resize', onResize);
   },
+
+  // 组件更新时重新计算[比如父组件 re-render]
+  updated(el, binding: DirectiveBinding<AdaptiveOptions>) {
+    const config = binding.value || {};
+    const bottomHeight = typeof config.height === 'number' ? config.height : DEFAULT_HEIGHT;
+
+    const rect = el.getBoundingClientRect();
+    const top = rect.top;
+    const pageHeight = window.innerHeight;
+    el.style.height = `${pageHeight - top - bottomHeight}px`;
+  },
+
   unmounted(el) {
-    window.removeEventListener("resize", el.resizeListener);
-  },
-  updated(el, binding) {
-    // 确保更新后重新设置表格高度
-    requestAnimationFrame(() => {
-      setTableHeight(el, binding);
-    });
+    if (el._resizeListener) {
+      window.removeEventListener('resize', el._resizeListener);
+      delete el._resizeListener;
+    }
   }
 };
 
-export default resizeDirective;
+export default vAdaptiveHeight;

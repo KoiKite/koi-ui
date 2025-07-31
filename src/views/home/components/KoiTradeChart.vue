@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col h-370px">
+  <div class="flex flex-col h-370px" v-loading="dataLoading">
     <div class="flex flex-justify-center">
       <el-segmented v-model="selectValue" :options="segmentedOptions" @change="getData" />
     </div>
@@ -9,7 +9,7 @@
 
 <script setup lang="ts">
 import * as echarts from "echarts";
-import { nextTick, ref, onMounted, onUnmounted, watch } from "vue";
+import { nextTick, ref, shallowRef, onMounted, onUnmounted, watch } from "vue";
 import { getCssVar } from "@/utils/index.ts";
 import { storeToRefs } from "pinia";
 import useGlobalStore from "@/stores/modules/global.ts";
@@ -25,7 +25,7 @@ const handleChartResize = (chartInstance: any) => {
       nextTick(() => {
         setTimeout(() => {
           if (chartInstance.value) {
-            screenAdapter();
+            chartAdapter();
           }
         }, 150);
       });
@@ -34,27 +34,73 @@ const handleChartResize = (chartInstance: any) => {
   );
 };
 
+// 用于监听容器尺寸的ResizeObserver
+const resizeObserver = ref<ResizeObserver | null>(null);
+// 图表初始化状态
+const dataLoading = ref(false);
+
+/** 安全初始化图表 */
+const safeInitChart = () => {
+  dataLoading.value = true;
+  if (!refChart.value) {
+    console.warn("图表容器未找到，延迟初始化");
+    setTimeout(safeInitChart, 50);
+    return;
+  }
+
+  // 检查容器尺寸是否有效
+  const { clientWidth, clientHeight } = refChart.value;
+  if (clientWidth <= 0 || clientHeight <= 0) {
+    console.warn("图表容器尺寸无效，延迟初始化", { width: clientWidth, height: clientHeight });
+    setTimeout(safeInitChart, 50);
+    return;
+  }
+
+  // 如果已有图表实例，先销毁
+  if (chartInstance.value) {
+    chartInstance.value.dispose();
+    chartInstance.value = null;
+  }
+
+  // 初始化图表
+  chartInstance.value = echarts.init(refChart.value);
+  initChartOptions();
+  updateChart();
+
+  // 设置ResizeObserver监听容器变化
+  resizeObserver.value = new ResizeObserver(() => {
+    if (chartInstance.value) {
+      chartInstance.value.resize();
+    }
+  });
+
+  resizeObserver.value.observe(refChart.value);
+
+  setTimeout(() => {
+    dataLoading.value = false;
+  }, 1000);
+};
+
 const selectValue = ref("订单量");
 const segmentedOptions = ["订单量", "销售量", "退款量"];
 const refChart = ref();
-const chartInstance = ref();
+const chartInstance = shallowRef();
 const xChartData = ref();
 const yChartData = ref();
 // 局部刷新定时器
 const koiTimer = ref();
 
 onMounted(() => {
-  // 图表初始化
-  initChart();
-  // 获取接口数据
-  getData();
-  // 调用Echarts图表自适应方法
-  screenAdapter();
-  // Echarts图表自适应
-  window.addEventListener("resize", screenAdapter);
-  // 局部刷新定时器
-  getDataTimer();
-  handleChartResize(chartInstance);
+  // 延迟初始化以确保容器尺寸已计算
+  setTimeout(() => {
+    safeInitChart();
+    // 图表自适应
+    chartAdapter();
+    window.addEventListener("resize", chartAdapter);
+    handleChartResize(chartInstance);
+    // 局部刷新定时器
+    getDataTimer();
+  }, 100);
 });
 
 onUnmounted(() => {
@@ -65,24 +111,26 @@ onUnmounted(() => {
   clearInterval(koiTimer.value);
   koiTimer.value = null;
   // Echarts图表自适应销毁
-  window.removeEventListener("resize", screenAdapter);
+  window.removeEventListener("resize", chartAdapter);
   // handleEventResize();
 });
 
 /** 初始化加载图表 */
-const initChart = () => {
-  chartInstance.value = echarts.init(refChart.value);
+const initChartOptions = () => {
+  if (!chartInstance.value) return;
+
   const initOption = {
     grid: {
-      top: "20%",
-      left: "30px",
-      bottom: "25%",
+      top: "55",
+      left: "30",
+      bottom: "25",
       right: "0"
     },
     tooltip: {
       show: true
     },
     legend: {
+      top: 0,
       right: "5%"
     },
     xAxis: [
@@ -170,50 +218,85 @@ const initChart = () => {
 /** 获取接口数据 */
 const getData = () => {
   // 先进行置空
-  xChartData.value = [];
   yChartData.value = [];
-  xChartData.value = [
-    "20240901",
-    "20240902",
-    "20240903",
-    "20240904",
-    "20240905",
-    "20240906",
-    "20240907",
-    "20240908",
-    "20240909",
-    "20240910",
-    "20240911",
-    "20240912",
-    "20240913",
-    "20240914",
-    "20240915"
-  ];
-  // 调用接口方法
-  // listTenDayData().then(res => {
-  //       xChartData.value = res.data;
-  //       updateChart();
-  //       // console.log("xChartData->"+JSON.stringify(xChartData.value));
-  //       // echarts查不到数据，将初始化echarts的方法全部放置到接口方法中即可。
-  // })
-  // 获取服务器的数据, 对xChartData进行赋值之后, 调用updateChart方法更新图表
-  //console.log("xChartData->",JSON.stringify(res.data))
-  //console.log("xChartData->",JSON.stringify(xChartData.value ))
+  xChartData.value = [];
+  // 模拟API请求
+  // try {
+  //   const res: any = await listData();
+  //   dataApi.value = res.data;
+  //   updateChart();
+  // } catch (error){
+  //   console.log('接口请求失败', error);
+  // }
+
   updateChart();
 };
 
 /** 修改图表数据 */
 const updateChart = () => {
+  if (!chartInstance.value) return;
+
   yChartData.value = [];
   if (selectValue.value == "订单量") {
+    xChartData.value = [
+      "20250901",
+      "20250902",
+      "20250903",
+      "20250904",
+      "20250905",
+      "20250906",
+      "20250907",
+      "20250908",
+      "20250909",
+      "20250910",
+      "20250911",
+      "20250912",
+      "20250913",
+      "20250914",
+      "20250915"
+    ];
     yChartData.value = [72, 33, 66, 26, 77, 36, 59, 35, 62, 27, 55, 33, 69, 37, 52];
   }
 
   if (selectValue.value == "销售量") {
+    xChartData.value = [
+      "20250901",
+      "20250902",
+      "20250903",
+      "20250904",
+      "20250905",
+      "20250906",
+      "20250907",
+      "20250908",
+      "20250909",
+      "20250910",
+      "20250911",
+      "20250912",
+      "20250913",
+      "20250914",
+      "20250915"
+    ];
     yChartData.value = [66, 52, 36, 55, 75, 48, 59, 73, 56, 66, 45, 62, 70, 63, 65];
   }
 
   if (selectValue.value === "退款量") {
+    xChartData.value = [
+      "20250901",
+      "20250902",
+      "20250903",
+      "20250904",
+      "20250905",
+      "20250906",
+      "20250907",
+      "20250908",
+      "20250909",
+      "20250910",
+      "20250911",
+      "20250912",
+      "20250913",
+      "20250914",
+      "20250915"
+    ];
     yChartData.value = [70, 62, 56, 60, 72, 55, 61, 46, 58, 52, 60, 54, 52, 59, 57];
   }
   // 处理图表需要的数据
@@ -235,7 +318,9 @@ const updateChart = () => {
 };
 
 /** 图表自适应 */
-const screenAdapter = () => {
+const chartAdapter = () => {
+  if (!refChart.value || !chartInstance.value) return;
+  
   const titleFontSize = Math.max(9, Math.round(refChart.value?.offsetWidth / 136));
   const adapterOption = {
     title: {
@@ -305,4 +390,25 @@ const getDataTimer = () => {
 };
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped>
+/* 添加加载状态指示器 */
+.data-loading {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(28, 121, 189, 0.3);
+  border-top-color: #1c79bd;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+</style>
