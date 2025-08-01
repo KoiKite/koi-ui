@@ -4,29 +4,7 @@
 
 <script setup lang="ts">
 import * as echarts from "echarts";
-import { nextTick, shallowRef, ref, onMounted, onUnmounted, watch } from "vue";
-import { storeToRefs } from "pinia";
-import useGlobalStore from "@/stores/modules/global.ts";
-
-const globalStore = useGlobalStore();
-const { isCollapse, themeColor, isDark } = storeToRefs(globalStore);
-
-/** 菜单折叠图表自适应 */
-const handleChartResize = (chartInstance: any) => {
-  watch(
-    [() => isCollapse.value, () => themeColor.value, () => isDark.value],
-    () => {
-      nextTick(() => {
-        setTimeout(() => {
-          if (chartInstance.value) {
-            chartAdapter();
-          }
-        }, 150);
-      });
-    },
-    { deep: true }
-  );
-};
+import { nextTick, shallowRef, ref, onMounted, onUnmounted } from "vue";
 
 // 用于监听容器尺寸的ResizeObserver
 const resizeObserver = ref<ResizeObserver | null>(null);
@@ -59,43 +37,36 @@ const safeInitChart = () => {
   // 初始化图表
   chartInstance.value = echarts.init(refChart.value);
   initChartOptions();
-  updateChart();
 
-  
   // 设置ResizeObserver监听容器变化
   resizeObserver.value = new ResizeObserver(() => {
     if (chartInstance.value) {
       chartInstance.value.resize();
     }
   });
-  
+
   resizeObserver.value.observe(refChart.value);
 
-  setTimeout(() => {
-    dataLoading.value = false
-  }, 1000);
+  // 图表自适应
+  chartAdapter();
+  window.addEventListener("resize", chartAdapter);
+  handleData();
+  // 局部刷新定时器
+  handleDataTimer();
 };
 
 const refChart = ref();
 const chartInstance = shallowRef();
 const xChartData = ref();
-const yChartData = ref();
+const yChartData1 = ref();
+const yChartData2 = ref();
 // 局部刷新定时器
 const koiTimer = ref();
 
 onMounted(() => {
-  // 延迟初始化以确保容器尺寸已计算
-  setTimeout(() => {
+  nextTick(() => {
     safeInitChart();
-    // 图表自适应
-    chartAdapter();
-    window.addEventListener("resize", chartAdapter);
-    handleChartResize(chartInstance);
-    // 局部刷新定时器
-    getDataTimer();
-  }, 100);
-
-  getData();
+  });
 });
 
 onUnmounted(() => {
@@ -109,7 +80,7 @@ onUnmounted(() => {
   window.removeEventListener("resize", chartAdapter);
 });
 
-/** 初始化加载图表 */ 
+/** 初始化加载图表 */
 const initChartOptions = () => {
   if (!chartInstance.value) return;
 
@@ -230,39 +201,42 @@ const initChartOptions = () => {
 };
 
 /** 获取接口数据 */
-const getData = () => {
-  // 先进行置空
-  xChartData.value = [];
-  yChartData.value = [];
-  xChartData.value = [
-    "20240901",
-    "20240902",
-    "20240903",
-    "20240904",
-    "20240905",
-    "20240906",
-    "20240907",
-    "20240908",
-    "20240909",
-    "20240910",
-    "20240911",
-    "20240912",
-    "20240913",
-    "20240914",
-    "20240915"
-  ];
-  // 模拟API请求
+const handleData = () => {
+  // API请求
   // try {
   //   const res: any = await listData();
   //   dataApi.value = res.data;
+  //   dataLoading.value = false;
   //   updateChart();
   // } catch (error){
   //   console.log('接口请求失败', error);
   // }
-  updateChart();
+  setTimeout(() => {
+    xChartData.value = [
+      "20240901",
+      "20240902",
+      "20240903",
+      "20240904",
+      "20240905",
+      "20240906",
+      "20240907",
+      "20240908",
+      "20240909",
+      "20240910",
+      "20240911",
+      "20240912",
+      "20240913",
+      "20240914",
+      "20240915"
+    ];
+    yChartData1.value = [320, 266, 245, 199, 278, 298, 312, 365, 378, 299, 287, 256, 276, 288, 281];
+    yChartData2.value = [188, 166, 100, 234, 256, 278, 300, 166, 156, 246, 220, 188, 210, 234, 290];
+    updateChart();
+    dataLoading.value = false;
+  }, 1000);
 };
 
-/** 修改图表数据 */ 
+/** 修改图表数据 */
 const updateChart = () => {
   // 处理图表需要的数据
   const dataOption = {
@@ -274,16 +248,12 @@ const updateChart = () => {
       {
         name: "上月同期交易笔数",
         type: "line",
-        data: [
-          320, 266, 245, 199, 278, 298, 312, 365, 378, 299, 287, 256, 276, 288, 281
-        ]
+        data: yChartData1.value
       },
       {
         name: "昨日交易笔数",
         type: "line",
-        data: [
-          188, 166, 100, 234, 256, 278, 300, 166, 156, 246, 220, 188, 210, 234, 290 
-        ]
+        data: yChartData2.value
       }
     ]
   };
@@ -325,10 +295,10 @@ const chartAdapter = () => {
 };
 
 /** 定时器 */
-const getDataTimer = () => {
+const handleDataTimer = () => {
   // koiTimer.value = setInterval(() => {
   //   // 执行刷新数据的方法
-  //   getData();
+  //   handleData();
   // }, 3000);
 };
 </script>

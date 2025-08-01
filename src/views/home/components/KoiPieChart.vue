@@ -4,29 +4,7 @@
 
 <script setup lang="ts">
 import * as echarts from "echarts";
-import { nextTick, ref, shallowRef, onMounted, onUnmounted, watch } from "vue";
-import { storeToRefs } from "pinia";
-import useGlobalStore from "@/stores/modules/global.ts";
-
-const globalStore = useGlobalStore();
-const { isCollapse, themeColor, isDark } = storeToRefs(globalStore);
-
-/** 菜单折叠图表自适应 */
-const handleChartResize = (chartInstance: any) => {
-  watch(
-    [() => isCollapse.value, () => themeColor.value, () => isDark.value],
-    () => {
-      nextTick(() => {
-        setTimeout(() => {
-          if (chartInstance.value) {
-            chartAdapter();
-          }
-        }, 150);
-      });
-    },
-    { deep: true }
-  );
-};
+import { nextTick, ref, shallowRef, onMounted, onUnmounted } from "vue";
 
 // 用于监听容器尺寸的ResizeObserver
 const resizeObserver = ref<ResizeObserver | null>(null);
@@ -59,7 +37,7 @@ const safeInitChart = () => {
   // 初始化图表
   chartInstance.value = echarts.init(refChart.value);
   initChartOptions();
-  updateChart();
+
   // 设置ResizeObserver监听容器变化
   resizeObserver.value = new ResizeObserver(() => {
     if (chartInstance.value) {
@@ -69,38 +47,29 @@ const safeInitChart = () => {
 
   resizeObserver.value.observe(refChart.value);
 
-  setTimeout(() => {
-    dataLoading.value = false;
-  }, 1000);
+  // 图表自适应
+  chartAdapter();
+  window.addEventListener("resize", chartAdapter);
+  // 获取接口数据
+  handleData();
+  handleTooltipTimer();
 };
 
 const refChart = ref();
 const chartInstance = shallowRef();
 // 接口数据
-const allData = ref([
-  { value: 5, name: "AABB故障" },
-  { value: 6, name: "CCDD故障" },
-  { value: 7, name: "TTZZ故障" },
-  { value: 8, name: "GGHH故障" },
-  { value: 9, name: "YYXX故障" }
-]);
+const dataApi = ref<any>([]);
 
 // tooltip定时器
 const tooltipTimer = ref();
 
 onMounted(() => {
-    // 延迟初始化以确保容器尺寸已计算
-  setTimeout(() => {
+  // 延迟初始化以确保容器尺寸已计算
+  nextTick(() => {
     safeInitChart();
-    // 图表自适应
-    chartAdapter();
-    window.addEventListener("resize", chartAdapter);
-    handleChartResize(chartInstance);
     // tooltip刷新定时器
-    getTooltipTimer();
-  }, 100);
-
-  getData();
+    handleTooltipTimer();
+  });
 });
 
 onUnmounted(() => {
@@ -123,8 +92,8 @@ onUnmounted(() => {
   }
 });
 
-/** 初始化加载图表 */ 
-const initChartOptions = () => {  
+/** 初始化加载图表 */
+const initChartOptions = () => {
   if (!chartInstance.value) return;
 
   const initOption = {
@@ -179,22 +148,32 @@ const initChartOptions = () => {
 
   // 鼠标移入启动定时器
   chartInstance.value.on("mouseout", () => {
-    getTooltipTimer();
+    handleTooltipTimer();
   });
 };
 
 /** 获取接口数据 */
-const getData = () => {
-  // 模拟API请求
+const handleData = () => {
+  // API请求
   // try {
   //   const res: any = await listData();
   //   dataApi.value = res.data;
+  //   dataLoading.value = false;
   //   updateChart();
   // } catch (error){
   //   console.log('接口请求失败', error);
   // }
-  // 获取服务器的数据, 对xChartData进行赋值之后, 调用updateChart方法更新图表
-  updateChart();
+  setTimeout(() => {
+    dataApi.value = [
+      { value: 5, name: "AABB故障" },
+      { value: 6, name: "CCDD故障" },
+      { value: 7, name: "TTZZ故障" },
+      { value: 8, name: "GGHH故障" },
+      { value: 9, name: "YYXX故障" }
+    ];
+    updateChart();
+    dataLoading.value = false;
+  }, 1000);
 };
 
 /** 修改图表数据 */
@@ -205,7 +184,7 @@ const updateChart = () => {
   const dataOption = {
     series: [
       {
-        data: allData.value
+        data: dataApi.value
       }
     ]
   };
@@ -231,8 +210,8 @@ const chartAdapter = () => {
   chartInstance.value?.resize();
 };
 
-/** 定时器 */ 
-const getTooltipTimer = () => {
+/** 定时器 */
+const handleTooltipTimer = () => {
   // 清除旧定时器
   if (tooltipTimer.value) {
     clearInterval(tooltipTimer.value);
@@ -254,7 +233,7 @@ const getTooltipTimer = () => {
       dataIndex: index
     });
     index++;
-    if (index > allData.value.length) {
+    if (index > dataApi.value.length) {
       index = 0;
     }
   }, 2000);
