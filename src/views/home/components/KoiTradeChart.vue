@@ -309,29 +309,29 @@ const updateChart = () => {
 const chartAdapter = () => {
   if (!refChart.value || !chartInstance.value) return;
 
-  const titleFontSize = Math.max(9, Math.round(refChart.value?.offsetWidth / 136));
+  const offsetSize = Math.max(9, Math.round(refChart.value?.offsetWidth / 136));
   const adapterOption = {
     title: {
       textStyle: {
-        fontSize: titleFontSize
+        fontSize: offsetSize
       }
     },
     // 圆点分类标题
     legend: {
       textStyle: {
-        fontSize: titleFontSize
+        fontSize: offsetSize
       }
     },
     xAxis: {
       //  改变x轴字体颜色和大小
       axisLabel: {
-        fontSize: titleFontSize
+        fontSize: offsetSize
       }
     },
     yAxis: {
       //  改变y轴字体颜色和大小
       axisLabel: {
-        fontSize: titleFontSize
+        fontSize: offsetSize
       }
     },
     series: []

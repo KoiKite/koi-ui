@@ -52,7 +52,6 @@ const safeInitChart = () => {
   // 初始化图表
   chartInstance.value = echarts.init(refChart.value);
   initChartOptions();
-  updateChart();
   // 设置ResizeObserver监听容器变化
   resizeObserver.value = new ResizeObserver(() => {
     if (chartInstance.value) {
@@ -176,13 +175,11 @@ const initChartOptions = () => {
             return value + " 单";
           }
         },
-
         label: {
           show: true, // 开启数字显示
           color: getCssVar("--el-color-primary"), // 设置顶部数字颜色
           position: "top" // 在上方显示数字
         },
-
         itemStyle: {
           // 这里设置柱形图圆角 [左上角，右上角，右下角，左下角]
           borderRadius: [4, 4, 0, 0],
@@ -290,36 +287,36 @@ const updateChart = () => {
 
 /** 图表自适应 */
 const chartAdapter = () => {
-  const titleFontSize = ref(Math.round(refChart.value?.offsetWidth / 66));
+  const offsetSize = ref(Math.round(refChart.value?.offsetWidth / 66));
   const adapterOption = {
     title: {
       textStyle: {
-        fontSize: titleFontSize.value
+        fontSize: offsetSize.value
       }
     },
     // 圆点分类标题
     legend: {
       textStyle: {
-        fontSize: titleFontSize.value
+        fontSize: offsetSize.value
       }
     },
     xAxis: {
       //  改变x轴字体颜色和大小
       axisLabel: {
-        fontSize: Math.round(titleFontSize.value)
+        fontSize: Math.round(offsetSize.value)
       }
     },
     yAxis: {
       //  改变y轴字体颜色和大小
       axisLabel: {
-        fontSize: Math.round(titleFontSize.value)
+        fontSize: Math.round(offsetSize.value)
       }
     },
     series: [
       // 双柱的话复制粘贴一份即可
       {
         // 圆柱的宽度
-        barWidth: Math.round(titleFontSize.value * 2.5)
+        barWidth: Math.round(offsetSize.value * 2.6)
       }
     ]
   };

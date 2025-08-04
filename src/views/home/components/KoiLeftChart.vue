@@ -366,29 +366,29 @@ const updateChart = () => {
 const chartAdapter = () => {
   if (!refChart.value || !chartInstance.value) return;
 
-  const titleFontSize = ref(Math.round(refChart.value?.offsetWidth / 66));
+  const offsetSize = ref(Math.round(refChart.value?.offsetWidth / 66));
   const adapterOption = {
     title: {
       textStyle: {
-        fontSize: titleFontSize.value
+        fontSize: offsetSize.value
       }
     },
     series: [
       {
         // 圆柱的宽度
-        barWidth: Math.round(titleFontSize.value * 2.6)
+        barWidth: Math.round(offsetSize.value * 2.6)
       }
     ],
     xAxis: {
       // 改变x轴字体颜色和大小
       axisLabel: {
-        fontSize: Math.round(titleFontSize.value)
+        fontSize: Math.round(offsetSize.value)
       }
     },
     yAxis: {
       //  改变y轴字体颜色和大小
       axisLabel: {
-        fontSize: Math.round(titleFontSize.value)
+        fontSize: Math.round(offsetSize.value)
       }
     }
   };
