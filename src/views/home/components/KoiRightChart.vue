@@ -27,11 +27,17 @@ const resizeObserver = ref<ResizeObserver | null>(null);
 const dataLoading = ref(false);
 
 /** 安全初始化图表 */
-const safeInitChart = () => {
+const safeInitChart = (retry = 0, maxRetries = 6) => {
   dataLoading.value = true;
+
+  if (retry > maxRetries) {
+    console.error("图表初始化失败：重试次数超限");
+    return;
+  }
+
   if (!refChart.value) {
     console.warn("图表容器未找到，延迟初始化");
-    setTimeout(safeInitChart, 50);
+    setTimeout(() => safeInitChart(retry + 1), 100);
     return;
   }
 
@@ -39,7 +45,7 @@ const safeInitChart = () => {
   const { clientWidth, clientHeight } = refChart.value;
   if (clientWidth <= 0 || clientHeight <= 0) {
     console.warn("图表容器尺寸无效，延迟初始化", { width: clientWidth, height: clientHeight });
-    setTimeout(safeInitChart, 50);
+    setTimeout(() => safeInitChart(retry + 1), 50);
     return;
   }
 
