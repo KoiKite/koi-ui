@@ -58,12 +58,10 @@ const activeMenu = computed(() => (route.meta.activeMenu ? route.meta.activeMenu
   width: 100vw;
   height: 100vh;
   .layout-aside {
-    z-index: $layout-aside-z-index; // 左侧菜单层级
     padding-right: $aside-menu-padding-right; // 左侧布局右边距[用于悬浮和选择更明显]
     padding-left: $aside-menu-padding-left; // 左侧布局左边距[用于悬浮和选择更明显]
     background-color: var(--el-menu-bg-color);
-    border-right: none;
-    box-shadow: $aside-menu-box-shadow; // 左侧布局右边框阴影
+    border-right: 1px solid var(--el-aside-border-right-color);
   }
   .layout-header {
     height: $aside-header-height;
@@ -75,6 +73,7 @@ const activeMenu = computed(() => (route.meta.activeMenu ? route.meta.activeMenu
 .el-menu {
   border-right: none;
 }
+
 .layout-scrollbar {
   width: 100%;
   height: calc(100vh - $aside-header-height);

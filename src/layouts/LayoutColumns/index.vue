@@ -281,7 +281,7 @@ watch(
   height: 100%;
   user-select: none;
   background-color: var(--el-menu-bg-color);
-  box-shadow: $column-menu-box-shadow;
+  border-right: 1px solid var(--el-aside-border-right-color);
 
   .left-column {
     display: flex;
@@ -290,7 +290,7 @@ watch(
     justify-content: center;
     width: 70px;
     min-height: 60px;
-    margin: 3px 6px 3px 4px;
+    margin: 4px;
     color: var(--el-menu-text-color);
     cursor: pointer;
     border-radius: 4px;
@@ -300,15 +300,12 @@ watch(
     &:hover {
       color: var(--el-menu-hover-text-color);
       background: var(--el-menu-hover-bg-color);
-      border: 1px solid var(--el-menu-border-left-color);
-      transform: scale(1.05);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
 
     &.is-active {
       color: var(--el-menu-hover-text-color);
       background: var(--el-menu-active-bg-color);
-      border: 1px solid var(--el-menu-border-left-color);
+      border: 1px dashed var(--el-menu-border-left-color);
     }
 
     .el-icon {
@@ -321,7 +318,7 @@ watch(
       font-weight: $aside-menu-font-weight;
       line-height: 14px;
       text-align: center;
-      letter-spacing: 2px;
+      letter-spacing: 1px;
     }
   }
 }
@@ -332,12 +329,10 @@ watch(
   overflow: hidden;
 
   .layout-aside {
-    z-index: $layout-aside-z-index;
     padding-right: $column-menu-padding-right;
     padding-left: $column-menu-padding-left;
     background-color: var(--el-menu-bg-color);
-    border-right: none;
-    box-shadow: $aside-menu-box-shadow;
+    border-right: 1px solid var(--el-aside-border-right-color);
   }
 
   .layout-header {

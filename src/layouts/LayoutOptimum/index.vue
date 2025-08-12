@@ -394,7 +394,7 @@ onBeforeUnmount(() => {
   max-width: 120px;
   height: 100%;
   padding: 6px 4px;
-  margin: 0 4px;
+  margin: 0 2px;
   cursor: pointer;
   border: 1px solid transparent;
   color: var(--el-header-optimum-color);
@@ -416,16 +416,16 @@ onBeforeUnmount(() => {
   &:hover {
     color: var(--el-header-optimum-hover-color);
     background: var(--el-header-optimum-hover-bg-color);
-    border: 1px solid var(--el-header-optimum-border-color);
+    border: 1px dashed var(--el-header-optimum-border-color);
     border-radius: 4px;
   }
 
   &.is-active {
     color: var(--el-header-optimum-active-color);
     background: var(--el-header-optimum-active-bg-color);
-    border: 1px solid var(--el-header-optimum-border-color);
+    border: 1px dashed var(--el-header-optimum-border-color);
     border-radius: 4px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    // box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
 }
 
@@ -435,12 +435,10 @@ onBeforeUnmount(() => {
   overflow: hidden;
 
   .layout-aside {
-    z-index: $layout-aside-z-index;
     padding-right: $column-menu-padding-right;
     padding-left: $column-menu-padding-left;
     background-color: var(--el-menu-bg-color);
-    border-right: none;
-    box-shadow: $aside-menu-box-shadow;
+    border-right: 1px solid var(--el-aside-border-right-color);
   }
 
   .layout-header {

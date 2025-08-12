@@ -45,13 +45,16 @@ export const headerTheme: any = {
 
 export const asideTheme: any = {
   light: {
-    "--el-aside-logo-text-color": "#303133"
+    "--el-aside-logo-text-color": "#303133",
+    "--el-aside-border-right-color": "#E5E7ED"
   },
   inverted: {
-    "--el-aside-logo-text-color": "#E5EAF3"
+    "--el-aside-logo-text-color": "#DADADA",
+    "--el-aside-border-right-color": "#414243"
   },
   dark: {
-    "--el-aside-logo-text-color": "#E5EAF3"
+    "--el-aside-logo-text-color": "#E5EAF3",
+    "--el-aside-border-right-color": "#414243"
   }
 };
 
@@ -70,8 +73,8 @@ export const menuTheme: any = {
     "--el-menu-hover-bg-color": "#303133",
     "--el-menu-active-bg-color": "var(--el-color-primary)",
     "--el-menu-text-color": "#DBD8D8",
-    "--el-menu-hover-text-color": "#ffffff",
-    "--el-menu-active-text-color": "#ffffff",
+    "--el-menu-hover-text-color": "#FFFFFF",
+    "--el-menu-active-text-color": "#FFFFFF",
     "--el-menu-border-left-color": "transparent"
   },
   dark: {

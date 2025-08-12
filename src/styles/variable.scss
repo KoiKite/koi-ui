@@ -15,9 +15,6 @@ $webkit-scrollbar-hover-color: var(--el-color-primary); // [已使用]
 /** 滚动条相关变量-结束 */
 
 /** Aside左侧布局相关变量-开始 */
-// 左侧布局层级
-$layout-aside-z-index: 10;
-
 // Logo和标题高度
 $aside-header-height: 56px;
 
@@ -40,9 +37,6 @@ $aside-menu-padding-left: 6px;
 // 左侧菜单右内边框宽度
 $aside-menu-padding-right: 6px;
 
-// 左侧菜单右阴影
-$aside-menu-box-shadow: 2px 0 12px #1d23290d;
-
 /** Aside左侧布局相关变量-结束 */
 
 /** Column双栏布局相关变量-开始 */
@@ -51,8 +45,4 @@ $column-menu-padding-left: 6px;
 
 // 左侧菜单右内边框宽度[双栏布局]
 $column-menu-padding-right: 6px;
-
-// 双栏布局最左侧第一个右阴影
-$column-menu-box-shadow: 2px 0 12px #1d23290d inset;
-
 /** Column双栏布局相关变量-结束 */
