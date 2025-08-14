@@ -188,8 +188,7 @@ const handleTabsMenuChildren = (path: any, value: any) => {
 <style lang="scss" scoped>
 /** tabs选项卡的css开始 */
 .layout-tabs {
-  border-bottom: 1px solid #d1d1da;
-  @apply dark:border-#313233;
+  border-bottom: 1px solid var(--el-border-color-light); // 选项卡边框实线
   // 色弱模式
   background-color: var(--el-bg-color);
 }
@@ -198,21 +197,23 @@ const handleTabsMenuChildren = (path: any, value: any) => {
 }
 :deep(.el-tabs__item:nth-child(n)) {
   // 选择/未选择边框
-  border: 1px solid #d1d1da !important;
+  border: 1px solid #D1D1DA !important;
 }
 :deep(.el-tabs__item:not(:active)) {
   // 设置未选择的边框
-  border: 1px solid #d1d1da;
+  border: 1px solid #D1D1DA;
 }
+
 :deep(.el-tabs__item) {
   height: 28px;
   margin-left: 6px;
-  margin-top: 1px;
+  margin-top: 0px !important;
+  margin-bottom: 1px;
   font-size: 14px;
   font-weight: 500;
-  color: #1f1f1f;
+  color: #1F1F1F;
   @apply dark:text-#E0E0E0;
-  border: 1px solid #d1d1da;
+  border: 1px solid #D1D1DA;
   border-radius: 4px;
   .is-top {
     border-bottom: none !important;
@@ -235,28 +236,31 @@ const handleTabsMenuChildren = (path: any, value: any) => {
     border: 1px solid var(--el-color-primary) !important;
   }
 }
+
 :deep(.el-tabs__header) {
-  border-top: 1px solid var(--el-color-info-light-7); // 选项卡边框实线
-  border-bottom: 1px solid var(--el-color-info-light-7); // 选项卡边框实线
+  border-top: 1px solid var(--el-border-color); // 选项卡边框实线
   margin: 0px;
 }
-:deep(.el-tabs__nav.is-top) {
-  height: 32px; // 高度越高，可以调整tab卡距离底部的高度
-  border: none; //  去除左侧tabs边框
-  border-radius: 4px;
-}
+
+// :deep(.el-tabs__nav.is-top) {
+//   height: 31px; // 高度越高，可以调整tab卡距离底部的高度
+//   border: none; //  去除左侧tabs边框
+//   border-radius: 4px;
+// }
 
 // 覆盖多余边框
 :deep(.el-tabs__nav) {
   border: none !important;
 }
+
 :deep(.el-tabs__nav-prev) {
   // 标签页多了左侧图标
-  line-height: 35px;
+  line-height: 30px;
 }
+
 :deep(.el-tabs__nav-next) {
   // 标签页多了右侧图标
-  line-height: 35px;
+  line-height: 30px;
 }
 /** tabs选项卡的css结束 */
 </style>

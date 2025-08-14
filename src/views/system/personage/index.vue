@@ -2,7 +2,7 @@
   <div class="p-4px">
     <el-row :gutter="20">
       <el-col :span="6" :xs="24">
-        <el-card>
+        <el-card class="rounded-md" shadow="never">
           <div class="text-13px text-#303133 dark:text-#E5EAF3">
             <div class="flex flex-justify-center">
               <KoiUploadImage v-model:imageUrl="mine.avatar">
@@ -65,7 +65,7 @@
         </el-card>
       </el-col>
       <el-col :span="18" :xs="24">
-        <el-card :body-style="{ 'padding-top': '6px' }">
+        <el-card class="rounded-md" shadow="never" :body-style="{ 'padding-top': '6px' }">
           <el-tabs v-model="activeName">
             <el-tab-pane label="基本资料" name="first">
               <el-form ref="mineFormRef" :rules="mineRules" :model="mineForm" label-width="80px" status-icon>

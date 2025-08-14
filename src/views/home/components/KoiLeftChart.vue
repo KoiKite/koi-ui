@@ -371,7 +371,7 @@ const updateChart = () => {
 /** 图表自适应 */
 const chartAdapter = () => {
   if (!refChart.value || !chartInstance.value) return;
-  console.log("chartAdapter", chartAdapter)
+  
   const offsetSize = ref(Math.round(refChart.value?.offsetWidth / 66));
   const adapterOption = {
     title: {
