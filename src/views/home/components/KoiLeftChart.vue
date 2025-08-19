@@ -128,7 +128,7 @@ const initChartOptions = () => {
     yAxis: {
       type: "value",
       axisLine: {
-        show: true
+        show: true,
         // lineStyle: {
         //   color: '#666' // 可选：设置 Y 轴颜色
         // }
@@ -374,27 +374,27 @@ const chartAdapter = () => {
   
   const offsetSize = ref(Math.round(refChart.value?.offsetWidth / 66));
   const adapterOption = {
-    title: {
-      textStyle: {
-        fontSize: offsetSize.value
-      }
-    },
+    // title: {
+    //   textStyle: {
+    //     fontSize: offsetSize.value
+    //   }
+    // },
     series: [
       {
         // 圆柱的宽度
-        barWidth: Math.round(offsetSize.value * 2.6)
+        barWidth: Math.round(offsetSize.value * 2.6) || 30
       }
     ],
     xAxis: {
       // 改变x轴字体颜色和大小
       axisLabel: {
-        fontSize: Math.round(offsetSize.value)
+        fontSize: Math.round(offsetSize.value) || 12
       }
     },
     yAxis: {
       //  改变y轴字体颜色和大小
       axisLabel: {
-        fontSize: Math.round(offsetSize.value)
+        fontSize: Math.round(offsetSize.value) || 12
       }
     }
   };

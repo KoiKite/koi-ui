@@ -295,34 +295,34 @@ const updateChart = () => {
 const chartAdapter = () => {
   const offsetSize = ref(Math.round(refChart.value?.offsetWidth / 66));
   const adapterOption = {
-    title: {
-      textStyle: {
-        fontSize: offsetSize.value
-      }
-    },
+    // title: {
+    //   textStyle: {
+    //     fontSize: offsetSize.value
+    //   }
+    // },
     // 圆点分类标题
     legend: {
       textStyle: {
-        fontSize: offsetSize.value
+        fontSize: offsetSize.value || 12
       }
     },
     xAxis: {
       //  改变x轴字体颜色和大小
       axisLabel: {
-        fontSize: Math.round(offsetSize.value)
+        fontSize: Math.round(offsetSize.value) || 12
       }
     },
     yAxis: {
       //  改变y轴字体颜色和大小
       axisLabel: {
-        fontSize: Math.round(offsetSize.value)
+        fontSize: Math.round(offsetSize.value) || 12
       }
     },
     series: [
       // 双柱的话复制粘贴一份即可
       {
         // 圆柱的宽度
-        barWidth: Math.round(offsetSize.value * 2.6)
+        barWidth: Math.round(offsetSize.value * 2.6) || 30
       }
     ]
   };

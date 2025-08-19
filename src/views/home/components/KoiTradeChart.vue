@@ -314,27 +314,27 @@ const chartAdapter = () => {
 
   const offsetSize = Math.max(9, Math.round(refChart.value?.offsetWidth / 136));
   const adapterOption = {
-    title: {
-      textStyle: {
-        fontSize: offsetSize
-      }
-    },
+    // title: {
+    //   textStyle: {
+    //     fontSize: offsetSize
+    //   }
+    // },
     // 圆点分类标题
     legend: {
       textStyle: {
-        fontSize: offsetSize
+        fontSize: offsetSize || 14
       }
     },
     xAxis: {
       //  改变x轴字体颜色和大小
       axisLabel: {
-        fontSize: offsetSize
+        fontSize: offsetSize || 12
       }
     },
     yAxis: {
       //  改变y轴字体颜色和大小
       axisLabel: {
-        fontSize: offsetSize
+        fontSize: offsetSize || 12
       }
     },
     series: []
