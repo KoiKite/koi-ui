@@ -97,7 +97,7 @@ const handleDropdownCommand = ({ item }: any) => {
     if (/^https?:\/\//.test(item.meta?.isLink)) {
       return window.open(item.meta.isLink, "_blank");
     }
-  }  
+  }
   router.push(item.path);
 };
 </script>
@@ -154,7 +154,7 @@ const handleDropdownCommand = ({ item }: any) => {
         color: var(--el-header-text-color-regular);
       }
       :deep(.el-breadcrumb__separator) {
-        transform: translateY(-1px);
+        transform: translateY(1px);
       }
     }
   }
