@@ -1,8 +1,8 @@
 <template>
   <div class="koi-flex">
-    <KoiCard>
+    <KoiSearch :isFold="true" :showSearch="showSearch">
       <!-- 搜索条件 -->
-      <el-form v-show="showSearch" :inline="true">
+      <el-form :inline="true">
         <el-form-item label="登录账号" prop="loginName">
           <el-input
             placeholder="请输入登录账号"
@@ -46,7 +46,8 @@
           <el-button type="danger" icon="refresh" plain v-throttle="resetSearch">重置</el-button>
         </el-form-item>
       </el-form>
-
+    </KoiSearch>
+    <KoiCard>
       <!-- 表格头部按钮 -->
       <el-row :gutter="10">
         <el-col :span="1.5" v-auth="['system:role:add']">

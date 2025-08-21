@@ -11,6 +11,7 @@ import KoiExcel from "./KoiExcel/Index.vue";
 import KoiTagFilter from "./KoiTagFilter/Index.vue";
 import KoiCard from "./KoiCard/Index.vue";
 import KoiGlobalIcon from "./KoiGlobalIcon/Index.vue";
+import KoiSearch from './KoiSearch/Index.vue';
 
 import type { App, Component } from "vue";
 
@@ -28,7 +29,8 @@ const components: { [name: string]: Component } = {
   KoiExcel,
   KoiTagFilter,
   KoiCard,
-  KoiGlobalIcon
+  KoiGlobalIcon,
+  KoiSearch
 };
 
 export default {
