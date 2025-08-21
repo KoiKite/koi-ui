@@ -29,12 +29,12 @@
 
 /* DIV 顶级自适应 */
 .koi-flex {
-  @apply flex flex-col flex-1 h-100%;
+  @apply flex flex-col flex-1 h-100% min-w-0;
 }
 
 /* DIV el-tabs 或 el-segmented 中 el-table 自适应 */
 .koi-flex-tabs {
-  @apply flex flex-col flex-1 overflow-hidden h-100%;
+  @apply flex flex-col flex-1 overflow-hidden h-100% min-w-0;
 }
 
 /* el-table 表格样式 和 表格自适应 */
