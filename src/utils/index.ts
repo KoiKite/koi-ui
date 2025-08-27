@@ -13,6 +13,22 @@ export function generateUUID() {
 }
 
 /**
+ * 路径匹配器
+ * @param {string} pattern
+ * @param {string} path
+ * @returns {Boolean}
+ */
+export function isPathMatch(pattern: string, path: string) {
+  const regexPattern = pattern
+    .replace(/\//g, '\\/')
+    .replace(/\*\*/g, '__DOUBLE_STAR__')
+    .replace(/\*/g, '[^\\/]*')
+    .replace(/__DOUBLE_STAR__/g, '.*');
+  const regex = new RegExp(`^${regexPattern}$`);
+  return regex.test(path);
+}
+
+/**
  * 构造树型结构数据
  * @param {*} data 数据源
  * @param {*} id id字段 默认 'id'

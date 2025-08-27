@@ -1,17 +1,17 @@
 <template>
-  <div class="p-4px">
+  <div class="p-6px">
     <el-button type="primary" plain @click="handleKoiDialog">打开Dialog</el-button>
 
     <KoiDialog ref="koiDialogRef" :title="title" @koiConfirm="handleConfirm" @koiCancel="handleCancel" :loading="confirmLoading">
       <template #content>
         <el-form ref="formRef" :rules="rules" :model="form" label-width="80px" status-icon>
-          <el-row>
+          <el-row :gutter="10">
             <el-col :sm="{ span: 12 }" :xs="{ span: 24 }">
               <el-form-item label="角色名称" prop="roleName">
                 <el-input v-model="form.roleName" placeholder="请输入角色名称" clearable />
               </el-form-item>
             </el-col>
-            <el-col :sm="{ span: 12 }" :xs="{ span: 24 }" class="p-l-10px">
+            <el-col :sm="{ span: 12 }" :xs="{ span: 24 }">
               <el-form-item label="角色编号" prop="roleCode">
                 <el-input v-model="form.roleCode" placeholder="请输入角色编号" clearable />
               </el-form-item>

@@ -1,19 +1,5 @@
 // 项目提供scss全局变量
 
-/** 滚动条相关变量-开始 [滚动条在@/assets/index.scss] */
-// 横部滚动条宽，纵向滚动条高
-$webkit-scrollbar-width: 6px;
-$webkit-scrollbar-height: 6px;
-
-// 滚动条圆角
-$webkit-scrollbar-border-radius: 10px;
-
-// 滚动条颜色[已使用]
-$webkit-scrollbar-color: var(--el-border-color-darker); // [已使用]
-$webkit-scrollbar-hover-color: var(--el-color-primary); // [已使用]
-
-/** 滚动条相关变量-结束 */
-
 /** Aside左侧布局相关变量-开始 */
 // Logo和标题高度
 $aside-header-height: 56px;

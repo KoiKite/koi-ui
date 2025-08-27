@@ -31,6 +31,8 @@ const globalStore = defineStore("global", {
       themeColor: DEFAULT_THEME,
       // 布局模式 (纵向：vertical | 经典：classic | 横向：horizontal | 分栏：column)
       layout: "vertical",
+      // 标签页风格
+      tabsStyle: "google",
       // 路由动画
       transition: "fade-default",
       // 菜单是否可展开单个[默认：true仅仅一个]

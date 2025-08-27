@@ -221,7 +221,7 @@ defineExpose({
   z-index: 9999;
   display: none;
   cursor: pointer;
-  background-color: #ffffff;
+  background-color: #FFFFFF;
   @apply dark:bg-black dark:text-#E5EAF3;
   border-radius: var(--el-border-radius-base);
   box-shadow: var(--el-box-shadow-light);

@@ -1,7 +1,8 @@
 <template>
   <Maximize v-show="globalStore.maximize" />
-  <Tabs v-if="showTabs"></Tabs>
-  <el-main class="overflow-x-hidden flex flex-col flex-1 p-0 m-0 bg-#F6F9FE dark:bg-black">
+  <Tabs v-if="showTabs && tabsStyle === 'card'"></Tabs>
+  <GoogleTabs v-if="showTabs && tabsStyle === 'google'"></GoogleTabs>
+  <el-main class="overflow-x-hidden flex flex-col flex-1 p-0 m-0 bg-#FAFBFC dark:bg-black">
     <router-view v-slot="{ Component, route }">
       <transition :name="transition" mode="out-in" appear>
         <keep-alive :max="16" :include="keepAliveStore.keepAliveName">
@@ -17,6 +18,7 @@ import { ref, watch, provide, onBeforeUnmount } from "vue";
 import Maximize from "@/layouts/components/Main/components/Maximize.vue";
 import { useDebounceFn } from "@vueuse/core";
 import Tabs from "@/layouts/components/Tabs/index.vue";
+import GoogleTabs from "@/layouts/components/Tabs/google.vue";
 import { storeToRefs } from "pinia";
 import useKeepAliveStore from "@/stores/modules/keepAlive.ts";
 import useGlobalStore from "@/stores/modules/global.ts";
@@ -24,7 +26,7 @@ import useGlobalStore from "@/stores/modules/global.ts";
 const globalStore = useGlobalStore();
 
 // 路由动画
-const { transition } = storeToRefs(globalStore);
+const { transition, tabsStyle } = storeToRefs(globalStore);
 
 const keepAliveStore = useKeepAliveStore();
 

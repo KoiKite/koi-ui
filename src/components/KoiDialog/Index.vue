@@ -3,7 +3,7 @@
   <el-dialog
     :model-value="visible"
     :title="title"
-    :width="width"
+    :width="dialogWidth"
     :center="center"
     :close-on-click-modal="closeOnClickModel"
     append-to-body
@@ -15,7 +15,7 @@
     :footerHidden="footerHidden"
   >
     <slot name="header"></slot>
-    <div class="overflow-y-auto overflow-x-initial" :style="fullscreen ? { height: 'auto' } : { height: height + 'px' }">
+    <div class="dialog-content-wrapper" :style="fullscreen ? { height: 'auto' } : { height: height + 'px' }">
       <!-- 具名插槽 -->
       <slot name="content"></slot>
     </div>
@@ -32,7 +32,7 @@
 
 <!-- 此弹窗封装将使用 defineExpose，通过ref进行使用 -->
 <script setup lang="ts">
-import { ref, toRefs } from "vue";
+import { ref, toRefs, computed, onMounted, onUnmounted } from "vue";
 import { koiMsgWarning } from "@/utils/koi.ts";
 import { ElMessageBox } from "element-plus";
 import { useI18n } from "vue-i18n";
@@ -76,8 +76,32 @@ const props = withDefaults(defineProps<IDialogProps>(), {
 const visible = ref(false);
 
 // 确定按钮Loading，此处必须用toRefs，否则将失去响应式
-const { loading } = toRefs(props);
+const { loading, width } = toRefs(props);
 const confirmLoading = ref(loading);
+
+// 响应式窗口宽度
+const windowWidth = ref(window.innerWidth);
+
+// 计算对话框宽度，在页面小于600px时使用90%宽度
+const dialogWidth = computed(() => {
+  if (windowWidth.value < 600) {
+    return "90%";
+  }
+  return width.value;
+});
+
+// 监听窗口大小变化
+const handleResize = () => {
+  windowWidth.value = window.innerWidth;
+};
+
+onMounted(() => {
+  window.addEventListener("resize", handleResize);
+});
+
+onUnmounted(() => {
+  window.removeEventListener("resize", handleResize);
+});
 
 /** 打开对话框 */
 const koiOpen = () => {
@@ -131,48 +155,13 @@ defineExpose({
 </script>
 
 <style lang="scss" scoped>
-// .dialog-container {
-//   overflow-x: initial;
-//   overflow-y: auto; // 超出部分则滚动
-// }
-
-// .el-dialog {
-//   border-top-left-radius: 8px !important;
-//   border-top-right-radius: 8px !important;
-//   padding-top: 0px;
-
-//   // 标题头部
-//   .el-dialog__header {
-//     display: flex;
-//     align-items: center;
-//     justify-content: center;
-//     height: 50px !important;
-//     padding: 0 0 6px 0;
-
-//     // background: #1e71ee;
-//     @apply dark:bg-#141414;
-//     .el-dialog__title {
-//       font-family: YouYuan;
-//       font-size: 18px;
-//       font-weight: 500;
-//     }
-//   }
-//   .el-dialog__body {
-//     padding: 0px;
-//   }
-//   .el-dialog__footer {
-//     padding: 10px;
-//   }
-// }
-// .el-dialog__body {
-//   // 内容区域内边距
-//   padding: 10px;
-// }
-// .el-dialog__headerbtn {
-//   padding-bottom: 10px !important;
-//   .el-dialog__close {
-//     border: 1px solid;
-//     border-radius: 10px;
-//   }
-// }
+.dialog-content-wrapper {
+  box-sizing: border-box;
+  padding-right: 6px; // 为滚动条预留空间
+  overflow: hidden auto;
+  // 确保内容不会被滚动条覆盖
+  & > * {
+    padding-right: 4px;
+  }
+}
 </style>

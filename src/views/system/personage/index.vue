@@ -1,5 +1,5 @@
 <template>
-  <div class="p-4px">
+  <div class="p-6px">
     <el-row :gutter="20">
       <el-col :span="6" :xs="24">
         <el-card class="rounded-md" shadow="never">

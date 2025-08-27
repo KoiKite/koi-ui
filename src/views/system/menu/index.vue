@@ -241,20 +241,20 @@
               </el-col>
             </el-row>
 
-            <el-row>
+            <el-row :gutter="10">
               <el-col :sm="{ span: 12 }" :xs="{ span: 24 }">
                 <el-form-item label="菜单名称" prop="menuName">
                   <el-input v-model="form.menuName" placeholder="请输入菜单名称" clearable />
                 </el-form-item>
               </el-col>
               <el-col :sm="{ span: 12 }" :xs="{ span: 24 }">
-                <el-form-item label="显示排序" prop="sorted" class="p-l-10px">
+                <el-form-item label="显示排序" prop="sorted">
                   <el-input-number v-model="form.sorted" clearable />
                 </el-form-item>
               </el-col>
             </el-row>
 
-            <el-row>
+            <el-row :gutter="10">
               <el-col :sm="{ span: 12 }" :xs="{ span: 24 }">
                 <el-form-item label="是否隐藏" prop="isHide">
                   <el-radio-group v-model="form.isHide">
@@ -263,7 +263,7 @@
                   </el-radio-group>
                 </el-form-item>
               </el-col>
-              <el-col :sm="{ span: 12 }" :xs="{ span: 24 }" class="p-l-10px">
+              <el-col :sm="{ span: 12 }" :xs="{ span: 24 }">
                 <el-form-item label="权限字符" prop="auth">
                   <el-input v-model="form.auth" placeholder="权限字符[system:user:list]" clearable />
                 </el-form-item>
@@ -278,20 +278,20 @@
               </el-col>
             </el-row>
 
-            <el-row v-if="form.menuType < 3">
+            <el-row :gutter="10" v-if="form.menuType < 3">
               <el-col :sm="{ span: 12 }" :xs="{ span: 24 }">
                 <el-form-item label="路由名称" prop="name">
                   <el-input v-model="form.name" placeholder="例如：user[唯一]" clearable />
                 </el-form-item>
               </el-col>
-              <el-col :sm="{ span: 12 }" :xs="{ span: 24 }" class="p-l-10px">
+              <el-col :sm="{ span: 12 }" :xs="{ span: 24 }">
                 <el-form-item label="路由Path" prop="path">
                   <el-input v-model="form.path" placeholder="例如：/user[唯一]" clearable />
                 </el-form-item>
               </el-col>
             </el-row>
 
-            <el-row>
+            <el-row :gutter="10">
               <el-col :sm="{ span: 12 }" :xs="{ span: 24 }" v-if="form.menuType < 3">
                 <el-form-item label="是否折叠" prop="isSpread">
                   <el-radio-group v-model="form.isSpread">
@@ -300,7 +300,7 @@
                   </el-radio-group>
                 </el-form-item>
               </el-col>
-              <el-col :sm="{ span: 12 }" :xs="{ span: 24 }" class="p-l-10px" v-if="form.menuType < 3">
+              <el-col :sm="{ span: 12 }" :xs="{ span: 24 }" v-if="form.menuType < 3">
                 <el-form-item label="是否固钉" prop="isAffix">
                   <el-radio-group v-model="form.isAffix">
                     <el-radio value="0">是</el-radio>

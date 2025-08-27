@@ -15,6 +15,7 @@
           class="flex flex-justify-center flex-items-center select-none"
           @contextmenu.prevent="handleTabsMenuChildren(item.path, $event)"
         >
+          <div class="line"></div>
           <KoiGlobalIcon class="m-r-6px" v-show="item.icon" :name="item.icon" size="16"></KoiGlobalIcon>
           <div>{{ getMenuLanguage(item?.title) }}</div>
         </div>
@@ -97,7 +98,7 @@ const tabList = computed(() => {
   return tabsStore.getTabs;
 });
 
-/** 2、添加后激活选项卡 */
+/* 2、添加后激活选项卡 */
 const activeTab = ref(route.fullPath);
 const setActiveTab = () => {
   activeTab.value = route.fullPath;
@@ -197,32 +198,26 @@ const handleTabsMenuChildren = (path: any, value: any) => {
 }
 
 :deep(.el-tabs__item) {
-  height: 28px;
-  margin-left: 6px;
-  margin-top: 0px !important;
-  margin-bottom: 1px;
+  height: 32px;
+  margin-left: 4px;
+  margin-top: 6px !important;
   padding: 0px 14px !important;
   font-size: 14px;
   font-weight: 500;
   color: #161718;
   @apply dark:text-#E0E0E0;
-  border: 1px solid #D3D6DB !important;
-  border-radius: 4px;
+  border-radius: 6px;
+  border: none !important;
   -webkit-user-select: none; /* 禁用 Safari / Chrome 选中 */
   -moz-user-select: none; /* 禁用 Firefox 选中 */
   -ms-user-select: none; /* 禁用 IE / Edge 选中 */
   user-select: none; /* 标准语法 */
   outline: none; /* 移除默认 focus 外框 */
-  .is-top {
-    border-bottom: none !important;
-  }
-
   // 设置鼠标悬停时的样式
   &:hover {
     color: var(--el-color-primary);
-    // 边框选择颜色
-    border: 1px solid var(--el-color-primary) !important;
-    // background: var(--el-color-primary-light-9);
+    background-color: #F4F4F5;
+    @apply dark:bg-#202122;
   }
 
   // 设置鼠标选择的样式[可用来定制不同配色的主题]
@@ -230,8 +225,81 @@ const handleTabsMenuChildren = (path: any, value: any) => {
     color: var(--el-color-primary);
     background: var(--el-color-primary-light-9);
 
-    // 边框选择颜色
-    border: 1px solid var(--el-color-primary) !important;
+    &::before,
+    &::after {
+      position: absolute;
+      bottom: 0;
+      width: 20px;
+      height: 20px;
+      content: "";
+      border-radius: 50%;
+      box-shadow: 0 0 0 30px var(--el-color-primary-light-9);
+    }
+
+    &::before {
+      left: -20px;
+      clip-path: inset(50% -10px 0 50%);
+    }
+
+    &::after {
+      right: -20px;
+      clip-path: inset(50% 50% 0 -10px);
+    }
+  }
+}
+
+:deep(.el-tabs__item) {
+  position: relative;
+  .line {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 1px;
+    height: 16px;
+    margin: auto;
+    background: #D3D6DB;
+    transition: opacity 0.3s ease;
+    opacity: 1; /* 默认显示 */
+  }
+
+  // 第一个标签的 左边线 line 隐藏
+  &:first-child .line {
+    opacity: 0 !important;
+  }
+
+  // 激活状态：隐藏自己和前后标签的 line
+  &.is-active {
+    .line {
+      opacity: 0; /* 隐藏自己的左边线 */
+    }
+
+    // 让前一个标签的 line 隐藏[即当前标签左边线]
+    &:not(:first-child) {
+      & + .el-tabs__item .line {
+        opacity: 0; /* 这是下一个标签的左边线，已处理 */
+      }
+    }
+  }
+
+  // 悬浮状态的 line 隐藏
+  &:hover {
+    .line {
+      opacity: 0;
+    }
+  }
+
+  // 当前标签是[前一个]时，它的 .line 是右边线，也要隐藏[当后一个是 active/hover]
+  & + .el-tabs__item {
+    &.is-active .line,
+    &:hover .line {
+      opacity: 0;
+    }
+  }
+  // 悬浮或激活的标签，其下一个标签的 line 隐藏
+  &:hover + .el-tabs__item .line,
+  &.is-active + .el-tabs__item .line {
+    opacity: 0;
   }
 }
 

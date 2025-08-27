@@ -9,8 +9,10 @@
 
 /* 为webkit浏览器设置纵向和横向滚动条宽度和高度 */
 ::-webkit-scrollbar {
-  width: $webkit-scrollbar-width; // 纵向滚动条宽度
-  height: $webkit-scrollbar-height; // 纵向滚动条高度
+  // 纵向滚动条宽度
+  width: 6px;
+  // 横向滚动条高度
+  height: 6px;
 }
 
 /* 为滚动条轨道设置背景颜色 */
@@ -18,15 +20,14 @@
   background: transparent;
 }
 
-/* 为滚动条设置滑块颜色 */
-::-webkit-scrollbar-thumb {
-  background: $webkit-scrollbar-color;
-  border-radius: $webkit-scrollbar-border-radius;
-}
-
 /* 悬浮在滑块上时为滑块设置背景颜色 */
-::-webkit-scrollbar-thumb:hover {
-  background: $webkit-scrollbar-hover-color;
+::-webkit-scrollbar-thumb {
+  background: var(--el-border-color-darker);
+  border-radius: 6px;
+
+  &:hover {
+    background: #B6B6B6;
+  }
 }
 
 /* 字体 */

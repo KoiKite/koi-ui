@@ -146,20 +146,20 @@
       >
         <template #content>
           <el-form ref="formRef" :rules="rules" :model="form" label-width="80px" status-icon>
-            <el-row>
+            <el-row :gutter="10">
               <el-col :sm="{ span: 12 }" :xs="{ span: 24 }">
                 <el-form-item label="字典名称" prop="dictLabel">
                   <el-input v-model="form.dictLabel" placeholder="请输入字典名称" clearable />
                 </el-form-item>
               </el-col>
-              <el-col :sm="{ span: 12 }" :xs="{ span: 24 }" class="p-l-10px">
+              <el-col :sm="{ span: 12 }" :xs="{ span: 24 }">
                 <el-form-item label="字典数据" prop="dictValue">
                   <el-input v-model="form.dictValue" placeholder="请输入字典数据" clearable />
                 </el-form-item>
               </el-col>
             </el-row>
 
-            <el-row>
+            <el-row :gutter="10">
               <el-col :sm="{ span: 12 }" :xs="{ span: 24 }">
                 <el-form-item label="标签类型" prop="dictTag">
                   <el-select v-model="form.dictTag" placeholder="请选择标签类型" style="width: 240px">
@@ -173,7 +173,7 @@
                   </el-select>
                 </el-form-item>
               </el-col>
-              <el-col :sm="{ span: 12 }" :xs="{ span: 24 }" class="p-l-10px">
+              <el-col :sm="{ span: 12 }" :xs="{ span: 24 }">
                 <el-form-item label="字典状态" prop="dictStatus">
                   <el-select v-model="form.dictStatus" placeholder="请选择字典状态" style="width: 260px" clearable>
                     <el-option label="启用" value="0" />
@@ -182,13 +182,13 @@
                 </el-form-item>
               </el-col>
             </el-row>
-            <el-row>
+            <el-row :gutter="10">
               <el-col :sm="{ span: 12 }" :xs="{ span: 24 }">
                 <el-form-item label="标签颜色" prop="dictColor">
                   <el-input v-model="form.dictColor" placeholder="请输入背景颜色(16进制)" clearable />
                 </el-form-item>
               </el-col>
-              <el-col :sm="{ span: 12 }" :xs="{ span: 24 }" class="p-l-10px">
+              <el-col :sm="{ span: 12 }" :xs="{ span: 24 }">
                 <el-form-item label="字典排序" prop="sorted">
                   <el-input-number v-model="form.sorted" style="width: 260px" clearable />
                 </el-form-item>

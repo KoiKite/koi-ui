@@ -152,13 +152,13 @@
       >
         <template #content>
           <el-form ref="formRef" :rules="rules" :model="form" label-width="80px" status-icon>
-            <el-row>
+            <el-row :gutter="10">
               <el-col :sm="{ span: 12 }" :xs="{ span: 24 }">
                 <el-form-item label="部门编码" prop="deptId">
                   <el-input v-model="form.deptId" placeholder="请输入部门编码" clearable />
                 </el-form-item>
               </el-col>
-              <el-col :sm="{ span: 12 }" :xs="{ span: 24 }" class="p-l-10px">
+              <el-col :sm="{ span: 12 }" :xs="{ span: 24 }">
                 <el-form-item label="部门名称" prop="deptName">
                   <el-input v-model="form.deptName" placeholder="请输入部门名称" clearable />
                 </el-form-item>
@@ -191,7 +191,7 @@
               </el-col>
             </el-row>
 
-            <el-row>
+            <el-row :gutter="10">
               <el-col :sm="{ span: 12 }" :xs="{ span: 24 }">
                 <el-form-item label="部门状态" prop="deptStatus">
                   <el-select v-model="form.deptStatus" placeholder="请选择部门状态" style="width: 260px" clearable>
@@ -200,33 +200,33 @@
                   </el-select>
                 </el-form-item>
               </el-col>
-              <el-col :sm="{ span: 12 }" :xs="{ span: 24 }" class="p-l-10px">
+              <el-col :sm="{ span: 12 }" :xs="{ span: 24 }">
                 <el-form-item label="负责人" prop="leader">
                   <el-input v-model="form.leader" placeholder="请输入部门负责人" clearable />
                 </el-form-item>
               </el-col>
             </el-row>
 
-            <el-row>
+            <el-row :gutter="10">
               <el-col :sm="{ span: 12 }" :xs="{ span: 24 }">
                 <el-form-item label="手机号码" prop="phone">
                   <el-input v-model="form.phone" placeholder="请输入手机号码" clearable />
                 </el-form-item>
               </el-col>
-              <el-col :sm="{ span: 12 }" :xs="{ span: 24 }" class="p-l-10px">
+              <el-col :sm="{ span: 12 }" :xs="{ span: 24 }">
                 <el-form-item label="邮箱地址" prop="email">
                   <el-input v-model="form.email" placeholder="请输入邮箱地址" clearable />
                 </el-form-item>
               </el-col>
             </el-row>
 
-            <el-row>
+            <el-row :gutter="10">
               <el-col :sm="{ span: 12 }" :xs="{ span: 24 }">
                 <el-form-item label="显示排序" prop="sorted">
                   <el-input-number v-model="form.sorted" style="width: 260px" clearable />
                 </el-form-item>
               </el-col>
-              <el-col :sm="{ span: 12 }" :xs="{ span: 24 }" class="p-l-10px">
+              <el-col :sm="{ span: 12 }" :xs="{ span: 24 }">
                 <el-form-item label="备注" prop="remark">
                   <el-input v-model="form.remark" placeholder="请输入备注" clearable />
                 </el-form-item>

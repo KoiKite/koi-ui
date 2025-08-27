@@ -5,8 +5,8 @@
         class="flex flex-items-center p-b-12px transition-500 transition-ease-in-out hover:text-[--el-color-primary]"
         @click="handleFold"
       >
-        <el-icon :size="12" class="transition-500 transition-ease-in-out" :class="{ 'rotate-180': showFold }">
-          <ArrowUpBold />
+        <el-icon :size="14" class="transition-500 transition-ease-in-out" :class="{ 'rotate-180': showFold }">
+          <ArrowDown />
         </el-icon>
         <div class="text-15px m-l-6px select-none">{{ $t("button.search") }}</div>
       </div>

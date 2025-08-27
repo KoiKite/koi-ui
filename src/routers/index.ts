@@ -7,7 +7,7 @@ import useAuthStore from "@/stores/modules/auth.ts";
 import { LOGIN_URL, ROUTER_WHITE_LIST } from "@/config/index.ts";
 import { koiMsgWarning } from "@/utils/koi.ts";
 import { initDynamicRouter } from "@/routers/modules/dynamicRouter.ts";
-import { getMenuLanguage } from "@/utils/index.ts";
+import { getMenuLanguage, isPathMatch } from "@/utils/index.ts";
 import i18n from '@/languages/index.ts';
 
 // .env配置文件读取
@@ -60,7 +60,7 @@ router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormali
   }
 
   // 4、判断访问页面是否在路由白名单地址[静态路由]中，如果存在直接放行。
-  if (ROUTER_WHITE_LIST.includes(to.path)) return next();
+  if (ROUTER_WHITE_LIST.some((pattern: any) => isPathMatch(pattern, to.path))) return next();
 
   // 5、判断是否有 Token，没有重定向到 login 页面。
   if (!userStore.token) return next({ path: LOGIN_URL, replace: true });
