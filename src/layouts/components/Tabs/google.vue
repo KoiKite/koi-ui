@@ -315,11 +315,11 @@ const handleTabsMenuChildren = (path: any, value: any) => {
 
 :deep(.el-tabs__nav-prev) {
   // 标签页多了左侧图标
-  line-height: 30px;
+  line-height: 46px;
 }
 
 :deep(.el-tabs__nav-next) {
   // 标签页多了右侧图标
-  line-height: 30px;
+  line-height: 46px;
 }
 </style>

@@ -1,25 +1,25 @@
 <template>
   <div class="tabs-card">
     <div @click="handleRefresh()" class="tab-menu-item">
-      <el-icon size="16" class="m-r-5px"><Refresh class="icon-scale" /></el-icon>{{ $t("tabs.refresh") }}
+      <el-icon size="16" class="m-r-5px"><Refresh class="icon-bounce" /></el-icon>{{ $t("tabs.refresh") }}
     </div>
     <div @click="handleMaximize()" class="tab-menu-item">
-      <el-icon size="16" class="m-r-5px"><FullScreen class="icon-scale" /></el-icon>{{ $t("tabs.maximize") }}
+      <el-icon size="16" class="m-r-5px"><FullScreen class="icon-bounce" /></el-icon>{{ $t("tabs.maximize") }}
     </div>
     <div @click="handleCloseCurrentTab()" class="tab-menu-item" v-if="isCurrent || isAlone">
-      <el-icon size="16" class="m-r-5px"><Close class="icon-scale" /></el-icon>{{ $t("tabs.closeCurrent") }}
+      <el-icon size="16" class="m-r-5px"><Close class="icon-bounce" /></el-icon>{{ $t("tabs.closeCurrent") }}
     </div>
     <div @click="handleCloseOtherTabs()" class="tab-menu-item" v-if="isAlone">
-      <el-icon size="16" class="m-r-5px"><Star class="icon-scale" /></el-icon>{{ $t("tabs.closeOther") }}
+      <el-icon size="16" class="m-r-5px"><Switch class="icon-bounce" /></el-icon>{{ $t("tabs.closeOther") }}
     </div>
     <div @click="handleCloseSideTabs('left')" class="tab-menu-item" v-if="hasLeft">
-      <el-icon size="16" class="m-r-5px"><DArrowLeft class="icon-scale" /></el-icon>{{ $t("tabs.closeLeft") }}
+      <el-icon size="16" class="m-r-5px"><DArrowLeft class="icon-bounce" /></el-icon>{{ $t("tabs.closeLeft") }}
     </div>
     <div @click="handleCloseSideTabs('right')" class="tab-menu-item" v-if="hasRight">
-      <el-icon size="16" class="m-r-5px"><DArrowRight class="icon-scale" /></el-icon>{{ $t("tabs.closeRight") }}
+      <el-icon size="16" class="m-r-5px"><DArrowRight class="icon-bounce" /></el-icon>{{ $t("tabs.closeRight") }}
     </div>
     <div icon="Remove" @click="handleCloseAllTabs()" class="tab-menu-item" v-if="isAlone">
-      <el-icon size="16" class="m-r-5px"><Remove class="icon-scale" /></el-icon>{{ $t("tabs.closeAll") }}
+      <el-icon size="16" class="m-r-5px"><Remove class="icon-bounce" /></el-icon>{{ $t("tabs.closeAll") }}
     </div>
   </div>
 </template>
@@ -220,50 +220,73 @@ defineExpose({
   position: absolute;
   z-index: 9999;
   display: none;
+  padding: 4px;
+  color: var(--el-text-color-primary);
   cursor: pointer;
-  background-color: #FFFFFF;
-  @apply dark:bg-black dark:text-#E5EAF3;
-  border-radius: var(--el-border-radius-base);
+  background-color: var(--el-bg-color);
+  border: 1px solid var(--el-border-color-light);
+  border-radius: 8px;
   box-shadow: var(--el-box-shadow-light);
-  color: #333639;
-  padding: 2px;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
 }
 
 .tab-menu-item {
   display: flex;
   align-items: center;
   width: auto;
-  height: 28px;
+  height: 32px;
   padding: 8px 12px;
-  margin-top: 1px;
+  margin: 2px 0;
   font-size: var(--el-font-size-base);
   user-select: none;
-  background-color: var(--el-bg-color);
+  background-color: transparent;
   border-radius: var(--el-border-radius-base);
+  transition: all 0.2s ease;
+  
   &:hover {
     color: var(--el-color-primary);
     background-color: var(--el-color-primary-light-9);
   }
-}
-
-.tab-menu-item:hover .icon-scale {
-  animation: koi-scale 0.6s ease-in-out forwards;
-}
-
-@keyframes koi-scale {
-  0% {
-    transform: scale(1); /* 初始状态为原始大小 */
-    -webkit-transform: scale(1);
-    transform-origin: center;
-    -webkit-transform-origin: center;
+  
+  &:first-child {
+    margin-top: 0;
   }
-  50% {
-    transform: scale(1.16); /* 中间放大到1.16倍 */
-    -webkit-transform: scale(1.16);
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.tab-menu-item:hover .icon-bounce {
+  animation: koi-jelly 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+@keyframes koi-jelly {
+  0% {
+    transform: scale(1, 1) rotate(0deg);
+    transform-origin: center;
+  }
+  15% {
+    transform: scale(1.25, 0.8) rotate(0deg);
+  }
+  30% {
+    transform: scale(0.85, 1.1) rotate(-2deg);
+  }
+  45% {
+    transform: scale(1.05, 0.95) rotate(1deg);
+  }
+  60% {
+    transform: scale(0.95, 1.02) rotate(-1deg);
+  }
+  75% {
+    transform: scale(1.02, 0.98) rotate(0.5deg);
+  }
+  90% {
+    transform: scale(0.98, 1.01) rotate(-0.3deg);
   }
   100% {
-    transform: scale(1); /* 最终状态恢复到原始大小 */
-    -webkit-transform: scale(1);
+    transform: scale(1, 1) rotate(0deg);
   }
 }
 /** 右键点击选项结束 */
