@@ -194,7 +194,6 @@ import { useTheme } from "@/utils/theme.ts";
 import { storeToRefs } from "pinia";
 import mittBus from "@/utils/mittBus.ts";
 import useGlobalStore from "@/stores/modules/global.ts";
-import { Check, Connection, Notification, ChatLineRound, QuestionFilled } from "@element-plus/icons-vue";
 
 const globalStore = useGlobalStore();
 
