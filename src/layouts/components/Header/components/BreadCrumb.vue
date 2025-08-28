@@ -54,6 +54,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
+// @ts-ignore
 import { HOME_URL, STATIC_URL } from "@/config/index.ts";
 import { useRoute, useRouter } from "vue-router";
 import { ArrowRight } from "@element-plus/icons-vue";
@@ -152,7 +153,7 @@ const handleDropdownCommand = ({ item }: any) => {
       }
       &:last-child .el-breadcrumb__inner,
       &:last-child .el-breadcrumb__inner:hover {
-        color: var(--el-header-text-color-regular);
+        color: var(--el-header-text-regular-color);
       }
       :deep(.el-breadcrumb__separator) {
         transform: translateY(1px);

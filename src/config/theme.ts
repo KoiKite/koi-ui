@@ -29,17 +29,23 @@ export const headerTheme: any = {
   light: {
     "--el-header-bg-color": "#FFFFFF",
     "--el-header-text-color": "#303133",
-    "--el-header-text-color-regular": "#606266"
+    "--el-header-text-regular-color": "#606266",
+    "--el-header-collapse-bg-color": "var(--el-color-primary-light-9)",
+    "--el-header-collapse-hover-bg-color": "var(--el-color-primary-light-8)"
   },
   inverted: {
-    "--el-header-bg-color": "#141414",
+    "--el-header-bg-color": "#191A20",
     "--el-header-text-color": "#E5EAF3",
-    "--el-header-text-color-regular": "#CFD3DC"
+    "--el-header-text-regular-color": "#CFD3DC",
+    "--el-header-collapse-bg-color": "#303133",
+    "--el-header-collapse-hover-bg-color": "#414141"
   },
   dark: {
     "--el-header-bg-color": "#141414",
     "--el-header-text-color": "#E5EAF3",
-    "--el-header-text-color-regular": "#CFD3DC"
+    "--el-header-text-regular-color": "#CFD3DC",
+    "--el-header-collapse-bg-color": "#303133",
+    "--el-header-collapse-hover-bg-color": "var(--el-color-primary-light-8)"
   }
 };
 

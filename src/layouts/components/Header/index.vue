@@ -19,16 +19,35 @@ import Toolbar from "@/layouts/components/Header/components/Toolbar.vue";
 
 <style lang="scss" scoped>
 .header-box {
+  position: relative; /* 为绝对定位的子元素提供参考 */
   display: flex;
   justify-content: space-between;
   height: $aside-header-height;
+
   .header-left {
     display: flex;
+    flex: 1; /* 允许左侧区域伸缩 */
     align-items: center;
+    min-width: 0; /* 重要：允许内容溢出 */
     overflow: hidden; /* 保留hidden防止内容溢出 */
     white-space: nowrap;
-    flex: 1; /* 允许左侧区域伸缩 */
-    min-width: 0; /* 重要：允许内容溢出 */
+    z-index: 1; /* 确保在 Toolbar 下方 */
+  }
+
+  /* 让 Toolbar 覆盖在 header-left 上方 */
+  :deep(.header-right) {
+    position: absolute;
+    top: 50%;
+    right: 0px;
+    z-index: 10; /* 确保在 header-left 上方 */
+    height: 40px;
+    transform: translateY(-50%);
+    padding: 2px 12px;
+    // background: var(--el-bg-color);
+    background-color: var(--el-header-bg-color); /* 添加背景色确保覆盖效果 */
+    border: 1px solid var(--el-border-color-light); /* 添加边框 */
+    border-radius: 20px; /* 圆角卡片效果 */
+    box-shadow: 0 4px 12px rgb(0 0 0 / 15%); /* 漂浮阴影效果 */
   }
 }
 </style>

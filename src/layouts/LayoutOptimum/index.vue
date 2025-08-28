@@ -23,7 +23,7 @@
     <el-container>
       <el-header class="layout-header">
         <div class="koi-header">
-          <div class="header-left">
+          <div class="header-left" :style="{ paddingRight: (toolbarWidth + 16) + 'px' }">
             <!-- 左侧菜单展开和折叠图标 -->
             <Collapse></Collapse>
             <div class="layout-row m-l-12px">
@@ -48,7 +48,7 @@
             </div>
           </div>
           <!-- 工具栏 -->
-          <Toolbar></Toolbar>
+          <Toolbar @widthChange="handleToolbarWidthChange"></Toolbar>
         </div>
       </el-header>
       <!-- 路由页面 -->
@@ -89,6 +89,14 @@ const activeTopMenuId = ref<any>();
 const currentSubMenuTree = ref<any[]>([]);
 // 当前激活的子菜单路径
 const activeMenu = computed(() => (route.meta?.activeMenu ? route.meta?.activeMenu : route.path) as string);
+
+// Toolbar 宽度
+const toolbarWidth = ref(0);
+
+// 处理 Toolbar 宽度变化
+const handleToolbarWidthChange = (width: number) => {
+  toolbarWidth.value = width;
+};
 
 /** 递归检查菜单项是否匹配 */
 const containsActiveMenu = (menu: any, activeMenu: string): boolean => {
@@ -316,6 +324,7 @@ onBeforeUnmount(() => {
 
 <style lang="scss" scoped>
 .koi-header {
+  position: relative; /* 为绝对定位的子元素提供参考 */
   display: flex;
   justify-content: space-between;
   height: $aside-header-height;
@@ -325,7 +334,31 @@ onBeforeUnmount(() => {
     align-items: center;
     flex: 1;
     min-width: 0;
+    overflow: hidden; /* 防止内容溢出 */
+    white-space: nowrap;
+    z-index: 1; /* 确保在 Toolbar 下方 */
+    transition: padding-right 0.3s ease;
+    
+    /* 为 Toolbar 预留空间 - 现在通过动态样式设置 */
   }
+
+  /* 让 Toolbar 覆盖在 header-left 上方 */
+  :deep(.header-right) {
+    position: absolute;
+    top: 50%;
+    right: 0px;
+    z-index: 10; /* 确保在 header-left 上方 */
+    height: 40px;
+    transform: translateY(-50%);
+    padding: 2px 12px;
+    background-color: var(--el-header-bg-color);
+    border: 1px solid var(--el-border-color-light); /* 添加边框 */
+    border-radius: 20px; /* 圆角卡片效果 */
+    box-shadow: 0 4px 12px rgb(0 0 0 / 15%); /* 漂浮阴影效果 */
+    transition: all 0.3s ease;
+  }
+  
+  /* 小屏幕时调整 header-left 的预留空间 - 现在通过动态样式设置 */
 }
 
 .layout-row {
@@ -335,6 +368,19 @@ onBeforeUnmount(() => {
   min-width: 0;
   user-select: none;
   background-color: var(--el-header-bg-color);
+  padding-left: 10px;
+
+  /* 左右两边阴影效果 - 适配明暗主题 */
+  box-shadow: 
+    inset 20px 0 20px -20px rgba(0, 0, 0, 0.15),
+    inset -20px 0 20px -20px rgba(0, 0, 0, 0.15);
+
+  /* 暗黑模式和头部反转色背景下的阴影效果 */
+  html.dark {
+    box-shadow: 
+      inset 20px 0 20px -20px rgba(255, 255, 255, 0.15),
+      inset -20px 0 20px -20px rgba(255, 255, 255, 0.15);
+  }
 }
 
 .horizontal-scrollbar {

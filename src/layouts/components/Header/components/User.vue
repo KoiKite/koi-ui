@@ -1,22 +1,24 @@
 <template>
-  <!-- 头像 -->
-  <el-image class="w-34px h-34px rounded-full select-none user-avatar m-l-6px" :src="avatar">
-    <template #error>
-      <el-image class="w-34px h-34px rounded-full select-none user-avatar" :src="errorAvatar"></el-image>
-    </template>
-  </el-image>
-  <el-dropdown class="m-l-10px" :hide-on-click="false" @command="handleCommand">
-    <div class="koi-dropdown">
-      <div class="max-w-113px text-14px m-r-6px line-clamp-1 select-none">王将(管理员)</div>
-      <el-icon><arrow-down /></el-icon>
-    </div>
-    <template #dropdown>
-      <el-dropdown-menu>
-        <el-dropdown-item command="koiMine">{{ $t("header.personalCenter") }}</el-dropdown-item>
-        <el-dropdown-item command="logout">{{ $t("header.logout") }}</el-dropdown-item>
-      </el-dropdown-menu>
-    </template>
-  </el-dropdown>
+  <div class="flex flex-items-center m-l-6px">
+    <!-- 头像 -->
+    <el-image class="w-32px h-32px rounded-full select-none user-avatar" :src="avatar">
+      <template #error>
+        <el-image class="w-32px h-32px rounded-full select-none user-avatar" :src="errorAvatar"></el-image>
+      </template>
+    </el-image>
+    <el-dropdown class="m-l-6px" :hide-on-click="false" @command="handleCommand">
+      <div class="koi-dropdown">
+        <div class="max-w-113px text-14px m-r-6px line-clamp-1 select-none">王将(管理员)</div>
+        <el-icon><arrow-down /></el-icon>
+      </div>
+      <template #dropdown>
+        <el-dropdown-menu>
+          <el-dropdown-item command="koiMine">{{ $t("header.personalCenter") }}</el-dropdown-item>
+          <el-dropdown-item command="logout">{{ $t("header.logout") }}</el-dropdown-item>
+        </el-dropdown-menu>
+      </template>
+    </el-dropdown>
+  </div>
 </template>
 
 <script setup lang="ts">
