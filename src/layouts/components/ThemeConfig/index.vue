@@ -104,8 +104,8 @@
             <div class="config-item">
               <div class="config-label">
                 <span>菜单手风琴</span>
-                <el-tooltip placement="bottom" content="左侧菜单是否展开单个子菜单[启用-单个/关闭-多个]">
-                  <el-icon class="help-icon"><QuestionFilled /></el-icon>
+                <el-tooltip content="菜单展开[启用-单个/关闭-多个]">
+                  <el-icon class="warning-icon"><Warning /></el-icon>
                 </el-tooltip>
               </div>
               <el-switch
@@ -633,8 +633,8 @@ mittBus.on("handleThemeConfig", () => {
       font-weight: 500;
       line-height: 1.4;
 
-      .help-icon {
-        margin-left: 6px;
+      .warning-icon {
+        margin-left: 2px;
         color: var(--el-text-color-secondary);
         cursor: help;
         transition: color 0.2s ease;
