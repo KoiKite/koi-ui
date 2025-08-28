@@ -18,7 +18,7 @@
     <div class="h-20px"></div>
     <KoiTag :tagOptions="koiDicts.sys_notice_type" :value="tagValue"></KoiTag>
     <div class="h-20px"></div>
-    <el-select placeholder="请选择公告类型" v-model="noticeType" style="width: 240px" clearable>
+    <el-select placeholder="请选择公告类型" v-model="noticeType" style="width: 220px" clearable>
       <el-option v-for="item in koiDicts.sys_notice_type" :key="item.dictValue" :label="item.dictLabel" :value="item.dictValue" />
     </el-select> -->
   </div>

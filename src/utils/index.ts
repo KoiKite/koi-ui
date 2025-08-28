@@ -76,6 +76,49 @@ export function handleTree(data: any, id?: any, parentId?: any, children?: any) 
       }
     }
   }
+
+  return tree;
+}
+
+/**
+ * 将扁平列表转换为树形结构
+ * @param {Array} data 数据数组
+ * @param {*} id id字段 默认 'id'
+ * @param {*} parentId 父节点字段 默认 'parentId'
+ * @param {*} children 孩子节点字段 默认 'children'
+ * @returns {Array} 树形结构数据
+ */
+export function handleToTree(data: any, id?: any, parentId?: any, children?: any) {
+  let config = {
+    id: id || "id",
+    parentId: parentId || "parentId",
+    childrenList: children || "children"
+  };
+
+  const map = new Map();
+  const tree: any = [];
+
+  // 将所有项存入map，并初始化children数组
+  data.forEach((item: any) => {
+    const node = { ...item };
+    node[config.childrenList] = [];
+    // 使用String()确保key的类型一致性，避免数字和字符串不匹配的问题
+    map.set(String(node[config.id]), node);
+  });
+
+  // 构建树形结构
+  data.forEach((item: any) => {
+    const node = map.get(String(item[config.id]));
+    const pId = String(item[config.parentId]);
+
+    // 注意：这里将parentId转换为字符串进行比较
+    if (pId !== "null" && pId !== "undefined" && map.has(pId)) {
+      map.get(pId)[config.childrenList].push(node);
+    } else {
+      tree.push(node);
+    }
+  });
+
   return tree;
 }
 

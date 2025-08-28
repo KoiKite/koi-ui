@@ -6,7 +6,7 @@
     </el-tooltip>
     <!-- 暗黑模式 -->
     <el-tooltip :content="$t('header.lightMode')" v-if="globalStore.isDark">
-      <KoiGlobalIcon name="koi-sun-side" size="18" />
+      <KoiGlobalIcon name="koi-sun-side" size="20" />
     </el-tooltip>
   </div>
 </template>

@@ -68,8 +68,9 @@ const authStore = useAuthStore();
 const breadcrumbList = computed(() => {
   let breadcrumbData = authStore.getBreadcrumbList[route.matched[route.matched.length - 1].path] ?? [];
   if (!breadcrumbData) return;
-  // 子页面放置静态路由里面, activeMenu存在值的时候
-  if (breadcrumbData[0].path === STATIC_URL && breadcrumbData.length > 1 && breadcrumbData[1].meta?.activeMenu) {
+  // activeMenu 存在值的时候，变为层级模式
+  // 若只需要静态路由是层级模式 则添加 breadcrumbData[0].path === STATIC_URL &&
+  if (breadcrumbData.length > 1 && breadcrumbData[1].meta?.activeMenu) {
     breadcrumbData = findRouteChildrenByActiveMenu(
       authStore.breadcrumbList,
       breadcrumbData[breadcrumbData.length - 1]?.meta?.activeMenu

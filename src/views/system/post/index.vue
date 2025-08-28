@@ -8,7 +8,7 @@
             placeholder="请输入岗位名称"
             v-model="searchParams.postName"
             clearable
-            style="width: 240px"
+            style="width: 220px"
             @keyup.enter.native="handleListPage"
           ></el-input>
         </el-form-item>
@@ -17,7 +17,7 @@
             placeholder="请输入岗位编码"
             v-model="searchParams.postCode"
             clearable
-            style="width: 240px"
+            style="width: 220px"
             @keyup.enter.native="handleListPage"
           ></el-input>
         </el-form-item>
@@ -26,7 +26,7 @@
             placeholder="请选择岗位状态"
             v-model="searchParams.postStatus"
             clearable
-            style="width: 240px"
+            style="width: 220px"
             @keyup.enter.native="handleListPage"
           >
             <el-option label="启用" value="0" />

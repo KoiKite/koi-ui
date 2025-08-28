@@ -8,7 +8,7 @@
             placeholder="请输入字典名称"
             v-model="searchParams.dictName"
             clearable
-            style="width: 240px"
+            style="width: 220px"
             @keyup.enter.native="handleListPage"
           ></el-input>
         </el-form-item>
@@ -17,7 +17,7 @@
             placeholder="请输入字典编号"
             v-model="searchParams.dictType"
             clearable
-            style="width: 240px"
+            style="width: 220px"
             @keyup.enter.native="handleListPage"
           ></el-input>
         </el-form-item>
@@ -26,7 +26,7 @@
             placeholder="请选择字典状态"
             v-model="searchParams.dictStatus"
             clearable
-            style="width: 240px"
+            style="width: 220px"
             @keyup.enter.native="handleListPage"
           >
             <el-option label="启用" value="0" />

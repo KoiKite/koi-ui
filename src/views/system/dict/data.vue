@@ -4,7 +4,7 @@
       <!-- 搜索条件 -->
       <el-form v-show="showSearch" :inline="true">
         <el-form-item label="字典类型" prop="dictType">
-          <el-select v-model="searchParams.dictType" clearable style="width: 240px" @keyup.enter.native="handleListPage">
+          <el-select v-model="searchParams.dictType" clearable style="width: 220px" @keyup.enter.native="handleListPage">
             <el-option v-for="item in dictOptions" :key="item.dictType" :label="item.dictName" :value="item.dictType" />
           </el-select>
         </el-form-item>
@@ -13,7 +13,7 @@
             placeholder="请输入字典名称"
             v-model="searchParams.dictLabel"
             clearable
-            style="width: 240px"
+            style="width: 220px"
             @keyup.enter.native="handleListPage"
           ></el-input>
         </el-form-item>
@@ -22,7 +22,7 @@
             placeholder="请选择字典状态"
             v-model="searchParams.dictStatus"
             clearable
-            style="width: 240px"
+            style="width: 220px"
             @keyup.enter.native="handleListPage"
           >
             <el-option label="启用" value="0" />
@@ -162,7 +162,7 @@
             <el-row :gutter="10">
               <el-col :sm="{ span: 12 }" :xs="{ span: 24 }">
                 <el-form-item label="标签类型" prop="dictTag">
-                  <el-select v-model="form.dictTag" placeholder="请选择标签类型" style="width: 240px">
+                  <el-select v-model="form.dictTag" placeholder="请选择标签类型" style="width: 220px">
                     <el-option
                       v-for="item in tagOptions"
                       :key="item.dictValue"

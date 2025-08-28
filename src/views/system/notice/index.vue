@@ -8,7 +8,7 @@
             placeholder="请输入公告标题"
             v-model="searchParams.noticeTitle"
             clearable
-            style="width: 240px"
+            style="width: 220px"
             @keyup.enter.native="handleListPage"
           ></el-input>
         </el-form-item>
@@ -16,7 +16,7 @@
           <el-select
             placeholder="请选择公告类型"
             v-model="searchParams.noticeType"
-            style="width: 240px"
+            style="width: 220px"
             @keyup.enter.native="handleListPage"
             clearable
           >
@@ -28,7 +28,7 @@
             placeholder="请选择公告状态"
             v-model="searchParams.noticeStatus"
             clearable
-            style="width: 240px"
+            style="width: 220px"
             @keyup.enter.native="handleListPage"
           >
             <el-option label="启用" value="0" />

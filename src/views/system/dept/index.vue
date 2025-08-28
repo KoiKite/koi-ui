@@ -8,7 +8,7 @@
             placeholder="请输入部门名称"
             v-model="searchParams.deptName"
             clearable
-            style="width: 240px"
+            style="width: 220px"
             @keyup.enter.native="handleTreeList"
           ></el-input>
         </el-form-item>
@@ -17,7 +17,7 @@
             placeholder="请选择部门状态"
             v-model="searchParams.deptStatus"
             clearable
-            style="width: 240px"
+            style="width: 220px"
             @keyup.enter.native="handleTreeList"
           >
             <el-option label="启用" value="0" />
@@ -29,7 +29,7 @@
             placeholder="请输入联系电话"
             v-model="searchParams.phone"
             clearable
-            style="width: 240px"
+            style="width: 220px"
             @keyup.enter.native="handleTreeList"
           ></el-input>
         </el-form-item>

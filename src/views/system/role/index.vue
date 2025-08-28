@@ -8,7 +8,7 @@
             placeholder="请输入角色名称"
             v-model="searchParams.roleName"
             clearable
-            style="width: 240px"
+            style="width: 220px"
             @keyup.enter.native="handleListPage"
           ></el-input>
         </el-form-item>
@@ -17,7 +17,7 @@
             placeholder="请选择角色状态"
             v-model="searchParams.roleStatus"
             clearable
-            style="width: 240px"
+            style="width: 220px"
             @keyup.enter.native="handleListPage"
           >
             <el-option label="启用" value="0" />
@@ -29,7 +29,7 @@
             placeholder="请输入角色编号"
             v-model="searchParams.roleCode"
             clearable
-            style="width: 240px"
+            style="width: 220px"
             @keyup.enter.native="handleListPage"
           ></el-input>
         </el-form-item>

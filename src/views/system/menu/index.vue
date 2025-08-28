@@ -8,7 +8,7 @@
             placeholder="请输入菜单名称"
             v-model="searchParams.menuName"
             clearable
-            style="width: 240px"
+            style="width: 220px"
             @keyup.enter.native="handleTreeList"
           ></el-input>
         </el-form-item>
@@ -17,7 +17,7 @@
             placeholder="请选择菜单状态"
             v-model="searchParams.menuStatus"
             clearable
-            style="width: 240px"
+            style="width: 220px"
             @keyup.enter.native="handleTreeList"
           >
             <el-option label="启用" value="0" />
@@ -29,7 +29,7 @@
             placeholder="请输入权限标识"
             v-model="searchParams.auth"
             clearable
-            style="width: 240px"
+            style="width: 220px"
             @keyup.enter.native="handleTreeList"
           ></el-input>
         </el-form-item>
