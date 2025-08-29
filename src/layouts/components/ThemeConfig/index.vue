@@ -102,6 +102,19 @@
             </div>
 
             <div class="config-item">
+              <div class="config-label">组件尺寸</div>
+              <el-select
+                placeholder="请选择组件尺寸"
+                v-model="dimension"
+                clearable
+                class="config-input"
+                @change="handleDimension"
+              >
+                <el-option v-for="item in dimensionList" :key="item.value" :label="item.label" :value="item.value" />
+              </el-select>
+            </div>
+
+            <div class="config-item">
               <div class="config-label">
                 <span>菜单手风琴</span>
                 <el-tooltip content="菜单展开[启用-单个/关闭-多个]">
@@ -189,17 +202,51 @@
 </template>
 
 <script setup lang="ts">
-import { nextTick, ref } from "vue";
+import { nextTick, ref, onMounted, watch, computed } from "vue";
 import { useTheme } from "@/utils/theme.ts";
 import { storeToRefs } from "pinia";
 import mittBus from "@/utils/mittBus.ts";
 import useGlobalStore from "@/stores/modules/global.ts";
+import { koiMsgSuccess } from "@/utils/koi.ts";
+import { useI18n } from "vue-i18n";
 
+const { t } = useI18n();
 const globalStore = useGlobalStore();
 
 const { changeThemeColor, changeGreyOrWeak, setAsideTheme, setHeaderTheme } = useTheme();
 const { layout, isCollapse, transition, tabsStyle, uniqueOpened, menuWidth, isGrey, isWeak, asideInverted, headerInverted } =
   storeToRefs(globalStore);
+
+// 组件尺寸相关
+const dimension = computed(() => globalStore.dimension);
+const dimensionList = ref<any>([]);
+
+onMounted(() => {
+  handleSwitchLanguage();
+});
+
+/** 切换语言 */
+const handleSwitchLanguage = () => {
+  dimensionList.value = [
+    { label: t("header.dimensionList.default"), value: "default" },
+    { label: t("header.dimensionList.large"), value: "large" },
+    { label: t("header.dimensionList.small"), value: "small" }
+  ];
+};
+
+/** 监听 globalStore.language 的变化 */
+watch(
+  () => globalStore.language,
+  () => {
+    handleSwitchLanguage();
+  }
+);
+
+const handleDimension = (item: string) => {
+  if (dimension.value === item) return;
+  globalStore.setDimension(item);
+  koiMsgSuccess(t("msg.success"));
+};
 
 // 主题颜色配置
 const themeColors = [

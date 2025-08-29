@@ -1,6 +1,6 @@
 <template>
   <el-tooltip placement="left" :content="$t('header.language')">
-    <div class="hover:bg-[rgba(0,0,0,0.06)] hover:dark-bg-[rgba(255,255,255,0.1)] w-36px h-36px rounded-md flex flex-justify-center flex-items-center koi-bounce-i">
+    <div class="hover:bg-[rgba(0,0,0,0.06)] hover:dark-bg-[rgba(255,255,255,0.1)] w-36px h-36px rounded-md flex flex-justify-center flex-items-center koi-flip-i">
       <el-dropdown @command="handleChangeLanguage">
         <KoiGlobalIcon name="koi-translate" size="18" class="koi-icon" />
         <template #dropdown>
@@ -40,7 +40,7 @@ onMounted(() => {
 });
 
 const handleSwitchLanguage = () => {
-  // 当 language 变化时，手动触发 dimensionList 的更新
+  // 当 language 变化时，手动触发 languageList 的更新
   languageList.value = [
     { label: t("header.languageList.chinese"), value: "zh" },
     { label: t("header.languageList.english"), value: "en" }
@@ -52,7 +52,6 @@ const handleSwitchLanguage = () => {
 watch(
   () => globalStore.language,
   () => {
-    // 当 language 变化时，手动触发 dimensionList 的更新
     handleSwitchLanguage();
   }
 );

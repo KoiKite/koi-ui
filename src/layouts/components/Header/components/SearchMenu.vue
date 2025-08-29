@@ -1,36 +1,76 @@
 <template>
   <!-- 搜索菜单 -->
-  <div class="search-menu hover:bg-[rgba(0,0,0,0.06)] hover:dark-bg-[rgba(255,255,255,0.1)] koi-icon w-36px h-36px rounded-md flex flex-justify-center flex-items-center koi-pulse-i" @click="handleMenuOpen">
-    <el-tooltip :content="$t('header.searchMenu')">
-      <KoiGlobalIcon name="koi-search" size="18" />
-    </el-tooltip>
-    <el-dialog class="search-dialog" v-model="isShowSearch" :width="600" :show-close="false" top="10vh">
-      <el-input
-        v-model="searchMenu"
-        ref="menuInputRef"
-        :placeholder="$t('header.menuSearch')"
-        size="large"
-        clearable
-        :prefix-icon="Search"
-      ></el-input>
-      <div v-if="searchList.length" class="menu-list" ref="menuListRef">
-        <div
-          v-for="item in searchList"
-          :key="item.path"
-          :class="['menu-item', { 'menu-active': item.path === activePath }]"
-          @mouseenter="mouseoverMenuItem(item)"
-          @click="handleClickMenu()"
-        >
-          <div class="menu-lf">
-            <el-icon class="menu-icon">
-              <component :is="item.meta.icon"></component>
-            </el-icon>
-            <span class="menu-title">{{ item.meta.title }}</span>
+  <div style="position: relative; display: flex; align-items: center">
+    <div
+      class="hover:bg-[rgba(0,0,0,0.06)] hover:dark-bg-[rgba(255,255,255,0.1)] koi-icon w-36px h-36px rounded-md flex flex-justify-center flex-items-center koi-pulse-i"
+      @click="handleMenuOpen"
+    >
+      <el-tooltip :content="$t('header.searchMenu')">
+        <KoiGlobalIcon name="koi-search" size="18" />
+      </el-tooltip>
+    </div>
+
+    <el-dialog class="search-dialog" v-model="isShowSearch" :width="400" :show-close="false" top="8vh" :append-to-body="true">
+      <div style="display: flex; flex-direction: column; height: 500px">
+        <!-- 搜索输入框 -->
+        <div>
+          <el-input
+            v-model="searchMenu"
+            ref="menuInputRef"
+            :placeholder="$t('header.menuSearch')"
+            size="large"
+            clearable
+            prefix-icon="Search"
+          ></el-input>
+        </div>
+
+        <!-- 搜索结果列表 -->
+        <div v-if="searchList.length" style="flex: 1; overflow-y: auto; padding: 10px 20px" ref="menuListRef">
+          <div
+            v-for="item in searchList"
+            :key="item.path"
+            :class="['menu-item', { 'menu-active': item.path === activePath }]"
+            :style="getMenuItemStyle(item)"
+            @mouseenter="handleMouseEnter(item)"
+            @mouseleave="handleMouseLeave"
+            @click="handleClickMenuItem(item)"
+          >
+            <div style="display: flex; align-items: center; flex: 1; gap: 12px">
+              <KoiGlobalIcon v-if="item.meta.icon" :name="item.meta.icon" size="18" :style="getIconStyle(item)" />
+              <el-icon v-else :style="getIconStyle(item)">
+                <Menu />
+              </el-icon>
+              <span :style="getTitleStyle(item)">
+                {{ item.localizedTitle }}
+              </span>
+            </div>
           </div>
-          <el-icon :size="20" @click="handleMenuOpen"><Search /></el-icon>
+        </div>
+
+        <!-- 空状态 -->
+        <el-empty
+          v-else
+          style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 20px"
+          :image-size="80"
+          :description="$t('msg.null')"
+        />
+
+        <!-- 快捷键提示 -->
+        <div
+          style="
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            padding: 10px 16px;
+            border-top: 1px solid var(--el-border-color-lighter);
+            background: linear-gradient(135deg, var(--el-fill-color-lighter), var(--el-fill-color-light));
+          "
+        >
+          <el-button size="small" plain>↑↓ 选择</el-button>
+          <el-button size="small" plain>↵ 确认</el-button>
+          <el-button size="small" plain>ESC 关闭</el-button>
         </div>
       </div>
-      <el-empty v-else class="m-t-80px m-b-80px" :image-size="100" :description="$t('msg.null')" />
     </el-dialog>
   </div>
 </template>
@@ -38,18 +78,112 @@
 <script setup lang="ts">
 import { ref, computed, nextTick, watch } from "vue";
 import { InputInstance } from "element-plus";
-import { Search } from "@element-plus/icons-vue";
 import useAuthStore from "@/stores/modules/auth.ts";
 import { useRouter } from "vue-router";
 import { useDebounceFn } from "@vueuse/core";
+import { getMenuLanguage } from "@/utils/index.ts";
 
 const router = useRouter();
 const authStore = useAuthStore();
-const menuList = computed(() => authStore.menuList.filter((item: any) => item.meta.isHide == "1" && item.meta.parentId != "0"));
+const menuList: any = computed(() => authStore.menuList.filter((item: any) => item.meta.isHide == "1" && item.meta.parentId != "0"));
+
+// 转换菜单数据，添加国际化标题
+const localizedMenuList: any = computed(() => {
+  return menuList.value.map((item: any) => ({
+    ...item,
+    localizedTitle: getMenuLanguage(item.meta.title),
+    originalTitle: item.meta.title
+  }));
+});
 
 const activePath = ref("");
-const mouseoverMenuItem = (menu: any) => {
-  activePath.value = menu.path;
+const hoveredItem = ref<string>("");
+
+const handleMouseEnter = (item: any) => {
+  hoveredItem.value = item.path;
+  // 鼠标悬浮时也更新选中状态
+  activePath.value = item.path;
+};
+
+const handleMouseLeave = () => {
+  hoveredItem.value = "";
+};
+
+// 获取菜单项样式
+const getMenuItemStyle = (item: any) => {
+  const isActive = item.path === activePath.value;
+  const isHovered = item.path === hoveredItem.value;
+
+  const baseStyle = {
+    position: "relative" as const,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    height: "48px",
+    padding: "0 16px",
+    margin: "6px 0",
+    cursor: "pointer",
+    borderRadius: "10px",
+    transition: "all 0.3s ease"
+  };
+
+  if (isActive) {
+    return {
+      ...baseStyle,
+      color: "#FFFFFF",
+      background: "linear-gradient(135deg, var(--el-color-primary), var(--el-color-primary-light-3))",
+      border: "1px solid var(--el-color-primary)",
+      transform: "translateY(-1px)",
+      boxShadow: "0 6px 20px rgba(64, 158, 255, 0.3)"
+    } as any;
+  } else if (isHovered) {
+    return {
+      ...baseStyle,
+      color: "var(--el-color-primary)",
+      backgroundColor: "var(--el-color-primary-light-9)",
+      border: "1px solid var(--el-color-primary-light-7)",
+      transform: "translateY(-1px)",
+      boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)"
+    };
+  } else {
+    return {
+      ...baseStyle,
+      color: "var(--el-text-color-regular)",
+      backgroundColor: "var(--el-fill-color-light)",
+      border: "1px solid var(--el-border-color-lighter)",
+      transform: "translateY(0)",
+      boxShadow: "none"
+    };
+  }
+};
+
+// 获取图标样式
+const getIconStyle = (item: any) => {
+  const isActive = item.path === activePath.value;
+  const isHovered = item.path === hoveredItem.value;
+
+  return {
+    fontSize: isActive || isHovered ? "18px" : "16px",
+    color: isActive ? "#FFFFFF" : isHovered ? "var(--el-color-primary)" : "var(--el-text-color-secondary)",
+    transition: "all 0.3s ease",
+    flexShrink: 0,
+    transform: isActive || isHovered ? "scale(1.1)" : "scale(1)"
+  };
+};
+
+// 获取标题样式
+const getTitleStyle = (item: any) => {
+  const isActive = item.path === activePath.value;
+  const isHovered = item.path === hoveredItem.value;
+
+  return {
+    fontSize: isActive || isHovered ? "15px" : "14px",
+    fontWeight: isActive || isHovered ? "bold" : "normal",
+    color: isActive ? "#FFFFFF" : isHovered ? "var(--el-color-primary)" : "var(--el-text-color-primary)",
+    transition: "all 0.3s ease",
+    lineHeight: "1.4",
+    flex: 1
+  };
 };
 
 const menuInputRef = ref<InputInstance | null>(null);
@@ -74,14 +208,17 @@ const handleMenuOpen = () => {
 };
 
 const searchList = ref<any>([]);
+
 const updateSearchList = () => {
   searchList.value = searchMenu.value
-    ? menuList.value.filter(
-        (item: any) =>
-          (item.path.toLowerCase().includes(searchMenu.value.toLowerCase()) ||
-            item.meta.title.toLowerCase().includes(searchMenu.value.toLowerCase())) &&
-          item.meta?.isHide === "1"
-      )
+    ? localizedMenuList.value.filter((item: any) => {
+        const searchText = searchMenu.value.toLowerCase();
+        const titleMatch = item.localizedTitle.toLowerCase().includes(searchText);
+        const originalTitleMatch = item.originalTitle.toLowerCase().includes(searchText);
+        const pathMatch = item.path.toLowerCase().includes(searchText);
+
+        return (titleMatch || originalTitleMatch || pathMatch) && item.meta?.isHide === "1";
+      })
     : [];
   activePath.value = searchList.value.length ? searchList.value[0].path : "";
 };
@@ -114,69 +251,29 @@ const keyboardOperation = (event: KeyboardEvent) => {
   } else if (event.key === "Enter") {
     event.preventDefault();
     handleClickMenu();
+  } else if (event.key === "Escape") {
+    event.preventDefault();
+    isShowSearch.value = false;
+    searchMenu.value = "";
   }
+};
+
+const handleClickMenuItem = (item: any) => {
+  if (!item) return;
+  // 更新选中状态
+  activePath.value = item.path;
+  // 延迟跳转，让用户看到选中效果
+  setTimeout(() => {
+    if (item.meta?.isLink) window.open(item.meta.isLink, "_blank");
+    else router.push(item.path);
+    searchMenu.value = "";
+    isShowSearch.value = false;
+  }, 150);
 };
 
 const handleClickMenu = () => {
   const menu = searchList.value.find((item: any) => item.path === activePath.value);
   if (!menu) return;
-  if (menu.meta?.isLink) window.open(menu.meta.isLink, "_blank");
-  else router.push(menu.path);
-  searchMenu.value = "";
-  isShowSearch.value = false;
+  handleClickMenuItem(menu);
 };
 </script>
-
-<style scoped lang="scss">
-.search-menu {
-  display: flex;
-  align-items: center;
-  :deep(.el-dialog) {
-    border-radius: 4px;
-    .el-dialog__header {
-      display: none;
-    }
-  }
-  .menu-list {
-    max-height: 515px;
-    margin-top: 15px;
-    overflow: auto;
-    .menu-item {
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 45px;
-      padding: 0 20px;
-      margin: 10px 0;
-      color: var(--el-text-color-secondary);
-      cursor: pointer;
-      background-color: transparent;
-      border: 1px solid var(--el-border-color);
-      border-radius: 6px;
-      transition: all 0.2s ease;
-      .menu-lf {
-        display: flex;
-        align-items: center;
-      }
-      .menu-icon {
-        margin-right: 8px;
-        font-size: 16px;
-      }
-      .menu-title {
-        font-size: 14px;
-      }
-    }
-    .menu-active {
-      color: #ffffff;
-      background-color: var(--el-color-primary);
-      .menu-icon {
-        font-size: 18px;
-      }
-      .menu-title {
-        font-size: 16px;
-      }
-    }
-  }
-}
-</style>

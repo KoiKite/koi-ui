@@ -1,50 +1,72 @@
 <template>
-  <div class="flex flex-items-center m-l-6px">
-    <!-- 头像 -->
-    <el-image class="w-32px h-32px rounded-full select-none user-avatar" :src="avatar">
-      <template #error>
-        <el-image class="w-32px h-32px rounded-full select-none user-avatar" :src="errorAvatar"></el-image>
-      </template>
-    </el-image>
-    <el-dropdown class="m-l-6px" :hide-on-click="false" @command="handleCommand">
-      <div class="koi-dropdown">
-        <div class="max-w-113px text-14px m-r-6px line-clamp-1 select-none">王将(管理员)</div>
-        <el-icon><arrow-down /></el-icon>
+  <div class="user-container">
+    <el-image class="w-32px h-32px rounded-full select-none user-avatar" :src="avatar"></el-image>
+
+    <!-- 悬浮卡片 -->
+    <div class="user-card">
+      <div class="user-card-header">
+        <el-image class="w-36px h-36px rounded-full select-none" :src="avatar"></el-image>
+        <div class="user-info">
+          <div class="user-name">{{ userName }}</div>
+          <div class="user-phone">{{ userPhone }}</div>
+        </div>
       </div>
-      <template #dropdown>
-        <el-dropdown-menu>
-          <el-dropdown-item command="koiMine">{{ $t("header.personalCenter") }}</el-dropdown-item>
-          <el-dropdown-item command="logout">{{ $t("header.logout") }}</el-dropdown-item>
-        </el-dropdown-menu>
-      </template>
-    </el-dropdown>
+      <div class="user-card-menu">
+        <div class="user-menu-item" @click="handleCommand('koiMine')">
+          <el-icon :size="15"><User /></el-icon>
+          <span>{{ $t("header.personalCenter") }}</span>
+        </div>
+      </div>
+      <div class="user-card-footer">
+        <el-button icon="SwitchButton" plain @click="handleCommand('logout')">
+          {{ $t("header.logout") }}
+        </el-button>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { koiSessionStorage, koiLocalStorage } from "@/utils/storage.ts";
+import { koiSessionStorage } from "@/utils/storage.ts";
 import { LOGIN_URL } from "@/config";
 import { useRouter } from "vue-router";
+import useAuthStore from "@/stores/modules/auth.ts";
+import useUserStore from "@/stores/modules/user.ts";
+import useTabsStore from "@/stores/modules/tabs.ts";
+import useKeepAliveStore from "@/stores/modules/keepAlive.ts";
 
+const authStore = useAuthStore();
+const userStore = useUserStore();
+const tabsStore = useTabsStore();
+const keepAliveStore = useKeepAliveStore();
 const router = useRouter();
 
-// 退出登录
-const handleLayout = () => {
-  koiSessionStorage.clear();
-  // 如果不想要保存上次登录设置的全局颜色、布局等，则将下方第一行清空全部代码打开。
-  // koiLocalStorage.clear();
-  koiLocalStorage.remove("user");
-  koiLocalStorage.remove("keepAlive");
-  koiLocalStorage.remove("tabs");
-  // 退出登录。必须使用replace把页面缓存刷掉。
-  window.location.replace(LOGIN_URL);
-};
+// 用户姓名
+const userName = ref("于心");
+// 手机号码
+const userPhone = ref("18888888888");
 // 用户头像
 const avatar = ref(
   "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fsafe-img.xhscdn.com%2Fbw1%2Fae90b4c7-98b6-4a47-b1b3-9ee8bc71acf6%3FimageView2%2F2%2Fw%2F1080%2Fformat%2Fjpg&refer=http%3A%2F%2Fsafe-img.xhscdn.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1692146441&t=6fca60f3a0d323869b81d8fb53b5dd1b"
 );
-const errorAvatar = "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png";
+
+/** 退出登录 */
+const handleLayout = () => {
+  // 清除 sessionStorage
+  koiSessionStorage.clear();
+  // 清除用户 token
+  userStore.setToken("");
+  // 清除 tabs 数据
+  tabsStore.setTab([]);
+  // 清除 keepAlive 缓存
+  keepAliveStore.setKeepAliveName([]);
+  // 清除 auth store 数据[重置为初始状态]
+  authStore.$reset();
+  // 退出登录，必须使用replace把页面缓存刷掉。
+  window.location.replace(LOGIN_URL);
+};
+
 // 下拉折叠
 const handleCommand = (command: string | number) => {
   switch (command) {
@@ -59,13 +81,171 @@ const handleCommand = (command: string | number) => {
 </script>
 
 <style lang="scss" scoped>
-// dropdown字体颜色
-.koi-dropdown {
-  color: var(--el-color-primary);
-  white-space: nowrap; /* 不换行 */
-  cursor: pointer;
-  outline: none; // 去除伪元素
+// 用户容器
+.user-container {
+  margin-left: 6px;
+  position: relative;
   display: flex;
   align-items: center;
+}
+
+// 悬浮卡片样式
+.user-card {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 9999;
+  width: 240px;
+  padding: 14px;
+  margin-top: 0px;
+  color: var(--el-text-color-primary);
+  background-color: var(--el-bg-color);
+  border: 1px solid var(--el-border-color-light);
+  border-radius: 10px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  backdrop-filter: blur(20px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px) scale(0.95);
+  pointer-events: none;
+}
+
+// 用户容器悬停时显示卡片
+.user-container:hover .user-card {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+  transition-delay: 0.15s;
+}
+
+// 卡片头部
+.user-card-header {
+  display: flex;
+  align-items: center;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--el-border-color-lighter);
+  margin-bottom: 10px;
+}
+
+.user-info {
+  margin-left: 12px;
+  flex: 1;
+}
+
+.user-name {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--el-text-color-primary);
+  margin-bottom: 3px;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 160px;
+}
+
+.user-phone {
+  font-size: 13px;
+  color: var(--el-text-color-regular);
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 160px;
+}
+
+// 卡片菜单
+.user-card-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.user-menu-item {
+  display: flex;
+  align-items: center;
+  width: auto;
+  height: 36px;
+  padding: 8px 10px;
+  font-size: 13px;
+  user-select: none;
+  background-color: transparent;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  line-height: 1;
+  font-display: swap;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  &:hover {
+    color: var(--el-color-primary);
+    background-color: var(--el-color-primary-light-9);
+  }
+
+  .el-icon {
+    margin-right: 8px;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+
+  span {
+    font-size: 13px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1;
+    line-height: 1;
+    font-display: swap;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+.user-menu-item:hover .el-icon {
+  animation: koi-jelly 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+@keyframes koi-jelly {
+  0% {
+    transform: scale(1, 1) rotate(0deg);
+    transform-origin: center;
+  }
+  15% {
+    transform: scale(1.25, 0.8) rotate(0deg);
+  }
+  30% {
+    transform: scale(0.85, 1.1) rotate(-2deg);
+  }
+  45% {
+    transform: scale(1.05, 0.95) rotate(1deg);
+  }
+  60% {
+    transform: scale(0.95, 1.02) rotate(-1deg);
+  }
+  75% {
+    transform: scale(1.02, 0.98) rotate(0.5deg);
+  }
+  90% {
+    transform: scale(0.98, 1.01) rotate(-0.3deg);
+  }
+  100% {
+    transform: scale(1, 1) rotate(0deg);
+  }
+}
+
+.user-card-footer {
+  display: flex;
+  align-items: center;
+  padding-top: 12px;
+  border-top: 1px solid var(--el-border-color-lighter);
+  margin-top: 10px;
+  .el-button {
+    width: 100%;
+  }
 }
 </style>

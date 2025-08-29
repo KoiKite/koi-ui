@@ -46,7 +46,7 @@ onMounted(() => {
 });
 
 const handleSwitchLanguage = () => {
-  // 当 language 变化时，手动触发 dimensionList 的更新
+  // 当 language 变化时，手动触发 languageList 的更新
   languageList.value = [
     { label: t("header.languageList.chinese"), value: "zh" },
     { label: t("header.languageList.english"), value: "en" }
@@ -58,7 +58,6 @@ const handleSwitchLanguage = () => {
 watch(
   () => globalStore.language,
   () => {
-    // 当 language 变化时，手动触发 dimensionList 的更新
     handleSwitchLanguage();
   }
 );

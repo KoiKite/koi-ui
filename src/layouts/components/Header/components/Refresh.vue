@@ -11,17 +11,17 @@
 </template>
 
 <script setup lang="ts">
-import { koiMsgSuccess } from "@/utils/koi.ts";
-import { LOGIN_URL } from "@/config";
-import { koiSessionStorage, koiLocalStorage } from "@/utils/storage.ts";
+import { koiSessionStorage } from "@/utils/storage.ts";
+import useGlobalStore from "@/stores/modules/global.ts";
 
+const globalStore = useGlobalStore();
 /** 刷新路由 */
 const handleRefresh = () => {
+  // 清除 sessionStorage
   koiSessionStorage.clear();
-  koiLocalStorage.clear();
-  koiMsgSuccess("刷新本地缓存成功");
-  // 必须使用这个把页面缓存刷掉
-  window.location.replace(LOGIN_URL);
+  // 清除 global store 数据[重置为初始状态]
+  globalStore.$reset();
+  window.location.reload();
 };
 </script>
 

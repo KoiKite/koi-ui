@@ -47,7 +47,12 @@ import Toolbar from "@/layouts/components/Header/components/Toolbar.vue";
     background-color: var(--el-header-bg-color); /* 添加背景色确保覆盖效果 */
     border: 1px solid var(--el-border-color-light); /* 添加边框 */
     border-radius: 20px; /* 圆角卡片效果 */
-    box-shadow: 0 4px 12px rgb(0 0 0 / 15%); /* 漂浮阴影效果 */
+    box-shadow: 0 4px 12px rgb(0 0 0 / 15%); /* 明亮模式阴影效果 */
+
+    /* 黑夜模式阴影效果 */
+    html.dark & {
+      box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1); /* 白色阴影，在黑夜模式下更明显 */
+    }
   }
 }
 </style>

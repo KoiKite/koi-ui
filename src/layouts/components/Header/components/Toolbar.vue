@@ -3,7 +3,7 @@
     <!-- 搜索菜单 -->
     <SearchMenu v-show="isCollapsed"></SearchMenu>
     <!-- ElementPlus 尺寸配置 -->
-    <Dimension v-if="isCollapsed"></Dimension>
+    <!-- <Dimension v-if="isCollapsed"></Dimension> -->
     <!-- 路由缓存刷新 -->
     <Refresh v-show="isCollapsed"></Refresh>
     <!-- 明亮/暗黑模式图标 -->
@@ -16,7 +16,7 @@
     <ThemeSetting></ThemeSetting>
     <!-- 头像 AND 下拉折叠 -->
     <User></User>
-    
+
     <!-- 折叠按钮 -->
     <div class="toolbar-toggle" @click="toggleToolbar">
       <el-icon>
@@ -28,18 +28,18 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, watch, nextTick } from 'vue';
-import { ArrowLeft, ArrowRight } from '@element-plus/icons-vue';
+import { ref, onMounted, onUnmounted, watch, nextTick } from "vue";
+import { ArrowLeft, ArrowRight } from "@element-plus/icons-vue";
 import User from "@/layouts/components/Header/components/User.vue";
 import FullScreen from "@/layouts/components/Header/components/FullScreen.vue";
 import Dark from "@/layouts/components/Header/components/Dark.vue";
 import ThemeSetting from "@/layouts/components/Header/components/ThemeSetting.vue";
 import Refresh from "@/layouts/components/Header/components/Refresh.vue";
-import Dimension from "@/layouts/components/Header/components/Dimension.vue";
+// import Dimension from "@/layouts/components/Header/components/Dimension.vue";
 import Language from "@/layouts/components/Header/components/Language.vue";
 import SearchMenu from "@/layouts/components/Header/components/SearchMenu.vue";
 
-const emit = defineEmits(['widthChange']);
+const emit = defineEmits(["widthChange"]);
 
 const isCollapsed = ref(true);
 const isSmallScreen = ref(true);
@@ -49,7 +49,7 @@ const toolbarRef = ref<HTMLElement>();
 const updateToolbarWidth = () => {
   if (toolbarRef.value) {
     const width = toolbarRef.value.offsetWidth;
-    emit('widthChange', width);
+    emit("widthChange", width);
   }
 };
 
@@ -62,7 +62,7 @@ const checkScreenSize = () => {
   } else {
     isCollapsed.value = true;
   }
-  
+
   // 更新宽度
   nextTick(() => {
     updateToolbarWidth();
@@ -88,8 +88,8 @@ watch(isCollapsed, () => {
 // 监听窗口大小变化
 onMounted(() => {
   checkScreenSize();
-  window.addEventListener('resize', checkScreenSize);
-  
+  window.addEventListener("resize", checkScreenSize);
+
   // 初始更新宽度
   nextTick(() => {
     updateToolbarWidth();
@@ -97,7 +97,7 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-  window.removeEventListener('resize', checkScreenSize);
+  window.removeEventListener("resize", checkScreenSize);
 });
 </script>
 
@@ -105,7 +105,6 @@ onUnmounted(() => {
 .header-right {
   display: flex;
   align-items: center;
-  justify-content: center;
   height: 100%;
   transition: all 0.3s ease;
 

@@ -23,7 +23,7 @@
     <el-container>
       <el-header class="layout-header">
         <div class="koi-header">
-          <div class="header-left" :style="{ paddingRight: (toolbarWidth + 16) + 'px' }">
+          <div class="header-left" :style="{ paddingRight: toolbarWidth + 16 + 'px' }">
             <!-- 左侧菜单展开和折叠图标 -->
             <Collapse></Collapse>
             <div class="layout-row m-l-12px">
@@ -282,7 +282,7 @@ onMounted(() => {
   // 添加滚轮事件监听
   const scrollbarElement = horizontalScrollbarRef.value?.$el;
   if (scrollbarElement) {
-    scrollbarElement.addEventListener('wheel', handleWheel);
+    scrollbarElement.addEventListener("wheel", handleWheel);
   }
 });
 
@@ -301,14 +301,14 @@ const horizontalScrollbarRef = ref<any>(null);
 // 处理鼠标滚轮事件
 const handleWheel = (e: WheelEvent) => {
   if (!horizontalScrollbarRef.value) return;
-  
+
   // 获取滚动容器元素
-  const scrollbarWrap = horizontalScrollbarRef.value.$el.querySelector('.el-scrollbar__wrap');
+  const scrollbarWrap = horizontalScrollbarRef.value.$el.querySelector(".el-scrollbar__wrap");
   if (!scrollbarWrap) return;
-  
+
   // 阻止默认的垂直滚动
   e.preventDefault();
-  
+
   // 应用水平滚动[调整系数0.5控制滚动速度]
   scrollbarWrap.scrollLeft += (e.deltaY + e.deltaX) * 0.5;
 };
@@ -317,7 +317,7 @@ const handleWheel = (e: WheelEvent) => {
 onBeforeUnmount(() => {
   const scrollbarElement = horizontalScrollbarRef.value?.$el;
   if (scrollbarElement) {
-    scrollbarElement.removeEventListener('wheel', handleWheel);
+    scrollbarElement.removeEventListener("wheel", handleWheel);
   }
 });
 </script>
@@ -338,8 +338,6 @@ onBeforeUnmount(() => {
     white-space: nowrap;
     z-index: 1; /* 确保在 Toolbar 下方 */
     transition: padding-right 0.3s ease;
-    
-    /* 为 Toolbar 预留空间 - 现在通过动态样式设置 */
   }
 
   /* 让 Toolbar 覆盖在 header-left 上方 */
@@ -357,8 +355,6 @@ onBeforeUnmount(() => {
     box-shadow: 0 4px 12px rgb(0 0 0 / 15%); /* 漂浮阴影效果 */
     transition: all 0.3s ease;
   }
-  
-  /* 小屏幕时调整 header-left 的预留空间 - 现在通过动态样式设置 */
 }
 
 .layout-row {
@@ -369,17 +365,35 @@ onBeforeUnmount(() => {
   user-select: none;
   background-color: var(--el-header-bg-color);
   padding-left: 10px;
+  position: relative;
+  overflow: hidden;
 
-  /* 左右两边阴影效果 - 适配明暗主题 */
-  box-shadow: 
-    inset 20px 0 20px -20px rgba(0, 0, 0, 0.15),
-    inset -20px 0 20px -20px rgba(0, 0, 0, 0.15);
+  /* 使用伪元素实现右边渐变遮罩效果 */
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 40px;
+    pointer-events: none;
+    z-index: 1;
+  }
 
-  /* 暗黑模式和头部反转色背景下的阴影效果 */
-  html.dark {
-    box-shadow: 
-      inset 20px 0 20px -20px rgba(255, 255, 255, 0.15),
-      inset -20px 0 20px -20px rgba(255, 255, 255, 0.15);
+  /* 右侧遮罩 */
+  &::after {
+    right: 0;
+    background: linear-gradient(270deg, var(--el-header-bg-color) 0%, rgba(255, 255, 255, 0.8) 50%, transparent 100%);
+  }
+
+  /* 暗黑模式下的遮罩效果 */
+  html.dark & {
+    &::before {
+      background: linear-gradient(90deg, var(--el-header-bg-color) 0%, rgba(0, 0, 0, 0.8) 50%, transparent 100%);
+    }
+
+    &::after {
+      background: linear-gradient(270deg, var(--el-header-bg-color) 0%, rgba(0, 0, 0, 0.8) 50%, transparent 100%);
+    }
   }
 }
 
