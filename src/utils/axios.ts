@@ -5,7 +5,7 @@ import { LOGIN_URL } from "@/config/index.ts";
 import useUserStore from "@/stores/modules/user.ts";
 import { getToken } from "@/utils/storage.ts";
 import router from "@/routers/index.ts";
-import i18n from '@/languages/index.ts';
+import i18n from "@/languages/index.ts";
 import { ElMessageBox } from "element-plus";
 
 // axios配置[不含加密版本]
@@ -70,30 +70,31 @@ class Yu {
             userStore.setToken("");
             return Promise.reject(res.data);
           }
-          
+
           // 非登录页面显示提示框
           return new Promise((_, reject) => {
             ElMessageBox.close();
-            ElMessageBox.confirm(
-              i18n.global.t("msg.confirmLogin"), 
-              i18n.global.t("msg.remind"), 
-              {
-                confirmButtonText: i18n.global.t("button.confirm"),
-                cancelButtonText: i18n.global.t("button.cancel"),
-                type: "warning"
-              }
-            )
-            .then(() => {
-              const userStore = useUserStore();
-              userStore.setToken("");
-              koiMsgError(i18n.global.t("msg.confirmLogin"));
-              reject(i18n.global.t("button.confirm"));
-              router.replace(LOGIN_URL);
+            ElMessageBox.confirm(i18n.global.t("msg.confirmLogin"), i18n.global.t("msg.remind"), {
+              confirmButtonText: i18n.global.t("button.confirm"),
+              cancelButtonText: i18n.global.t("button.cancel"),
+              type: "warning"
             })
-            .catch(() => {
-              koiNoticeWarning(i18n.global.t("msg.cancelled"));
-              reject(i18n.global.t("msg.cancelled"));
-            });
+              .then(() => {
+                const userStore = useUserStore();
+                userStore.setToken("");
+                koiMsgError(i18n.global.t("msg.confirmLogin"));
+                reject(i18n.global.t("button.confirm"));
+                setTimeout(() => {
+                  router.replace(LOGIN_URL).catch(err => {
+                    console.error("路由跳转失败:", err);
+                    window.location.href = LOGIN_URL;
+                  });
+                }, 0);
+              })
+              .catch(() => {
+                koiNoticeWarning(i18n.global.t("msg.cancelled"));
+                reject(i18n.global.t("msg.cancelled"));
+              });
           });
         } else {
           // console.log("后端返回数据：", res.data.msg)
@@ -166,23 +167,23 @@ class Yu {
         return Promise.reject(error); // 将错误返回给 try{} catch(){} 中进行捕获，就算不进行捕获，上方 res.data.status != 200 也会抛出提示。
       }
     );
-  };
+  }
   // Get请求
   get<T = Result>(url: string, params?: object): Promise<T> {
     return this.instance.get(url, { params });
-  };
+  }
   // Post请求
   post<T = Result>(url: string, data?: object): Promise<T> {
     return this.instance.post(url, data);
-  };
+  }
   // Put请求
   put<T = Result>(url: string, data?: object): Promise<T> {
     return this.instance.put(url, data);
-  };
+  }
   // Delete请求 /yu/role/1
   delete<T = Result>(url: string): Promise<T> {
-    return this.instance.delete(url); 
-  };
+    return this.instance.delete(url);
+  }
   // 图片上传
   upload<T = Result>(url: string, formData?: object): Promise<T> {
     return this.instance.post(url, formData, {
@@ -190,7 +191,7 @@ class Yu {
         "Content-Type": "multipart/form-data"
       }
     });
-  };
+  }
   // 导出Excel
   exportExcel<T = Result>(url: string, params?: object): Promise<T> {
     return axios.get(import.meta.env.VITE_SERVER + url, {
@@ -199,18 +200,18 @@ class Yu {
         Accept: "application/vnd.ms-excel",
         Authorization: "Bearer " + getToken()
       },
-      responseType: 'blob'
+      responseType: "blob"
     });
-  };
+  }
   // 下载
   download<T = Result>(url: string, data?: object): Promise<T> {
     return axios.post(import.meta.env.VITE_SERVER + url, data, {
       headers: {
         Authorization: "Bearer " + getToken()
       },
-      responseType: 'blob'
+      responseType: "blob"
     });
-  };
+  }
 }
 
 export default new Yu(config);

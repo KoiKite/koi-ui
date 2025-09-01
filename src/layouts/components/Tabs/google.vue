@@ -208,11 +208,10 @@ const handleTabsMenuChildren = (path: any, value: any) => {
   @apply dark:text-#E0E0E0;
   border-radius: 6px;
   border: none !important;
-  -webkit-user-select: none; /* 禁用 Safari / Chrome 选中 */
-  -moz-user-select: none; /* 禁用 Firefox 选中 */
-  -ms-user-select: none; /* 禁用 IE / Edge 选中 */
-  user-select: none; /* 标准语法 */
-  outline: none; /* 移除默认 focus 外框 */
+  user-select: none;
+  outline: none !important; /* 移除默认 focus 外框 */
+  box-shadow: none !important; /* 移除所有阴影效果 */
+  
   // 设置鼠标悬停时的样式
   &:hover {
     color: var(--el-color-primary);
@@ -289,6 +288,15 @@ const handleTabsMenuChildren = (path: any, value: any) => {
     }
   }
 
+  // 强制覆盖所有focus相关样式
+  &:focus,
+  &:focus-visible,
+  &:focus-within {
+    outline: none !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
   // 当前标签是[前一个]时，它的 .line 是右边线，也要隐藏[当后一个是 active/hover]
   & + .el-tabs__item {
     &.is-active .line,
@@ -321,5 +329,22 @@ const handleTabsMenuChildren = (path: any, value: any) => {
 :deep(.el-tabs__nav-next) {
   // 标签页多了右侧图标
   line-height: 46px;
+}
+
+// 全局覆盖Element Plus的focus样式
+:deep(.el-tabs__item:focus),
+:deep(.el-tabs__item:focus-visible),
+:deep(.el-tabs__item:focus-within) {
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+// 确保在右键菜单激活时也不出现focus样式
+:deep(.el-tabs__item[aria-selected="true"]:focus),
+:deep(.el-tabs__item[aria-selected="false"]:focus) {
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
 }
 </style>

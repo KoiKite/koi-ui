@@ -208,11 +208,9 @@ const handleTabsMenuChildren = (path: any, value: any) => {
   @apply dark:text-#E0E0E0;
   border: 1px solid #D3D6DB !important;
   border-radius: 4px;
-  -webkit-user-select: none; /* 禁用 Safari / Chrome 选中 */
-  -moz-user-select: none; /* 禁用 Firefox 选中 */
-  -ms-user-select: none; /* 禁用 IE / Edge 选中 */
-  user-select: none; /* 标准语法 */
-  outline: none; /* 移除默认 focus 外框 */
+  user-select: none;
+  outline: none !important; /* 移除默认 focus 外框 */
+  box-shadow: none !important; /* 移除所有阴影效果 */
   .is-top {
     border-bottom: none !important;
   }
@@ -253,5 +251,29 @@ const handleTabsMenuChildren = (path: any, value: any) => {
 :deep(.el-tabs__nav-next) {
   // 标签页多了右侧图标
   line-height: 30px;
+}
+
+// 全局覆盖Element Plus的focus样式
+:deep(.el-tabs__item:focus),
+:deep(.el-tabs__item:focus-visible),
+:deep(.el-tabs__item:focus-within) {
+  outline: none !important;
+  box-shadow: none !important;
+  border: 1px solid #D3D6DB !important; /* 保持原有的边框样式 */
+}
+
+// 确保在右键菜单激活时也不出现focus样式
+:deep(.el-tabs__item[aria-selected="true"]:focus),
+:deep(.el-tabs__item[aria-selected="false"]:focus) {
+  outline: none !important;
+  box-shadow: none !important;
+  border: 1px solid #D3D6DB !important; /* 保持原有的边框样式 */
+}
+
+// 激活状态下的focus样式覆盖
+:deep(.el-tabs__item.is-active:focus) {
+  outline: none !important;
+  box-shadow: none !important;
+  border: 1px solid var(--el-color-primary) !important; /* 保持激活状态的边框样式 */
 }
 </style>
