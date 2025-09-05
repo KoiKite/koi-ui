@@ -1,28 +1,42 @@
 <template>
   <div class="user-container">
-    <el-image class="w-32px h-32px rounded-full select-none user-avatar" :src="avatar"></el-image>
+    <el-popover
+      placement="bottom-end"
+      :width="240"
+      trigger="hover"
+      :show-arrow="false"
+      :offset="2"
+      popper-style="border-radius: 10px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);"
+    >
+      <template #reference>
+        <el-image class="w-32px h-32px rounded-full select-none user-avatar" :src="avatar"></el-image>
+      </template>
 
-    <!-- 悬浮卡片 -->
-    <div class="user-card">
-      <div class="user-card-header">
-        <el-image class="w-36px h-36px rounded-full select-none" :src="avatar"></el-image>
-        <div class="user-info">
-          <div class="user-name">{{ userName }}</div>
-          <div class="user-phone">{{ userPhone }}</div>
+      <!-- 用户信息卡片内容 -->
+      <div class="user-card-content">
+        <div class="user-card-header">
+          <el-image class="w-36px h-36px rounded-full select-none" :src="avatar"></el-image>
+          <div class="user-info">
+            <div class="user-name">{{ userName }}</div>
+            <div class="user-phone">{{ userPhone }}</div>
+          </div>
+        </div>
+        <div class="user-card-menu">
+          <div
+            class="user-menu-item"
+            @click="handleCommand('koiMine')"
+          >
+            <el-icon :size="15"><User /></el-icon>
+            <span>{{ $t("header.personalCenter") }}</span>
+          </div>
+        </div>
+        <div class="user-card-footer">
+          <el-button icon="SwitchButton" plain @click="handleCommand('logout')">
+            {{ $t("header.logout") }}
+          </el-button>
         </div>
       </div>
-      <div class="user-card-menu">
-        <div class="user-menu-item" @click="handleCommand('koiMine')">
-          <el-icon :size="15"><User /></el-icon>
-          <span>{{ $t("header.personalCenter") }}</span>
-        </div>
-      </div>
-      <div class="user-card-footer">
-        <el-button icon="SwitchButton" plain @click="handleCommand('logout')">
-          {{ $t("header.logout") }}
-        </el-button>
-      </div>
-    </div>
+    </el-popover>
   </div>
 </template>
 
@@ -89,35 +103,19 @@ const handleCommand = (command: string | number) => {
   align-items: center;
 }
 
-// 悬浮卡片样式
-.user-card {
-  position: absolute;
-  top: 100%;
-  right: 0;
-  z-index: 9999;
-  width: 240px;
-  padding: 14px;
-  margin-top: 0px;
-  color: var(--el-text-color-primary);
-  background-color: var(--el-bg-color);
-  border: 1px solid var(--el-border-color-light);
-  border-radius: 10px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
-  backdrop-filter: blur(20px);
+// 用户头像悬停效果
+.user-avatar {
+  cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(-10px) scale(0.95);
-  pointer-events: none;
+
+  &:hover {
+    transform: scale(1.05);
+  }
 }
 
-// 用户容器悬停时显示卡片
-.user-container:hover .user-card {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0) scale(1);
-  pointer-events: auto;
-  transition-delay: 0.15s;
+// 卡片内容容器
+.user-card-content {
+  padding: 0px;
 }
 
 // 卡片头部
