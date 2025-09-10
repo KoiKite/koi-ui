@@ -196,6 +196,15 @@ const getSubMenuTree = (topMenuId: number | string) => {
  * @param {Object} item 菜单项
  */
 const handleTopMenuClick = (route: any) => {
+  if (route.meta?.isLink) {
+    if (/^https?:\/\//.test(route.meta?.isLink)) {
+      return window.open(route.meta.isLink, "_blank");
+    } else {
+      koiMsgError("错误链接地址，禁止跳转");
+      return;
+    }
+  }
+  
   if (!route?.children) {
     // 更新当前激活的顶级菜单
     activeTopMenuId.value = route.meta?.menuId;
