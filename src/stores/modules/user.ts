@@ -17,7 +17,8 @@ const userStore = defineStore("user", {
   // 存储数据state
   state: (): any => {
     return {
-      token: ""
+      token: "",
+      loginName: ""
     };
   },
   // 该函数没有上下文数据，所以获取state中的变量需要使用this
@@ -25,6 +26,10 @@ const userStore = defineStore("user", {
     // Set Token
     setToken(token: string) {
       this.token = token;
+    },
+    // Set Login Name
+    setLoginName(loginName: string) {
+      this.loginName = loginName;
     }
   },
   // 计算属性，和vuex是使用一样，getters里面不是方法，是计算返回的结果值

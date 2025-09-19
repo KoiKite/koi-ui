@@ -47,12 +47,12 @@ import { LOGIN_URL } from "@/config";
 import { useRouter } from "vue-router";
 import useAuthStore from "@/stores/modules/auth.ts";
 import useUserStore from "@/stores/modules/user.ts";
-import useTabsStore from "@/stores/modules/tabs.ts";
+// import useTabsStore from "@/stores/modules/tabs.ts";
 import useKeepAliveStore from "@/stores/modules/keepAlive.ts";
 
 const authStore = useAuthStore();
 const userStore = useUserStore();
-const tabsStore = useTabsStore();
+// const tabsStore = useTabsStore();
 const keepAliveStore = useKeepAliveStore();
 const router = useRouter();
 
@@ -61,9 +61,7 @@ const userName = ref("于心");
 // 手机号码
 const userPhone = ref("18888888888");
 // 用户头像
-const avatar = ref(
-  "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fsafe-img.xhscdn.com%2Fbw1%2Fae90b4c7-98b6-4a47-b1b3-9ee8bc71acf6%3FimageView2%2F2%2Fw%2F1080%2Fformat%2Fjpg&refer=http%3A%2F%2Fsafe-img.xhscdn.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1692146441&t=6fca60f3a0d323869b81d8fb53b5dd1b"
-);
+const avatar = ref("https://pic4.zhimg.com/v2-702a23ebb518199355099df77a3cfe07_1440w.webp");
 
 /** 退出登录 */
 const handleLayout = () => {
@@ -72,7 +70,7 @@ const handleLayout = () => {
   // 清除用户 token
   userStore.setToken("");
   // 清除 tabs 数据
-  tabsStore.setTab([]);
+  // tabsStore.setTab([]);
   // 清除 keepAlive 缓存
   keepAliveStore.setKeepAliveName([]);
   // 清除 auth store 数据[重置为初始状态]

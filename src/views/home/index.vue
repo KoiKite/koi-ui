@@ -2,10 +2,10 @@
   <div class="overflow-x-hidden m-x-6px m-y-5px">
     <el-card class="rounded-md" shadow="hover">
       <div class="flex flex-items-center" v-waterMarker="{ text: 'KOI-ADMIN', textColor: '#D9D9D9' }">
-        <img class="w-60px h-60px rounded-full select-none user-avatar" :src="avatar" alt="avatar" />
+        <img class="w-60px h-60px rounded-full select-none user-avatar" src="https://pic4.zhimg.com/v2-702a23ebb518199355099df77a3cfe07_1440w.webp" alt="avatar" />
         <div class="p-l-20px">
           <div class="font-bold p-b-8px whitespace-nowrap">
-            <span>KOI-ADMIN/</span><span class="c-#6169FF" @click="handleKoiAdminGitee">前后端版本[159块]</span><span>/</span
+            <span>KOI-ADMIN/</span><span class="c-#6169FF" @click="handleKoiAdminGitee">前后端版本[169块]</span><span>/</span
             ><span class="c-#409EFF" @click="handleKoiUIGitee">纯前端[Gitee]</span><span>/</span
             ><span class="c-orange" @click="handleKoiUIGitHub">纯前端[GitHub]</span>
           </div>
@@ -71,10 +71,6 @@ onMounted(() => {
   // 时间问候语
   koiMsgSuccess(getDayText());
 });
-
-// 头像
-const avatar =
-  "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fsafe-img.xhscdn.com%2Fbw1%2Fae90b4c7-98b6-4a47-b1b3-9ee8bc71acf6%3FimageView2%2F2%2Fw%2F1080%2Fformat%2Fjpg&refer=http%3A%2F%2Fsafe-img.xhscdn.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1692146441&t=6fca60f3a0d323869b81d8fb53b5dd1b";
 
 // 前后端版本Gitee地址
 const handleKoiAdminGitee = () => {
