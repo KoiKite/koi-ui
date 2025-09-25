@@ -214,6 +214,8 @@ const loginRules: any = reactive<FormRules<ILoginUser>>({
 
 /** 获取验证码 */
 const handleCaptcha = async () => {
+  userStore.setToken("");
+  
   // try {
   //   const res: any = await getCaptcha();
   //   loginForm.codeKey = res.data.codeKey;
