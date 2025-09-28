@@ -64,7 +64,7 @@ class Yu {
           // 获取当前路由路径
           const currentPath = router.currentRoute.value.path;
           // 如果当前是登录页面，不显示提示框
-          if (currentPath === LOGIN_URL) {
+          if (currentPath === "/" || currentPath === LOGIN_URL) {
             // 直接清除token并拒绝请求
             const userStore = useUserStore();
             userStore.setToken("");
