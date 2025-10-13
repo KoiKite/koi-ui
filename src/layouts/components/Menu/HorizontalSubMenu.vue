@@ -36,7 +36,7 @@ const handleMenuRouter = (value: any) => {
     if (/^https?:\/\//.test(value.meta?.isLink)) {
       return window.open(value.meta.isLink, "_blank");
     } else {
-      koiMsgWarning("非正确链接地址，禁止跳转");
+      koiMsgWarning("错误链接地址，禁止跳转");
       return;
     }
   }
@@ -95,7 +95,8 @@ const handleMenuRouter = (value: any) => {
     border-radius: 8px !important;
     // box-shadow: none !important;
     padding: 6px !important;
-    background: var(--el-header-bg-color) !important;
+    // 这里没有使用scoped，防止覆盖反转颜色
+    // background: var(--el-header-bg-color) !important;
 
     .el-sub-menu__title:hover,
     .el-menu-item:hover {
@@ -125,6 +126,17 @@ const handleMenuRouter = (value: any) => {
         margin-bottom: 0;
       }
     }
+  }
+}
+</style>
+
+<style lang="scss" scoped>
+// 菜单折叠 hover 弹窗样式
+.el-menu--vertical,
+.el-menu--popup-container {
+  .el-menu--popup {
+    background: var(--el-header-bg-color);
+    border: none;
   }
 }
 </style>
