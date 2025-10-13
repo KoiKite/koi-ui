@@ -177,10 +177,10 @@ const handleMenuRouter = (value: any) => {
 <style lang="scss">
 /** 子级菜单字体高亮，父级菜单也高亮 */
 .el-sub-menu.is-active > .el-sub-menu__title {
-  color: var(--el-menu-active-text-color) !important;
+  color: var(--el-menu-parent-active-text-color) !important;
   
   .menu-icon {
-    color: var(--el-menu-active-text-color) !important;
+    color: var(--el-menu-parent-active-text-color) !important;
   }
 }
 </style>

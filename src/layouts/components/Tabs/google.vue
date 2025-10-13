@@ -257,9 +257,9 @@ const handleTabsMenuChildren = (path: any, value: any) => {
     width: 1px;
     height: 16px;
     margin: auto;
-    background: #D3D6DB;
+    background: #D3D6DB !important;
     transition: opacity 0.3s ease;
-    opacity: 1; /* 默认显示 */
+    opacity: 1 !important; /* 默认显示 */
   }
 
   // 第一个标签的 左边线 line 隐藏
@@ -270,13 +270,13 @@ const handleTabsMenuChildren = (path: any, value: any) => {
   // 激活状态：隐藏自己和前后标签的 line
   &.is-active {
     .line {
-      opacity: 0; /* 隐藏自己的左边线 */
+      opacity: 0 !important; /* 隐藏自己的左边线 */
     }
 
     // 让前一个标签的 line 隐藏[即当前标签左边线]
     &:not(:first-child) {
       & + .el-tabs__item .line {
-        opacity: 0; /* 这是下一个标签的左边线，已处理 */
+        opacity: 0 !important; /* 这是下一个标签的左边线，已处理 */
       }
     }
   }
@@ -284,7 +284,7 @@ const handleTabsMenuChildren = (path: any, value: any) => {
   // 悬浮状态的 line 隐藏
   &:hover {
     .line {
-      opacity: 0;
+      opacity: 0 !important;
     }
   }
 
@@ -301,13 +301,13 @@ const handleTabsMenuChildren = (path: any, value: any) => {
   & + .el-tabs__item {
     &.is-active .line,
     &:hover .line {
-      opacity: 0;
+      opacity: 0 !important;
     }
   }
   // 悬浮或激活的标签，其下一个标签的 line 隐藏
   &:hover + .el-tabs__item .line,
   &.is-active + .el-tabs__item .line {
-    opacity: 0;
+    opacity: 0 !important;
   }
 }
 

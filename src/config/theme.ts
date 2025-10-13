@@ -71,6 +71,7 @@ export const menuTheme: any = {
     "--el-menu-active-bg-color": "var(--el-color-primary-light-9)",
     "--el-menu-text-color": "#333639",
     "--el-menu-hover-text-color": "var(--el-color-primary)",
+    "--el-menu-parent-active-text-color": "var(--el-color-primary)",
     "--el-menu-active-text-color": "var(--el-color-primary)",
     "--el-menu-border-left-color": "var(--el-color-primary)"
   },
@@ -78,8 +79,9 @@ export const menuTheme: any = {
     "--el-menu-bg-color": "#191A20",
     "--el-menu-hover-bg-color": "#303133",
     "--el-menu-active-bg-color": "var(--el-color-primary)",
-    "--el-menu-text-color": "#DBD8D8",
-    "--el-menu-hover-text-color": "#FFFFFF",
+    "--el-menu-text-color": "#FFFFFF",
+    "--el-menu-hover-text-color": "var(--el-color-primary)",
+    "--el-menu-parent-active-text-color": "var(--el-color-primary)",
     "--el-menu-active-text-color": "#FFFFFF",
     "--el-menu-border-left-color": "transparent"
   },
@@ -88,6 +90,7 @@ export const menuTheme: any = {
     "--el-menu-hover-bg-color": "var(--el-color-primary-light-8)",
     "--el-menu-active-bg-color": "var(--el-color-primary-light-8)",
     "--el-menu-text-color": "#E5EAF3",
+    "--el-menu-parent-active-text-color": "var(--el-color-primary)",
     "--el-menu-hover-text-color": "var(--el-color-primary)",
     "--el-menu-active-text-color": "var(--el-color-primary)",
     "--el-menu-border-left-color": "var(--el-color-primary)"
