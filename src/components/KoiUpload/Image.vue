@@ -74,7 +74,7 @@ interface IUploadImageProps {
 // 接收父组件参数
 const props = withDefaults(defineProps<IUploadImageProps>(), {
   imageUrl: "",
-  action: "/koi/file/uploadFile",
+  action: "/koi/upload/file",
   drag: true,
   disabled: false,
   fileSize: 3,
@@ -111,16 +111,19 @@ const emit = defineEmits<{
 const handleHttpUpload = async (options: UploadRequestOptions) => {
   let formData = new FormData();
   formData.append("file", options.file);
+  // 添加其他参数到 FormData
+  formData.append("fileSize", props.fileSize.toString());
+  formData.append("folderName", props.folderName);
+  formData.append("fileParam", props.fileParam === "-1" || props.fileParam === "" ? "-1" : props.fileParam);
+
   const loadingInstance = ElLoading.service({
     text: "正在上传",
     background: "rgba(0,0,0,.2)"
   });
+
   try {
-    if (props.fileParam == "-1" || props.fileParam == "") {
-      props.fileParam === "-1";
-    }
-    const res: any = await koi.upload(props.action + "/" + props.fileSize + "/" + props.folderName + "/" + props.fileParam, formData);
-    emit("update:imageUrl", import.meta.env.VITE_SERVER + res.data.fileUploadPath);
+    const res: any = await koi.upload(props.action, formData);
+    emit("update:imageUrl", import.meta.env.VITE_SERVER + res.data?.fileUploadPath);
     loadingInstance.close();
     // 调用 el-form 内部的校验方法[可自动校验]
     formItemContext?.prop && formContext?.validateField([formItemContext.prop as string]);

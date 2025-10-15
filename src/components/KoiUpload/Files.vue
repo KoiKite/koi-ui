@@ -82,7 +82,7 @@ const props = withDefaults(defineProps<IUploadFilesProps>(), {
   limit: 5,
   disabled: false,
   fileSize: 10,
-  action: "/koi/file/uploadFile",
+  action: "/koi/upload/file",
   fileList: [],
   isDownload: false,
   folderName: "files",
@@ -142,19 +142,21 @@ const handleChange = async (file: any) => {
   } else {
     let formData = new FormData();
     formData.append("file", rawFile);
-    formData.append("fileType", "2");
+    formData.append("fileSize", props.fileSize.toString());
+    formData.append("folderName", props.folderName);
+    formData.append("fileParam", props.fileParam === "-1" || props.fileParam === "" ? "-1" : props.fileParam);
+    
     const loadingInstance = ElLoading.service({
       text: "正在上传",
       background: "rgba(0,0,0,.2)"
     });
+
     // 上传到服务器上面
     const requestURL: string = props.action;
-    if (props.fileParam == "-1" || props.fileParam == "") {
-      props.fileParam === "-1";
-    }
+
     // 文件上传
     koi
-      .upload(requestURL + "/" + props.fileSize + "/" + props.folderName + "/" + props.fileParam, formData)
+      .upload(requestURL, formData)
       .then((res: any) => {
         loadingInstance.close();
         let fileMap = res.data;

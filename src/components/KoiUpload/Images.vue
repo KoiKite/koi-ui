@@ -70,7 +70,7 @@ interface IUploadImagesProps {
 
 const props = withDefaults(defineProps<IUploadImagesProps>(), {
   fileList: () => [],
-  action: "/koi/file/uploadFile",
+  action: "/koi/upload/file",
   drag: true,
   disabled: false,
   limit: 5,
@@ -125,16 +125,19 @@ const beforeUpload: UploadProps["beforeUpload"] = rawFile => {
 const handleHttpUpload = async (options: UploadRequestOptions) => {
   let formData = new FormData();
   formData.append("file", options.file);
+  // 添加其他参数到 FormData
+  formData.append("fileSize", props.fileSize.toString());
+  formData.append("folderName", props.folderName);
+  formData.append("fileParam", props.fileParam === "-1" || props.fileParam === "" ? "-1" : props.fileParam);
+
   const loadingInstance = ElLoading.service({
     text: "正在上传",
     background: "rgba(0,0,0,.2)"
   });
+  
   try {
-    if (props.fileParam == "-1" || props.fileParam == "") {
-      props.fileParam === "-1";
-    }
-    const res: any = await koi.upload(props.action + "/" + props.fileSize + "/" + props.folderName + "/" + props.fileParam, formData);
-    options.onSuccess(import.meta.env.VITE_SERVER + res.data.fileUploadPath);
+    const res: any = await koi.upload(props.action, formData);
+    options.onSuccess(import.meta.env.VITE_SERVER + res.data?.fileUploadPath);
     loadingInstance.close();
   } catch (error) {
     loadingInstance.close();
