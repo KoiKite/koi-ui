@@ -49,7 +49,7 @@ export const staticRouter: RouteRecordRaw[] = [
   //     title: "menu.home.auth", // 标题
   //     icon: "koi-home", // 图标 HomeFilled
   //     isHide: "1", // 代表路由在菜单中是否隐藏，是否隐藏[0隐藏，1显示]
-  //     isLink: "", // 是否外链[有值则是外链]
+  //     linkUrl: "", // 是否外链[有值则是外链]
   //     isKeepAlive: "0", // 是否缓存路由数据[0是，1否]
   //     isTag: "1", // 是否显示标签[0是，1否]
   //     isAffix: "0" // 是否缓存固定路由[0是，1否]
@@ -66,7 +66,7 @@ export const staticRouter: RouteRecordRaw[] = [
       title: "menu.home.auth", // 标题
       icon: "koi-home", // 图标 HomeFilled
       isHide: "1", // 代表路由在菜单中是否隐藏，是否隐藏[0隐藏，1显示]
-      isLink: "", // 是否外链[有值则是外链]
+      linkUrl: "", // 是否外链[有值则是外链]
       isKeepAlive: "0", // 是否缓存路由数据[0是，1否]
       isTag: "1", // 是否显示标签[0是，1否]
       isAffix: "0" // 是否缓存固定路由[0是，1否]
@@ -81,7 +81,7 @@ export const staticRouter: RouteRecordRaw[] = [
           title: "menu.home.work.name", // 标题
           icon: "koi-work", // 图标
           isHide: "1", // 代表路由在菜单中是否隐藏，是否隐藏[0隐藏，1显示]
-          isLink: "", // 是否外链[有值则是外链]
+          linkUrl: "", // 是否外链[有值则是外链]
           isKeepAlive: "0", // 是否缓存路由数据[0是，1否]
           isTag: "1", // 是否显示标签[0是，1否]
           isAffix: "0" // 是否缓存固定路由[0是，1否]
@@ -96,7 +96,7 @@ export const staticRouter: RouteRecordRaw[] = [
           title: "menu.home.analysis.name", // 标题
           icon: "koi-analysis", // 图标
           isHide: "1", // 代表路由在菜单中是否隐藏，是否隐藏[0隐藏，1显示]
-          isLink: "", // 是否外链[有值则是外链]
+          linkUrl: "", // 是否外链[有值则是外链]
           isKeepAlive: "0", // 是否缓存路由数据[0是，1否]
           isTag: "1", // 是否显示标签[0是，1否]
           isAffix: "1" // 是否缓存固定路由[0是，1否]
@@ -111,7 +111,7 @@ export const staticRouter: RouteRecordRaw[] = [
           title: "menu.home.console.name", // 标题
           icon: "koi-console", // 图标
           isHide: "1", // 代表路由在菜单中是否隐藏，是否隐藏[0隐藏，1显示]
-          isLink: "", // 是否外链[有值则是外链]
+          linkUrl: "", // 是否外链[有值则是外链]
           isKeepAlive: "0", // 是否缓存路由数据[0是，1否]
           isTag: "1", // 是否显示标签[0是，1否]
           isAffix: "1" // 是否缓存固定路由[0是，1否]
@@ -127,7 +127,7 @@ export const staticRouter: RouteRecordRaw[] = [
       title: "静态路由", // 标题
       icon: "House", // 图标
       isHide: "0", // 代表路由在菜单中是否隐藏，是否隐藏[0隐藏，1显示]
-      isLink: "", // 是否外链[有值则是外链]
+      linkUrl: "", // 是否外链[有值则是外链]
       isKeepAlive: "1", // 是否缓存路由数据[0是，1否]
       isTag: "1", // 是否显示标签[0是，1否]
       isAffix: "1", // 是否缓存固定路由[0是，1否]
@@ -142,7 +142,7 @@ export const staticRouter: RouteRecordRaw[] = [
           title: "menu.system.dictData.name", // 标题
           icon: "koi-message-favorite", // 图标
           isHide: "0", // 代表路由在菜单中是否隐藏，是否隐藏[0隐藏，1显示]
-          isLink: "", // 是否外链[有值则是外链]
+          linkUrl: "", // 是否外链[有值则是外链]
           isKeepAlive: "0", // 是否缓存路由数据[0是，1否]
           isTag: "1", // 是否显示标签[0是，1否]
           isAffix: "1", // 是否缓存固定路由[0是，1否]
@@ -166,7 +166,7 @@ export const errorRouter = [
       title: "menu.coding.403.name",
       icon: "QuestionFilled", // 菜单图标
       isHide: "1", // 代表路由在菜单中是否隐藏，是否隐藏[0隐藏，1显示]
-      isLink: "1", // 是否外链[有值则是外链]
+      linkUrl: "1", // 是否外链[有值则是外链]
       isKeepAlive: "0", // 是否缓存路由数据[0是，1否]
       isTag: "1", // 是否显示标签[0是，1否]
       isAffix: "1" // 是否缓存固定路由[0是，1否]
@@ -181,7 +181,7 @@ export const errorRouter = [
       title: "menu.coding.404.name",
       icon: "CircleCloseFilled", // 菜单图标
       isHide: "1", // 代表路由在菜单中是否隐藏，是否隐藏[0隐藏，1显示]
-      isLink: "1", // 是否外链[有值则是外链]
+      linkUrl: "1", // 是否外链[有值则是外链]
       isKeepAlive: "0", // 是否缓存路由数据[0是，1否]
       isTag: "1", // 是否显示标签[0是，1否]
       isAffix: "1" // 是否缓存固定路由[0是，1否]
@@ -196,7 +196,7 @@ export const errorRouter = [
       title: "menu.coding.500.name",
       icon: "WarningFilled", // 图标
       isHide: "1", // 代表路由在菜单中是否隐藏，是否隐藏[0隐藏，1显示]
-      isLink: "1", // 是否外链[有值则是外链]
+      linkUrl: "1", // 是否外链[有值则是外链]
       isKeepAlive: "0", // 是否缓存路由数据[0是，1否]
       isTag: "1", // 是否显示标签[0是，1否]
       isAffix: "1" // 是否缓存固定路由[0是，1否]

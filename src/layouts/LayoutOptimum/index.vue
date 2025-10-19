@@ -214,15 +214,15 @@ const getSubMenuTree = (topMenuId: number | string) => {
  * @param {Object} item 菜单项
  */
 const handleTopMenuClick = (route: any) => {
-  if (route.meta?.isLink) {
-    if (/^https?:\/\//.test(route.meta?.isLink)) {
-      return window.open(route.meta.isLink, "_blank");
+  if (route.meta?.linkUrl) {
+    if (/^https?:\/\//.test(route.meta?.linkUrl)) {
+      return window.open(route.meta.linkUrl, "_blank");
     } else {
       koiMsgError("错误链接地址，禁止跳转");
       return;
     }
   }
-  
+
   if (!route?.children) {
     // 更新当前激活的顶级菜单
     activeTopMenuId.value = route.meta?.menuId;
@@ -391,17 +391,17 @@ onBeforeUnmount(() => {
   /* 右侧遮罩 */
   &::after {
     right: 0;
-    background: linear-gradient(270deg, var(--el-header-bg-color) 0%, rgba(255, 255, 255, 0.8) 50%, transparent 100%);
+    background: linear-gradient(270deg, var(--el-header-bg-color) 0%, var(--el-header-optimum-mark-color) 50%, transparent 100%);
   }
 
   /* 暗黑模式下的遮罩效果 */
   html.dark & {
     &::before {
-      background: linear-gradient(90deg, var(--el-header-bg-color) 0%, rgba(0, 0, 0, 0.8) 50%, transparent 100%);
+      background: linear-gradient(90deg, var(--el-header-bg-color) 0%, var(--el-header-optimum-mark-color) 50%, transparent 100%);
     }
 
     &::after {
-      background: linear-gradient(270deg, var(--el-header-bg-color) 0%, rgba(0, 0, 0, 0.8) 50%, transparent 100%);
+      background: linear-gradient(270deg, var(--el-header-bg-color) 0%, var(--el-header-optimum-mark-color) 50%, transparent 100%);
     }
   }
 }

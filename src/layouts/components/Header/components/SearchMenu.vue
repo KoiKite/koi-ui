@@ -264,7 +264,7 @@ const handleClickMenuItem = (item: any) => {
   activePath.value = item.path;
   // 延迟跳转，让用户看到选中效果
   setTimeout(() => {
-    if (item.meta?.isLink) window.open(item.meta.isLink, "_blank");
+    if (item.meta?.linkUrl) window.open(item.meta.linkUrl, "_blank");
     else router.push(item.path);
     searchMenu.value = "";
     isShowSearch.value = false;

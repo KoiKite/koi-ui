@@ -26,7 +26,7 @@ export function generateRoutes(data: any[], parentId: any) {
             icon: data[i]?.icon,
             isHide: data[i]?.isHide,
             isKeepAlive: data[i]?.isKeepAlive,
-            isLink: data[i]?.isLink,
+            linkUrl: data[i]?.linkUrl,
             isTag: data[i]?.isTag,
             isAffix: data[i]?.isAffix,
             activeMenu: data[i]?.activeMenu
@@ -71,7 +71,7 @@ export function generateFlattenRoutes(data: any[]) {
         icon: data[i]?.icon,
         isHide: data[i]?.isHide,
         isKeepAlive: data[i]?.isKeepAlive,
-        isLink: data[i]?.isLink,
+        linkUrl: data[i]?.linkUrl,
         isTag: data[i]?.isTag,
         isAffix: data[i]?.isAffix,
         activeMenu: data[i]?.activeMenu

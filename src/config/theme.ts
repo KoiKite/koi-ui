@@ -3,9 +3,10 @@ export const optimumHeaderTheme: any = {
     "--el-header-optimum-color": "#000000",
     "--el-header-optimum-hover-color": "var(--el-color-primary)",
     "--el-header-optimum-active-color": "var(--el-color-primary)",
-    "--el-header-optimum-hover-bg-color": "#F4F4F5",
+    "--el-header-optimum-hover-bg-color": "transparent",
     "--el-header-optimum-active-bg-color": "var(--el-color-primary-light-9)",
-    "--el-header-optimum-border-color": "var(--el-color-primary)"
+    "--el-header-optimum-border-color": "var(--el-color-primary)",
+    "--el-header-optimum-mark-color": "rgba(255, 255, 255, 0.8)"
   },
   inverted: {
     "--el-header-optimum-color": "#FFFFFF",
@@ -13,15 +14,17 @@ export const optimumHeaderTheme: any = {
     "--el-header-optimum-active-color": "#FFFFFF",
     "--el-header-optimum-hover-bg-color": "transparent",
     "--el-header-optimum-active-bg-color": "var(--el-color-primary)",
-    "--el-header-optimum-border-color": "var(--el-color-primary)"
+    "--el-header-optimum-border-color": "var(--el-color-primary)",
+    "--el-header-optimum-mark-color": "rgba(0, 0, 0, 0.8)"
   },
   dark: {
     "--el-header-optimum-color": "#E5EAF3",
     "--el-header-optimum-hover-color": "var(--el-color-primary)",
     "--el-header-optimum-active-color": "var(--el-color-primary)",
-    "--el-header-optimum-hover-bg-color": "var(--el-color-primary-light-9)",
+    "--el-header-optimum-hover-bg-color": "transparent",
     "--el-header-optimum-active-bg-color": "var(--el-color-primary-light-9)",
-    "--el-header-optimum-border-color": "var(--el-color-primary)"
+    "--el-header-optimum-border-color": "var(--el-color-primary)",
+    "--el-header-optimum-mark-color": "rgba(0, 0, 0, 0.8)"
   }
 };
 

@@ -196,9 +196,9 @@ const getSubMenuTree = (topMenuId: number | string) => {
  * @param {Object} item 菜单项
  */
 const handleTopMenuClick = (route: any) => {
-  if (route.meta?.isLink) {
-    if (/^https?:\/\//.test(route.meta?.isLink)) {
-      return window.open(route.meta.isLink, "_blank");
+  if (route.meta?.linkUrl) {
+    if (/^https?:\/\//.test(route.meta?.linkUrl)) {
+      return window.open(route.meta.linkUrl, "_blank");
     } else {
       koiMsgError("错误链接地址，禁止跳转");
       return;

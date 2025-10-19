@@ -32,9 +32,9 @@ defineProps(["menuList"]);
 
 /** 打开标签页 或 外部链接 */
 const handleMenuRouter = (value: any) => {
-  if (value.meta?.isLink) {
-    if (/^https?:\/\//.test(value.meta?.isLink)) {
-      return window.open(value.meta.isLink, "_blank");
+  if (value.meta?.linkUrl) {
+    if (/^https?:\/\//.test(value.meta?.linkUrl)) {
+      return window.open(value.meta.linkUrl, "_blank");
     } else {
       koiMsgWarning("错误链接地址，禁止跳转");
       return;

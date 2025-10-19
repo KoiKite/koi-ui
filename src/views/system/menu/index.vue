@@ -312,8 +312,8 @@
 
             <el-row>
               <el-col :sm="{ span: 24 }" :xs="{ span: 24 }">
-                <el-form-item label="外链地址" prop="isLink">
-                  <el-input v-model="form.isLink" placeholder="请输入外链地址[输入值则判断为外链地址]" clearable />
+                <el-form-item label="外链地址" prop="linkUrl">
+                  <el-input v-model="form.linkUrl" placeholder="请输入外链地址[输入值则判断为外链地址]" clearable />
                 </el-form-item>
               </el-col>
             </el-row>
@@ -669,7 +669,7 @@ const resetForm = () => {
     path: "",
     component: "",
     isHide: "1",
-    isLink: "",
+    linkUrl: "",
     isKeepAlive: "0",
     isSpread: "1",
     auth: "",
