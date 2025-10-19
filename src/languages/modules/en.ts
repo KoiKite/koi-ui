@@ -287,7 +287,7 @@ export default {
     execute: "Execute",
     executeOnce: "Execute Once",
     file: "File Upload",
-    picture: "Picture Upload",
+    image: "Image Upload",
     upload: "Upload",
     download: "Download",
     confirm: "Confirm",

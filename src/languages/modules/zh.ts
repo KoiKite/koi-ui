@@ -287,7 +287,7 @@ export default {
     execute: "执行",
     executeOnce: "执行一次",
     file: "文件上传",
-    picture: "图片上传",
+    image: "图片上传",
     upload: "上传",
     download: "下载",
     confirm: "确定",
