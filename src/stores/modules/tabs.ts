@@ -29,7 +29,7 @@ const tabsStore = defineStore("tabs", {
       // 添加前打印 keepAliveStore 状态
       // console.log("添加前 keepAliveName:", keepAliveStore.keepAliveName);
       // 如果满足条件，添加到 keepAlive
-      if (tab.isKeepAlive == "0" && tab.name && !keepAliveStore.keepAliveName.includes(tab.name)) {
+      if (tab.isKeepAlive == "1" && tab.name && !keepAliveStore.keepAliveName.includes(tab.name)) {
         keepAliveStore.addKeepAliveName(tab.name);
         // 添加后打印 keepAliveStore 状态
         // console.log("添加后 keepAliveName:", keepAliveStore.keepAliveName);

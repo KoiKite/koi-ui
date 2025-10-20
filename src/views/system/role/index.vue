@@ -20,8 +20,8 @@
             style="width: 220px"
             @keyup.enter.native="handleListPage"
           >
-            <el-option label="启用" value="0" />
-            <el-option label="停用" value="1" />
+            <el-option label="启用" value="1" />
+            <el-option label="停用" value="0" />
           </el-select>
         </el-form-item>
         <el-form-item label="角色编号" prop="roleCode">
@@ -91,8 +91,8 @@
               v-model="scope.row.roleStatus"
               active-text="启用"
               inactive-text="停用"
-              active-value="0"
-              inactive-value="1"
+              active-value="1"
+              inactive-value="0"
               :inline-prompt="true"
               @change="handleSwitch(scope.row)"
             >
@@ -187,8 +187,8 @@
               <el-col :sm="{ span: 12 }" :xs="{ span: 24 }">
                 <el-form-item label="角色状态" prop="roleStatus">
                   <el-select v-model="form.roleStatus" placeholder="请选择角色状态" style="width: 260px" clearable>
-                    <el-option label="启用" value="0" />
-                    <el-option label="停用" value="1" />
+                    <el-option label="启用" value="1" />
+                    <el-option label="停用" value="0" />
                   </el-select>
                 </el-form-item>
               </el-col>
@@ -259,7 +259,7 @@ const tableList = ref<any>([
     roleId: 1,
     roleName: "YU-ADMIN",
     roleCode: "YU-ADMIN",
-    roleStatus: "0",
+    roleStatus: "1",
     sorted: 1,
     remark: "超级管理员",
     createTime: "2023-08-08 23:00:00"
@@ -268,7 +268,7 @@ const tableList = ref<any>([
     roleId: 2,
     roleName: "张大仙",
     roleCode: "ZDX",
-    roleStatus: "0",
+    roleStatus: "1",
     sorted: 2,
     remark: "虎牙688，每晚七点半，不见不散！",
     createTime: "2023-08-08 23:00:00"
@@ -379,7 +379,7 @@ const handleAdd = () => {
   resetForm();
   // 标题
   title.value = "角色添加";
-  form.value.roleStatus = "0";
+  form.value.roleStatus = "1";
 };
 
 /** 回显数据 */
@@ -535,7 +535,7 @@ const handleCancel = () => {
 
 /** 状态开关 */
 const handleSwitch = (row: any) => {
-  let text = row.roleStatus === "0" ? "启用" : "停用";
+  let text = row.roleStatus === "1" ? "启用" : "停用";
   koiMsgBox("确认要[" + text + "]-[" + row.roleName + "]角色吗？")
     .then(async () => {
       if (!row.roleId || !row.roleStatus) {

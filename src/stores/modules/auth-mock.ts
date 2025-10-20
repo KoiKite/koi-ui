@@ -38,7 +38,7 @@ const authStore = defineStore("auth", {
       console.log("用户路由菜单数据", res.data);
       // res.data是后端接口原始数据，进行扁平化路由数据。
       this.menuList = generateFlattenRoutes(res.data);
-      // 持久化递归菜单数据，左侧菜单栏渲染，这里的菜单将后端数据进行递归，需要将动态路由 isHide == 0 的剔除，将静态路由 isHide == 0 的剔除
+      // 持久化递归菜单数据，左侧菜单栏渲染，这里的菜单将后端数据进行递归，需要将动态路由 isVisible == 0 的剔除，将静态路由 isVisible == 0 的剔除
       this.recursiveMenuList = getShowStaticAndDynamicMenuList(staticRouter).concat(
         generateRoutes(getShowStaticAndDynamicMenuList(res.data), 0)
       );
@@ -60,7 +60,7 @@ const authStore = defineStore("auth", {
     getButtonList: state => state.buttonList,
     // 菜单权限列表 ==> 原始后端接口菜单数据，扁平化之后的一维数组菜单，主要用来添加动态路由
     getMenuList: state => state.menuList,
-    // 菜单权限列表 ==> 左侧菜单栏渲染，这里的菜单将后端数据进行递归，需要将动态路由 isHide == 0 的剔除, 将静态路由 isHide == 0 的剔除
+    // 菜单权限列表 ==> 左侧菜单栏渲染，这里的菜单将后端数据进行递归，需要将动态路由 isVisible == 0 的剔除, 将静态路由 isVisible == 0 的剔除
     showMenuList: state => state.recursiveMenuList,
     // 递归处理后的所有面包屑导航列表
     getBreadcrumbList: state => getAllBreadcrumbList(state.breadcrumbList)

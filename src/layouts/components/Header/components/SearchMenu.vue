@@ -85,7 +85,7 @@ import { getMenuLanguage } from "@/utils/index.ts";
 
 const router = useRouter();
 const authStore = useAuthStore();
-const menuList: any = computed(() => authStore.menuList.filter((item: any) => item.meta.isHide == "1" && item.meta.parentId != "0"));
+const menuList: any = computed(() => authStore.menuList.filter((item: any) => item.meta.isVisible == "1" && item.meta.parentId != "0"));
 
 // 转换菜单数据，添加国际化标题
 const localizedMenuList: any = computed(() => {
@@ -217,7 +217,7 @@ const updateSearchList = () => {
         const originalTitleMatch = item.originalTitle.toLowerCase().includes(searchText);
         const pathMatch = item.path.toLowerCase().includes(searchText);
 
-        return (titleMatch || originalTitleMatch || pathMatch) && item.meta?.isHide === "1";
+        return (titleMatch || originalTitleMatch || pathMatch) && item.meta?.isVisible === "1";
       })
     : [];
   activePath.value = searchList.value.length ? searchList.value[0].path : "";

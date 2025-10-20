@@ -138,8 +138,8 @@
               v-model="scope.row.userStatus"
               active-text="启用"
               inactive-text="停用"
-              active-value="0"
-              inactive-value="1"
+              active-value="1"
+              inactive-value="0"
               :inline-prompt="true"
               @change="handleSwitch(scope.row)"
             >
@@ -225,8 +225,8 @@
               <el-col :sm="{ span: 24 }" :xs="{ span: 24 }">
                 <el-form-item label="用户状态" prop="userStatus">
                   <el-select v-model="form.userStatus" placeholder="请选择用户状态" clearable>
-                    <el-option label="启用" value="0" />
-                    <el-option label="停用" value="1" />
+                    <el-option label="启用" value="1" />
+                    <el-option label="停用" value="0" />
                   </el-select>
                 </el-form-item>
               </el-col>
@@ -320,7 +320,7 @@ const tableList = ref<any>([
     phone: "18888888888",
     sex: "1",
     avatar: "https://pic4.zhimg.com/v2-702a23ebb518199355099df77a3cfe07_b.webp",
-    userStatus: "0",
+    userStatus: "1",
     remark: "管理员",
     createTime: "2023-08-06 04:00:00"
   },
@@ -333,7 +333,7 @@ const tableList = ref<any>([
     phone: "18666666666",
     sex: "1",
     avatar: "https://pic2.zhimg.com/v2-44ce1b82f7e68de4078bf513221619e1_b.webp",
-    userStatus: "0",
+    userStatus: "1",
     remark: "管理员",
     createTime: "2023-08-07 04:00:00"
   },
@@ -346,7 +346,7 @@ const tableList = ref<any>([
     phone: "18666666666",
     sex: "2",
     avatar: "https://pic1.zhimg.com/v2-3cbc889feac057cc7fb85a40c82598dc_b.webp",
-    userStatus: "0",
+    userStatus: "1",
     remark: "管理员",
     createTime: "2023-08-08 04:00:00"
   },
@@ -359,7 +359,7 @@ const tableList = ref<any>([
     phone: "18888888888",
     sex: "1",
     avatar: "https://pic3.zhimg.com/v2-b6c350529f3c06c8a90d886c311f3866_b.webp",
-    userStatus: "0",
+    userStatus: "1",
     remark: "远古时代战士",
     createTime: "2023-08-06 04:00:00"
   },
@@ -372,7 +372,7 @@ const tableList = ref<any>([
     phone: "18666666666",
     sex: "1",
     avatar: "https://pic2.zhimg.com/v2-430e1a7dd0508a0b4b01dca9b94b22f5_b.webp",
-    userStatus: "0",
+    userStatus: "1",
     remark: "远古时代战士",
     createTime: "2023-08-07 04:00:00"
   },
@@ -385,7 +385,7 @@ const tableList = ref<any>([
     phone: "18666666666",
     sex: "2",
     avatar: "https://pic3.zhimg.com/v2-6e8ff25c222b6302cb836c9f6b013e7e_b.webp",
-    userStatus: "0",
+    userStatus: "1",
     remark: "远古时代战士",
     createTime: "2023-08-08 04:00:00"
   },
@@ -398,7 +398,7 @@ const tableList = ref<any>([
     phone: "18888888888",
     sex: "1",
     avatar: "https://pic2.zhimg.com/v2-d75d120cdab34142933ad9df18508ad1_b.webp",
-    userStatus: "0",
+    userStatus: "1",
     remark: "假面骑士",
     createTime: "2023-08-06 04:00:00"
   },
@@ -411,7 +411,7 @@ const tableList = ref<any>([
     phone: "18666666666",
     sex: "1",
     avatar: "https://pic3.zhimg.com/v2-a42559223697c17188a75ad3a10e1cea_b.webp",
-    userStatus: "0",
+    userStatus: "1",
     remark: "假面骑士",
     createTime: "2023-08-07 04:00:00"
   },
@@ -424,7 +424,7 @@ const tableList = ref<any>([
     phone: "18666666666",
     sex: "2",
     avatar: "https://img0.baidu.com/it/u=1752705848,3929873216&fm=253&app=138&size=w931&n=0&f=JPEG",
-    userStatus: "0",
+    userStatus: "1",
     remark: "假面骑士",
     createTime: "2023-08-08 04:00:00"
   },
@@ -437,7 +437,7 @@ const tableList = ref<any>([
     phone: "18888888888",
     sex: "1",
     avatar: "https://img1.baidu.com/it/u=3941674148,2170642163&fm=253&fmt=auto&app=138&f=JPEG?w=255&h=255",
-    userStatus: "0",
+    userStatus: "1",
     remark: "地底世界",
     createTime: "2023-08-06 04:00:00"
   },
@@ -450,7 +450,7 @@ const tableList = ref<any>([
     phone: "18666666666",
     sex: "1",
     avatar: "https://img2.baidu.com/it/u=1519337523,3739613381&fm=253&fmt=auto&app=120&f=JPEG?w=600&h=600",
-    userStatus: "0",
+    userStatus: "1",
     remark: "地底世界",
     createTime: "2023-08-07 04:00:00"
   },
@@ -463,7 +463,7 @@ const tableList = ref<any>([
     phone: "18666666666",
     sex: "2",
     avatar: "https://img2.baidu.com/it/u=71901679,703168528&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500",
-    userStatus: "0",
+    userStatus: "1",
     remark: "地底世界",
     createTime: "2023-08-08 04:00:00"
   },
@@ -476,7 +476,7 @@ const tableList = ref<any>([
     phone: "18888888888",
     sex: "1",
     avatar: "https://img0.baidu.com/it/u=1121602739,1172990093&fm=253&fmt=auto&app=138&f=JPEG?w=380&h=378",
-    userStatus: "0",
+    userStatus: "1",
     remark: "熊出没",
     createTime: "2023-08-06 04:00:00"
   },
@@ -489,7 +489,7 @@ const tableList = ref<any>([
     phone: "18666666666",
     sex: "1",
     avatar: "https://img1.baidu.com/it/u=1544796506,2220725573&fm=253&fmt=auto&app=120&f=JPEG?w=501&h=500",
-    userStatus: "0",
+    userStatus: "1",
     remark: "熊出没",
     createTime: "2023-08-07 04:00:00"
   },
@@ -502,7 +502,7 @@ const tableList = ref<any>([
     phone: "18666666666",
     sex: "2",
     avatar: "https://img1.baidu.com/it/u=550431475,3093096287&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=514",
-    userStatus: "0",
+    userStatus: "1",
     remark: "熊出没",
     createTime: "2023-08-08 04:00:00"
   }
@@ -634,7 +634,7 @@ const handleDict2 = async () => {
     userSexOptions.value = [
       { dictLabel: "男", dictValue: "1", dictTag: "primary", dictColor: "" },
       { dictLabel: "女", dictValue: "2", dictTag: "danger", dictColor: "" },
-      { dictLabel: "未知", dictValue: "3", dictTag: "info", dictColor: "" }
+      { dictLabel: "未知", dictValue: "0", dictTag: "info", dictColor: "" }
     ];
     // const res: any = await listDataByType("sys_user_sex");
     // console.log("字典数据", res.data);
@@ -666,7 +666,7 @@ const handleAdd = () => {
   resetForm();
   // 标题
   title.value = "用户添加";
-  form.value.userStatus = "0";
+  form.value.userStatus = "1";
 };
 
 /** 回显数据 */
@@ -809,7 +809,7 @@ const handleCancel = () => {
 
 /** 状态开关 */
 const handleSwitch = (row: any) => {
-  let text = row.userStatus === "0" ? "启用" : "停用";
+  let text = row.userStatus === "1" ? "启用" : "停用";
   koiMsgBox("确认要[" + text + "]-[" + row.userName + "]吗？")
     .then(async () => {
       if (!row.userId || !row.userStatus) {

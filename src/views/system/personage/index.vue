@@ -90,7 +90,7 @@
                       <el-radio-group v-model="mineForm.sex" placeholder="请选择性别">
                         <el-radio value="1" border>男</el-radio>
                         <el-radio value="2" border>女</el-radio>
-                        <el-radio value="3" border>未知</el-radio>
+                        <el-radio value="0" border>未知</el-radio>
                       </el-radio-group>
                     </el-form-item>
                   </el-col>
@@ -167,7 +167,7 @@ let mineForm = ref<any>({
   loginName: "",
   phone: "",
   email: "",
-  sex: "3"
+  sex: "0"
 });
 /** 清空表单数据 */
 const resetMineForm = () => {
@@ -182,7 +182,7 @@ const resetMineForm = () => {
     loginName: "",
     phone: "",
     email: "",
-    sex: "3"
+    sex: "0"
   };
 };
 /** 表单规则 */

@@ -20,8 +20,8 @@
             style="width: 220px"
             @keyup.enter.native="handleTreeList"
           >
-            <el-option label="启用" value="0" />
-            <el-option label="停用" value="1" />
+            <el-option label="启用" value="1" />
+            <el-option label="停用" value="0" />
           </el-select>
         </el-form-item>
         <el-form-item label="联系电话" prop="phone">
@@ -86,8 +86,8 @@
               v-model="scope.row.isSpread"
               active-text="展开"
               inactive-text="折叠"
-              active-value="0"
-              inactive-value="1"
+              active-value="1"
+              inactive-value="0"
               :inline-prompt="true"
               @click="handleSpread(scope.row)"
             >
@@ -106,8 +106,8 @@
               v-model="scope.row.deptStatus"
               active-text="启用"
               inactive-text="停用"
-              active-value="0"
-              inactive-value="1"
+              active-value="1"
+              inactive-value="0"
               :inline-prompt="true"
               @change="handleSwitch(scope.row)"
             >
@@ -195,8 +195,8 @@
               <el-col :sm="{ span: 12 }" :xs="{ span: 24 }">
                 <el-form-item label="部门状态" prop="deptStatus">
                   <el-select v-model="form.deptStatus" placeholder="请选择部门状态" style="width: 260px" clearable>
-                    <el-option label="启用" value="0" />
-                    <el-option label="停用" value="1" />
+                    <el-option label="启用" value="1" />
+                    <el-option label="停用" value="0" />
                   </el-select>
                 </el-form-item>
               </el-col>
@@ -271,8 +271,8 @@ const tableList = ref<any>([
     leader: "YU-ADMIN",
     phone: "18588888888",
     email: "xxxxxx@163.com",
-    deptStatus: "0",
-    isSpread: "1",
+    deptStatus: "1",
+    isSpread: "0",
     sorted: 1,
     remark: "我是天才",
     createTime: "2023-08-08 23:00:00",
@@ -284,8 +284,8 @@ const tableList = ref<any>([
         leader: "YU-ADMIN",
         phone: "18588888888",
         email: "xxxxxx@163.com",
-        deptStatus: "0",
-        isSpread: "1",
+        deptStatus: "1",
+        isSpread: "0",
         sorted: 1,
         remark: "我是天才",
         createTime: "2023-08-08 23:00:00"
@@ -297,8 +297,8 @@ const tableList = ref<any>([
         leader: "虎牙688张大仙",
         phone: "18566666666",
         email: "666666@163.com",
-        deptStatus: "0",
-        isSpread: "1",
+        deptStatus: "1",
+        isSpread: "0",
         sorted: 1,
         remark: "我是天才",
         createTime: "2023-08-08 23:00:00"
@@ -312,8 +312,8 @@ const tableList = ref<any>([
     leader: "YU-ADMIN",
     phone: "18577777777",
     email: "xxxxxx@163.com",
-    deptStatus: "0",
-    isSpread: "1",
+    deptStatus: "1",
+    isSpread: "0",
     sorted: 1,
     remark: "我是天才",
     createTime: "2023-08-08 23:00:00",
@@ -325,8 +325,8 @@ const tableList = ref<any>([
         leader: "YU-ADMIN",
         phone: "18577777777",
         email: "xxxxxx@163.com",
-        deptStatus: "0",
-        isSpread: "1",
+        deptStatus: "1",
+        isSpread: "0",
         sorted: 1,
         remark: "我是天才",
         createTime: "2023-08-08 23:00:00"
@@ -338,8 +338,8 @@ const tableList = ref<any>([
         leader: "虎牙688张大仙",
         phone: "18577777777",
         email: "666666@163.com",
-        deptStatus: "0",
-        isSpread: "1",
+        deptStatus: "1",
+        isSpread: "0",
         sorted: 1,
         remark: "我是天才",
         createTime: "2023-08-08 23:00:00"
@@ -422,10 +422,10 @@ const handleExpandKey = (data: any) => {
     expandKey.value = [];
     const resultList: string[] = [];
     data.forEach((obj: any) => {
-      if (obj.parentId == "0" && obj.isSpread == "0") {
+      if (obj.parentId == "0" && obj.isSpread == "1") {
         resultList.push(obj.deptId);
       }
-      if (obj.parentId != "0" && obj.isSpread == "0") {
+      if (obj.parentId != "0" && obj.isSpread == "1") {
         resultList.push(obj.deptId);
         resultList.push(obj.parentId);
       }
@@ -502,7 +502,7 @@ const handleAdd = () => {
   title.value = "部门添加";
   handleCascader();
   form.value.parentId = "0";
-  form.value.deptStatus = "0";
+  form.value.deptStatus = "1";
 };
 
 /** 回显数据 */
@@ -552,7 +552,7 @@ let form = ref<any>({
   deptId: "",
   deptName: "",
   parentId: "",
-  deptStatus: "0",
+  deptStatus: "1",
   leader: "",
   phone: "",
   email: "",
@@ -653,7 +653,7 @@ const handleCancel = () => {
 
 /** 状态开关 */
 const handleSwitch = (row: any) => {
-  let text = row.deptStatus === "0" ? "启用" : "停用";
+  let text = row.deptStatus === "1" ? "启用" : "停用";
   koiMsgBox("确认要[" + text + "]-[" + row.deptName + "]部门吗？")
     .then(async () => {
       if (!row.id || !row.deptStatus) {

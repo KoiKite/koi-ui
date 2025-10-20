@@ -20,8 +20,8 @@
             style="width: 220px"
             @keyup.enter.native="handleTreeList"
           >
-            <el-option label="启用" value="0" />
-            <el-option label="停用" value="1" />
+            <el-option label="启用" value="1" />
+            <el-option label="停用" value="0" />
           </el-select>
         </el-form-item>
         <el-form-item label="权限标识" prop="auth">
@@ -91,8 +91,8 @@
               v-model="scope.row.isSpread"
               active-text="展开"
               inactive-text="折叠"
-              active-value="0"
-              inactive-value="1"
+              active-value="1"
+              inactive-value="0"
               :inline-prompt="true"
               @click="handleIsSpread(scope.row)"
             >
@@ -134,18 +134,18 @@
               v-model="scope.row.menuStatus"
               active-text="启用"
               inactive-text="停用"
-              active-value="0"
-              inactive-value="1"
+              active-value="1"
+              inactive-value="0"
               :inline-prompt="true"
               @click="handleSwitch(scope.row)"
             >
             </el-switch>
           </template>
         </el-table-column>
-        <el-table-column label="是否隐藏" prop="isHide" width="100px" align="center" :show-overflow-tooltip="true">
+        <el-table-column label="是否显示" prop="isVisible" width="100px" align="center" :show-overflow-tooltip="true">
           <template #default="scope">
-            <el-tag :type="scope.row.isHide == '0' ? 'danger' : scope.row.isHide == '1' ? 'primary' : 'warning'">
-              {{ scope.row.isHide == "0" ? "隐藏" : scope.row.isHide == "1" ? "显示" : "未知状态" }}
+            <el-tag :type="scope.row.isVisible == '0' ? 'danger' : scope.row.isVisible == '1' ? 'primary' : 'warning'">
+              {{ scope.row.isVisible == "0" ? "隐藏" : scope.row.isVisible == "1" ? "显示" : "未知状态" }}
             </el-tag>
           </template>
         </el-table-column>
@@ -256,10 +256,10 @@
 
             <el-row :gutter="10">
               <el-col :sm="{ span: 12 }" :xs="{ span: 24 }">
-                <el-form-item label="是否隐藏" prop="isHide">
-                  <el-radio-group v-model="form.isHide">
-                    <el-radio value="0">是</el-radio>
-                    <el-radio value="1">否</el-radio>
+                <el-form-item label="是否显示" prop="isVisible">
+                  <el-radio-group v-model="form.isVisible">
+                    <el-radio value="1">是</el-radio>
+                    <el-radio value="0">否</el-radio>
                   </el-radio-group>
                 </el-form-item>
               </el-col>
@@ -295,16 +295,16 @@
               <el-col :sm="{ span: 12 }" :xs="{ span: 24 }" v-if="form.menuType < 3">
                 <el-form-item label="是否折叠" prop="isSpread">
                   <el-radio-group v-model="form.isSpread">
-                    <el-radio value="0">是</el-radio>
-                    <el-radio value="1">否</el-radio>
+                    <el-radio value="1">是</el-radio>
+                    <el-radio value="0">否</el-radio>
                   </el-radio-group>
                 </el-form-item>
               </el-col>
               <el-col :sm="{ span: 12 }" :xs="{ span: 24 }" v-if="form.menuType < 3">
                 <el-form-item label="是否固钉" prop="isAffix">
                   <el-radio-group v-model="form.isAffix">
-                    <el-radio value="0">是</el-radio>
-                    <el-radio value="1">否</el-radio>
+                    <el-radio value="1">是</el-radio>
+                    <el-radio value="0">否</el-radio>
                   </el-radio-group>
                 </el-form-item>
               </el-col>
@@ -357,9 +357,9 @@ const tableList = ref([
     icon: "Tools",
     auth: "system:menu:list",
     component: "system/menu/Index",
-    isSpread: "1",
-    menuStatus: "0",
-    isHide: "1",
+    isSpread: "0",
+    menuStatus: "1",
+    isVisible: "1",
     path: "system",
     sorted: 1,
     children: [
@@ -370,9 +370,9 @@ const tableList = ref([
         icon: "UserFilled",
         auth: "system:menu:list",
         component: "system/menu/Index",
-        isSpread: "1",
-        menuStatus: "0",
-        isHide: "1",
+        isSpread: "0",
+        menuStatus: "1",
+        isVisible: "1",
         path: "system",
         sorted: 3
       },
@@ -383,9 +383,9 @@ const tableList = ref([
         icon: "CameraFilled",
         auth: "system:menu:list",
         component: "system/menu/Index",
-        isSpread: "1",
-        menuStatus: "0",
-        isHide: "1",
+        isSpread: "0",
+        menuStatus: "1",
+        isVisible: "1",
         path: "system",
         sorted: 4
       },
@@ -396,9 +396,9 @@ const tableList = ref([
         icon: "Menu",
         auth: "system:menu:list",
         component: "system/menu/Index",
-        isSpread: "1",
-        menuStatus: "0",
-        isHide: "1",
+        isSpread: "0",
+        menuStatus: "1",
+        isVisible: "1",
         path: "system",
         sorted: 5
       }
@@ -411,9 +411,9 @@ const tableList = ref([
     icon: "Search",
     auth: "system:menu:list",
     component: "system/menu/Index",
-    isSpread: "1",
-    menuStatus: "0",
-    isHide: "1",
+    isSpread: "0",
+    menuStatus: "1",
+    isVisible: "1",
     path: "system",
     sorted: 2,
     children: [
@@ -424,9 +424,9 @@ const tableList = ref([
         icon: "CameraFilled",
         auth: "system:menu:list",
         component: "system/menu/Index",
-        isSpread: "1",
-        menuStatus: "0",
-        isHide: "1",
+        isSpread: "0",
+        menuStatus: "1",
+        isVisible: "1",
         path: "system",
         sorted: 6
       },
@@ -437,9 +437,9 @@ const tableList = ref([
         icon: "Menu",
         auth: "system:menu:list",
         component: "system/menu/Index",
-        isSpread: "1",
-        menuStatus: "0",
-        isHide: "1",
+        isSpread: "0",
+        menuStatus: "1",
+        isVisible: "1",
         path: "system",
         sorted: 7
       }
@@ -605,7 +605,7 @@ const handleAdd = () => {
   // 标题
   title.value = "菜单添加";
   handleCascader();
-  form.value.menuStatus = "0";
+  form.value.menuStatus = "1";
 };
 
 /** 回显数据 */
@@ -668,13 +668,13 @@ const resetForm = () => {
     name: "",
     path: "",
     component: "",
-    isHide: "1",
+    isVisible: "1",
     linkUrl: "",
     isKeepAlive: "0",
-    isSpread: "1",
+    isSpread: "0",
     auth: "",
-    isFull: "1",
-    isAffix: "1",
+    isTag: "0",
+    isAffix: "0",
     sorted: 1
   };
 };
@@ -684,7 +684,7 @@ const rules = reactive({
   parentId: [{ required: true, message: "请选择上级菜单", trigger: "blur" }],
   menuType: [{ required: true, message: "请选择菜单类型", trigger: "blur" }],
   menuName: [{ required: true, message: "请输入菜单名称", trigger: "blur" }],
-  isHide: [{ required: true, message: "请选择是否隐藏", trigger: "blur" }],
+  isVisible: [{ required: true, message: "请选择是否显示", trigger: "blur" }],
   auth: [{ required: true, message: "请输入权限字符", trigger: "blur" }],
   sorted: [{ required: true, message: "请输入排序号", trigger: "blur" }]
 });
@@ -740,7 +740,7 @@ const handleCancel = () => {
 
 /** 状态开关 */
 const handleSwitch = (row: any) => {
-  let text = row.menuStatus === "0" ? "启用" : "停用";
+  let text = row.menuStatus === "1" ? "启用" : "停用";
   koiMsgBox("确认要[" + text + "]-[" + row.menuName + "]菜单吗？")
     .then(async () => {
       if (!row.menuId || !row.menuStatus) {

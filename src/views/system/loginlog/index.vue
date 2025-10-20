@@ -29,8 +29,8 @@
             clearable
             @keyup.enter.native="handleListPage"
           >
-            <el-option label="登录成功" value="0" />
-            <el-option label="登录失败" value="1" />
+            <el-option label="登录成功" value="1" />
+            <el-option label="登录失败" value="0" />
           </el-select>
         </el-form-item>
         <el-form-item label="访问时间" prop="loginTime">
@@ -92,10 +92,10 @@
         ></el-table-column>
         <el-table-column label="登录状态" prop="loginStatus" width="100px" align="center" :show-overflow-tooltip="true">
           <template #default="scope">
-            <el-tag :type="scope.row.loginStatus == '0' ? 'primary' : scope.row.loginStatus == '1' ? 'danger' : 'warning'">
+            <el-tag :type="scope.row.loginStatus == '1' ? 'primary' : scope.row.loginStatus == '0' ? 'danger' : 'warning'">
               <!-- :type是用来判断块状的颜色 -->
               <!-- 里面填写内容 -->
-              {{ scope.row.loginStatus == "0" ? "登录成功" : scope.row.loginStatus == "1" ? "登录失败" : "未知状态" }}
+              {{ scope.row.loginStatus == "1" ? "登录成功" : scope.row.loginStatus == "0" ? "登录失败" : "未知状态" }}
             </el-tag>
           </template>
         </el-table-column>
@@ -133,8 +133,8 @@
               v-model="scope.row.loginStatus"
               active-text="启用"
               inactive-text="停用"
-              active-value="0"
-              inactive-value="1"
+              active-value="1"
+              inactive-value="0"
               :inline-prompt="true"
               @change="handleSwitch(scope.row)"
             >
@@ -201,7 +201,7 @@ const tableList = ref<any>([
     loginName: "YU-ADMIN",
     ipAddress: "127.0.0.1",
     loginAddress: "河南省 郑州市",
-    loginStatus: "0",
+    loginStatus: "1",
     deviceName: "PC",
     browser: "Chrome 11",
     os: "Windows 10",
@@ -213,7 +213,7 @@ const tableList = ref<any>([
     loginName: "张大仙",
     ipAddress: "127.0.0.1",
     loginAddress: "河南省 郑州市",
-    loginStatus: "0",
+    loginStatus: "1",
     deviceName: "PC",
     browser: "Chrome 11",
     os: "Windows 10",
@@ -225,7 +225,7 @@ const tableList = ref<any>([
     loginName: "王将",
     ipAddress: "127.0.0.1",
     loginAddress: "河南省 郑州市",
-    loginStatus: "0",
+    loginStatus: "1",
     deviceName: "PC",
     browser: "Chrome 11",
     os: "Windows 10",
@@ -331,7 +331,7 @@ const handleSelectionChange = (selection: any) => {
 
 /** 状态开关 */
 // const handleSwitch = (row: any) => {
-//   let text = row.loginStatus === "0" ? "启用" : "停用";
+//   let text = row.loginStatus === "1" ? "启用" : "停用";
 //   koiMsgBox("确认要[" + text + "]-[" + row.loginName + "]吗？")
 //     .then(async () => {
 //       if (!row.loginId || !row.loginStatus) {

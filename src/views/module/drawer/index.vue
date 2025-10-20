@@ -13,8 +13,8 @@
             <el-col :sm="{ span: 24 }" :xs="{ span: 24 }">
               <el-form-item label="公告状态" prop="noticeStatus">
                 <el-select v-model="form.noticeStatus" placeholder="请选择公告状态" clearable>
-                  <el-option label="启用" value="0" />
-                  <el-option label="停用" value="1" />
+                  <el-option label="启用" value="1" />
+                  <el-option label="停用" value="0" />
                 </el-select>
               </el-form-item>
             </el-col>

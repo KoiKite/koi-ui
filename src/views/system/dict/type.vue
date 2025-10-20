@@ -29,8 +29,8 @@
             style="width: 220px"
             @keyup.enter.native="handleListPage"
           >
-            <el-option label="启用" value="0" />
-            <el-option label="停用" value="1" />
+            <el-option label="启用" value="1" />
+            <el-option label="停用" value="0" />
           </el-select>
         </el-form-item>
         <el-form-item>
@@ -86,8 +86,8 @@
               v-model="scope.row.dictStatus"
               active-text="启用"
               inactive-text="停用"
-              active-value="0"
-              inactive-value="1"
+              active-value="1"
+              inactive-value="0"
               :inline-prompt="true"
               @change="handleSwitch(scope.row)"
             >
@@ -169,8 +169,8 @@
               <el-col :sm="{ span: 24 }" :xs="{ span: 24 }">
                 <el-form-item label="字典状态" prop="dictStatus">
                   <el-select v-model="form.dictStatus" placeholder="请选择字典状态" clearable>
-                    <el-option label="启用" value="0" />
-                    <el-option label="停用" value="1" />
+                    <el-option label="启用" value="1" />
+                    <el-option label="停用" value="0" />
                   </el-select>
                 </el-form-item>
               </el-col>
@@ -212,7 +212,7 @@ const tableList = ref<any>([
     dictId: 1,
     dictName: "系统开关",
     dictType: "sys_common_status",
-    dictStatus: "0",
+    dictStatus: "1",
     remark: "系统开关列表",
     createTime: "2023-08-08 23:00:00",
     updateTime: "2023-08-08 23:00:00",
@@ -222,7 +222,7 @@ const tableList = ref<any>([
     dictId: 2,
     dictName: "用户性别",
     dictType: "sys_user_sex",
-    dictStatus: "0",
+    dictStatus: "1",
     remark: "用户性别列表",
     createTime: "2023-08-08 23:00:00",
     updateTime: "2023-08-08 23:00:00",
@@ -341,7 +341,7 @@ const handleAdd = () => {
   resetForm();
   // 标题
   title.value = "字典添加";
-  form.value.dictStatus = "0";
+  form.value.dictStatus = "1";
 };
 
 /** 回显数据 */
@@ -481,7 +481,7 @@ const handleCancel = () => {
 
 /** 状态开关 */
 const handleSwitch = (row: any) => {
-  let text = row.dictStatus === "0" ? "启用" : "停用";
+  let text = row.dictStatus === "1" ? "启用" : "停用";
   koiMsgBox("确认要[" + text + "]-[" + row.dictName + "]吗？")
     .then(async () => {
       if (!row.dictId || !row.dictStatus) {

@@ -31,8 +31,8 @@
             style="width: 220px"
             @keyup.enter.native="handleListPage"
           >
-            <el-option label="启用" value="0" />
-            <el-option label="停用" value="1" />
+            <el-option label="启用" value="1" />
+            <el-option label="停用" value="0" />
           </el-select>
         </el-form-item>
         <el-form-item>
@@ -89,8 +89,8 @@
               v-model="scope.row.noticeStatus"
               active-text="启用"
               inactive-text="停用"
-              active-value="0"
-              inactive-value="1"
+              active-value="1"
+              inactive-value="0"
               :inline-prompt="true"
               @change="handleSwitch(scope.row)"
             >
@@ -179,8 +179,8 @@
               <el-col :sm="{ span: 24 }" :xs="{ span: 24 }">
                 <el-form-item label="公告状态" prop="noticeStatus">
                   <el-select v-model="form.noticeStatus" placeholder="请选择公告状态" clearable>
-                    <el-option label="启用" value="0" />
-                    <el-option label="停用" value="1" />
+                    <el-option label="启用" value="1" />
+                    <el-option label="停用" value="0" />
                   </el-select>
                 </el-form-item>
               </el-col>
@@ -236,7 +236,7 @@ const tableList = ref<any>([
     noticeTitle: "ElementPlus全新经典UI",
     noticeType: "2",
     noticeContent: "走过路过，千万不要错过",
-    noticeStatus: "0",
+    noticeStatus: "1",
     sorted: 3,
     createBy: "YU-ADMIN",
     createTime: "2023-08-22 11:27:24",
@@ -249,7 +249,7 @@ const tableList = ref<any>([
     noticeTitle: "维护通知：2023-11-23 YU-ADMIN将持续进行维护",
     noticeType: "2",
     noticeContent: "维护内容",
-    noticeStatus: "0",
+    noticeStatus: "1",
     sorted: 2,
     createBy: "YU-ADMIN",
     createTime: "2023-08-22 11:27:24",
@@ -262,7 +262,7 @@ const tableList = ref<any>([
     noticeTitle: "温馨提醒：2023-11-23 YU-ADMIN生日",
     noticeType: "1",
     noticeContent: "新版本内容",
-    noticeStatus: "0",
+    noticeStatus: "1",
     sorted: 1,
     createBy: "YU-ADMIN",
     createTime: "2023-08-22 11:27:24",
@@ -403,7 +403,7 @@ const handleAdd = () => {
   resetForm();
   // 标题
   title.value = "公告添加";
-  form.value.noticeStatus = "0";
+  form.value.noticeStatus = "1";
 };
 
 /** 回显数据 */
@@ -546,7 +546,7 @@ const handleCancel = () => {
 
 /** 状态开关 */
 const handleSwitch = (row: any) => {
-  let text = row.noticeStatus === "0" ? "启用" : "停用";
+  let text = row.noticeStatus === "1" ? "启用" : "停用";
   koiMsgBox("确认要[" + text + "]-[" + row.noticeTitle + "]吗？")
     .then(async () => {
       if (!row.noticeId || !row.noticeStatus) {

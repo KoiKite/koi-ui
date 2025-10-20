@@ -173,14 +173,14 @@ export function selectDictLabel(dataList: any, value: any) {
 }
 
 /**
- * @description 使用递归过滤出需要渲染在左侧菜单动态数据的列表 (需剔除 isHide == 0 隐藏的菜单)
+ * @description 使用递归过滤出需要渲染在左侧菜单动态数据的列表 (需剔除 isVisible == 0 隐藏的菜单)
  * @param {Array} menuList 菜单列表
  * @returns {Array}
  * */
 export function getShowStaticAndDynamicMenuList(menuList: any) {
   let newMenuList: any = JSON.parse(JSON.stringify(menuList));
   return newMenuList.filter((item: any) => {
-    return item.isHide == "1" || item.meta?.isHide == "1";
+    return item.isVisible == "1" || item.meta?.isVisible == "1";
   });
 }
 

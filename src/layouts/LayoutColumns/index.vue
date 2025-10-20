@@ -71,7 +71,7 @@ const globalStore = useGlobalStore();
 const menuAnimate = ref(settings.menuAnimate);
 
 // 获取所有顶级菜单[第一层级]
-const topLevelMenus = computed(() => authStore.showMenuList.filter((item: any) => item.meta?.isHide == "1"));
+const topLevelMenus = computed(() => authStore.showMenuList.filter((item: any) => item.meta?.isVisible == "1"));
 
 // 当前激活的顶级菜单ID
 const activeTopMenuId = ref<any>();

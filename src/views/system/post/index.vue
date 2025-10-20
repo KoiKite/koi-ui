@@ -29,8 +29,8 @@
             style="width: 220px"
             @keyup.enter.native="handleListPage"
           >
-            <el-option label="启用" value="0" />
-            <el-option label="停用" value="1" />
+            <el-option label="启用" value="1" />
+            <el-option label="停用" value="0" />
           </el-select>
         </el-form-item>
         <el-form-item>
@@ -89,8 +89,8 @@
               v-model="scope.row.postStatus"
               active-text="启用"
               inactive-text="停用"
-              active-value="0"
-              inactive-value="1"
+              active-value="1"
+              inactive-value="0"
               :inline-prompt="true"
               @change="handleSwitch(scope.row)"
             >
@@ -180,8 +180,8 @@
               <el-col :sm="{ span: 24 }" :xs="{ span: 24 }">
                 <el-form-item label="岗位状态" prop="postStatus">
                   <el-select v-model="form.postStatus" placeholder="请选择岗位状态" clearable>
-                    <el-option label="启用" value="0" />
-                    <el-option label="停用" value="1" />
+                    <el-option label="启用" value="1" />
+                    <el-option label="停用" value="0" />
                   </el-select>
                 </el-form-item>
               </el-col>
@@ -229,7 +229,7 @@ const tableList = ref<any>([
     postCode: "CEO",
     postName: "董事长",
     sorted: 1,
-    postStatus: "0",
+    postStatus: "1",
     createBy: "YU-ADMIN",
     createTime: "2023-08-22 12:00:00",
     updateBy: "YU-ADMIN",
@@ -241,7 +241,7 @@ const tableList = ref<any>([
     postCode: "PM",
     postName: "项目经理",
     sorted: 2,
-    postStatus: "0",
+    postStatus: "1",
     createBy: "YU-ADMIN",
     createTime: "2023-08-22 12:00:00",
     updateBy: "YU-ADMIN",
@@ -253,7 +253,7 @@ const tableList = ref<any>([
     postCode: "HR",
     postName: "人力资源",
     sorted: 3,
-    postStatus: "0",
+    postStatus: "1",
     createBy: "YU-ADMIN",
     createTime: "2023-08-22 12:00:00",
     updateBy: "YU-ADMIN",
@@ -265,7 +265,7 @@ const tableList = ref<any>([
     postCode: "NORMAL",
     postName: "普通员工",
     sorted: 4,
-    postStatus: "0",
+    postStatus: "1",
     createBy: "YU-ADMIN",
     createTime: "2023-08-22 12:00:00",
     updateBy: "YU-ADMIN",
@@ -277,7 +277,7 @@ const tableList = ref<any>([
     postCode: "TECHNOLOGY",
     postName: "技术岗位",
     sorted: 4,
-    postStatus: "0",
+    postStatus: "1",
     createBy: "YU-ADMIN",
     createTime: "2023-08-22 12:00:00",
     updateBy: "YU-ADMIN",
@@ -388,7 +388,7 @@ const handleAdd = () => {
   resetForm();
   // 标题
   title.value = "岗位添加";
-  form.value.postStatus = "0";
+  form.value.postStatus = "1";
 };
 
 /** 回显数据 */
@@ -529,7 +529,7 @@ const handleCancel = () => {
 
 /** 状态开关 */
 const handleSwitch = (row: any) => {
-  let text = row.postStatus === "0" ? "启用" : "停用";
+  let text = row.postStatus === "1" ? "启用" : "停用";
   koiMsgBox("确认要[" + text + "]-[" + row.postName + "]吗？")
     .then(async () => {
       if (!row.postId || !row.postStatus) {

@@ -20,7 +20,7 @@
                   <!-- 用 template 包裹 v-for + v-if -->
                   <template v-for="child in item.children">
                     <el-dropdown-item
-                      v-if="child.meta && child.meta.isHide === '1'"
+                      v-if="child.meta && child.meta.isVisible === '1'"
                       :key="child.path"
                       :command="{ item: child, index }"
                     >

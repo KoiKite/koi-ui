@@ -78,7 +78,7 @@ watch(
 /** 1、初始化需要固定的 tabs[isAffix[配置固定tabs项]，在进入系统的时候，获取对应权限菜单数据，如果里面有固定tabs配置项，则进行添加] */
 const initTabs = () => {
   authStore.menuList.forEach((item: any) => {
-    if (item.meta.isAffix == "0" && item.meta.isHide == "1") {
+    if (item.meta.isAffix == "1" && item.meta.isVisible == "1") {
       const tabsParams = {
         icon: item.meta.icon,
         title: item.meta.title,
@@ -113,7 +113,7 @@ const addTab = () => {
     title: meta.title as string,
     path: fullPath,
     name: route.name as string,
-    closable: route.meta.isAffix == "1", // true则显示关闭图标
+    closable: route.meta.isAffix == "0", // true则显示关闭图标
     isKeepAlive: route.meta.isKeepAlive
   };
   if (fullPath == HOME_URL) {
@@ -127,8 +127,8 @@ const addTab = () => {
 /** 4、移除选项卡 */
 const removeTab = (fullPath: any) => {
   // 最后一个选项卡不被允许关闭
-  const ObjectNumber = tabsStore.tabList.filter((item: any) => typeof item === "object").length;
-  if (ObjectNumber == 1) {
+  const tabNumber = tabsStore.tabList.filter((item: any) => typeof item === "object").length;
+  if (tabNumber === 1) {
     koiMsgWarning("到我的底线了，哼");
     return;
   }

@@ -47,12 +47,12 @@ import { LOGIN_URL } from "@/config";
 import { useRouter } from "vue-router";
 import useAuthStore from "@/stores/modules/auth.ts";
 import useUserStore from "@/stores/modules/user.ts";
-// import useTabsStore from "@/stores/modules/tabs.ts";
+import useTabsStore from "@/stores/modules/tabs.ts";
 import useKeepAliveStore from "@/stores/modules/keepAlive.ts";
 
 const authStore = useAuthStore();
 const userStore = useUserStore();
-// const tabsStore = useTabsStore();
+const tabsStore = useTabsStore();
 const keepAliveStore = useKeepAliveStore();
 const router = useRouter();
 
@@ -70,9 +70,9 @@ const handleLayout = () => {
   // 清除用户 token
   userStore.setToken("");
   // 清除 tabs 数据
-  // tabsStore.setTab([]);
+  tabsStore.$reset();
   // 清除 keepAlive 缓存
-  keepAliveStore.setKeepAliveName([]);
+  keepAliveStore.$reset();
   // 清除 auth store 数据[重置为初始状态]
   authStore.$reset();
   // 退出登录，必须使用replace把页面缓存刷掉。
