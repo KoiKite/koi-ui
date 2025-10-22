@@ -3,16 +3,16 @@
     <div class="koi-search" v-show="props.showSearch">
       <div
         class="flex flex-items-center p-b-12px transition-500 transition-ease-in-out hover:text-[--el-color-primary]"
-        @click="handleFold"
+        @click="handleExpanded"
       >
-        <el-icon :size="14" class="transition-500 transition-ease-in-out" :class="{ 'rotate-180': showFold }">
+        <el-icon :size="14" class="transition-500 transition-ease-in-out" :class="{ 'rotate-180': showExpanded }">
           <ArrowDown />
         </el-icon>
         <div class="text-15px m-l-6px select-none">{{ $t("button.search") }}</div>
       </div>
 
       <el-collapse-transition>
-        <slot v-if="showFold"></slot>
+        <slot v-if="showExpanded"></slot>
       </el-collapse-transition>
     </div>
   </transition>
@@ -22,20 +22,20 @@
 import { ref, onMounted } from "vue";
 
 const props = defineProps<{
-  isFold?: boolean;
+  isExpanded?: boolean;
   showSearch?: boolean;
 }>();
 
-const showFold = ref(false);
+const showExpanded = ref(false);
 
-/* 折叠搜索表单 */
-const handleFold = () => {
-  showFold.value = !showFold.value;
+/* 是否展开搜索表单 */
+const handleExpanded = () => {
+  showExpanded.value = !showExpanded.value;
 };
 
 onMounted(() => {
-  if (props.isFold !== undefined) {
-    showFold.value = props.isFold;
+  if (props.isExpanded !== undefined) {
+    showExpanded.value = props.isExpanded;
   }
 });
 </script>

@@ -1,6 +1,6 @@
 <template>
   <div class="koi-flex">
-    <KoiSearch :isFold="true" :showSearch="showSearch">
+    <KoiSearch :isExpanded="true" :showSearch="showSearch">
       <!-- 搜索条件 -->
       <el-form :inline="true">
         <el-form-item label="登录账号" prop="loginName">
