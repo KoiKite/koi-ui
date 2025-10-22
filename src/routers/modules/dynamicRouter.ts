@@ -13,17 +13,15 @@ export const initDynamicRouter = async () => {
 
   try {
     // 1、并行获取菜单列表 && 按钮权限列表 && 递归菜单数据
-    await Promise.all([
-      authStore.listRouters(),
-      authStore.getLoginUserInfo()
-    ]);
+    await authStore.listRouters();
+    await authStore.getLoginUserInfo();
 
     // 2、判断当前用户是否拥有菜单权限
     console.log("authStore.menuList", authStore.menuList);
     // Proxy对象转换为正常的JSON数据
     // const menuRouters = JSON.parse(JSON.stringify(authStore.menuList));
     if (!authStore.menuList?.length) {
-      userStore.setToken("");
+      userStore.$reset();
       router.replace(LOGIN_URL);
       return;
     }
@@ -54,16 +52,16 @@ export const initDynamicRouter = async () => {
     });
 
     // 4、检查所有路由是否都注册成功
-    // const allRoutes = router.getRoutes();
-    // const allRegistered = authStore.menuList.every((menu: any) => 
-    //   allRoutes.some(route => route.name === menu.name)
-    // );
+    const allRoutes = router.getRoutes();
+    const allRegistered = authStore.menuList.every((menu: any) => 
+      allRoutes.some(route => route.name === menu.name)
+    );
 
-    // if (!allRegistered) {
-    //   console.log("路由注册失败，重新登录");
-    //   userStore.setToken("");
-    //   router.replace(LOGIN_URL);
-    // }
+    if (!allRegistered) {
+      console.log("路由注册失败，重新登录");
+      userStore.$reset();
+      router.replace(LOGIN_URL);
+    }
 
   } catch (error) {
     console.log(error);

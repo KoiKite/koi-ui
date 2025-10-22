@@ -50,8 +50,8 @@ const handleMenuRouter = (value: any) => {
   border: none !important;
 
   &.is-active {
-    color: var(--el-color-primary) !important;
-    background-color: var(--el-color-primary-light-9) !important;
+    color: var(--el-menu-active-text-color) !important;
+    background: var(--el-menu-active-bg-color) !important;
   }
 }
 

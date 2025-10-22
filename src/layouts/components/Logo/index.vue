@@ -1,5 +1,5 @@
 <template>
-  <div class="koi-logo flex flex-items-center p-l-5px" v-show="isShow">
+  <div class="koi-logo flex flex-items-center p-l-5px" v-show="showLogo">
     <div class="rounded-full" :style="{ width: logoSize, height: logoSize }" v-if="props.layout !== 'classic' && props.layout !== 'horizontal'">
       <el-image
         :src="logoUrl"
@@ -40,10 +40,10 @@
       </el-image>
     </div>
     <el-tooltip :content="$t('project.title')" :show-after="2000" placement="right" v-if="props.layout !== 'classic' && props.layout !== 'horizontal'">
-      <div class="chroma-text flex-1 m-l-10px font-bold truncate tracking-1px" :style="{ 'font-size': titleSize }" :class="titleAnimate" v-text="$t('project.title')" v-show="!props.isCollapse"></div>
+      <div class="flex-1 m-l-10px truncate select-none" :style="{ 'font-size': titleSize }" :class="titleAnimate" v-text="$t('project.title')" v-show="!props.isCollapse"></div>
     </el-tooltip>
     <el-tooltip :content="$t('project.title')" :show-after="2000" placement="right" v-else>
-      <div class="chroma-text w-155px m-x-10px font-bold truncate tracking-1px" :style="{ 'font-size': titleSize }" :class="titleAnimate" v-text="$t('project.title')" v-show="!props.isCollapse"></div>
+      <div class="w-155px m-x-10px truncate select-none" :style="{ 'font-size': titleSize }" :class="titleAnimate" v-text="$t('project.title')" v-show="!props.isCollapse"></div>
     </el-tooltip>
   </div>
 </template>
@@ -66,7 +66,7 @@ const props = defineProps({
 });
 
 const titleSize = ref(`${settings.loginTitleSize}px`);
-const isShow = ref(settings.logoShow);
+const showLogo = ref(settings.logoShow);
 const logoSize = ref(settings.logoSize);
 const titleAnimate = ref(settings.logoTitleAnimate);
 </script>
@@ -75,5 +75,6 @@ const titleAnimate = ref(settings.logoTitleAnimate);
 .koi-logo {
   height: $aside-header-height;
   line-height: $aside-header-height;
+  color: var(--el-aside-logo-text-color);
 }
 </style>

@@ -1,16 +1,19 @@
 <template>
-  <Maximize v-show="globalStore.maximize" />
-  <Tabs v-if="showTabs && tabsStyle === 'card'"></Tabs>
-  <GoogleTabs v-if="showTabs && tabsStyle === 'google'"></GoogleTabs>
-  <el-main class="overflow-x-hidden flex flex-col flex-1 p-0 m-0 bg-#FAFBFC dark:bg-black">
-    <router-view v-slot="{ Component, route }">
-      <transition :name="transition" mode="out-in" appear>
-        <keep-alive :max="16" :include="keepAliveStore.keepAliveName">
-          <component :is="Component" :key="route.fullPath" v-if="isRouterShow" />
-        </keep-alive>
-      </transition>
-    </router-view>
-  </el-main>
+  <div class="main-wrapper">
+    <Maximize v-show="globalStore.maximize" />
+    <Tabs v-if="showTabs && tabsStyle === 'card'"></Tabs>
+    <GoogleTabs v-if="showTabs && tabsStyle === 'google'"></GoogleTabs>
+    <!-- <el-main class="overflow-x-hidden flex flex-col flex-1 p-0 m-0 bg-#FAFBFC dark:bg-black"></el-main> -->
+    <el-main class="main-content">
+      <router-view v-slot="{ Component, route }">
+        <transition :name="transition" mode="out-in" appear>
+          <keep-alive :max="16" :include="keepAliveStore.keepAliveName">
+            <component :is="Component" :key="route.fullPath" v-if="isRouterShow" />
+          </keep-alive>
+        </transition>
+      </router-view>
+    </el-main>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -72,13 +75,25 @@ onBeforeUnmount(() => {
 <style lang="scss" scoped>
 @use "../../../styles/transition.scss";
 
-// .layout-main {
-//   display: flex;
-//   flex-direction: column;
-//   flex: 1;
-//   margin: 0;
-//   padding: 0;
-//   overflow-x: hidden;
-//   @apply bg-[#F6F9FE] dark:bg-black;
-// }
+.main-wrapper {
+  // 最小化样式，只设置必要的布局属性
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0; // 防止高度溢出
+}
+
+.main-content {
+  overflow-x: hidden;
+  flex: 1;
+  padding: 0;
+  margin: 0;
+  background-color: #FAFBFC;
+  min-height: 0;
+  
+  // 暗色模式
+  .dark & {
+    background-color: #000000;
+  }
+}
 </style>

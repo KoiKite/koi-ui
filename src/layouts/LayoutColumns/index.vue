@@ -204,7 +204,7 @@ const handleTopMenuClick = (route: any) => {
       return;
     }
   }
-  
+    
   if (!route?.children) {
     // 更新当前激活的顶级菜单
     activeTopMenuId.value = route.meta?.menuId;
@@ -302,7 +302,7 @@ watch(
     margin: 4px;
     color: var(--el-menu-text-color);
     cursor: pointer;
-    border-radius: 4px;
+    border-radius: 6px;
     border: 1px solid transparent;
     transition: all 0.3s ease;
 
@@ -312,7 +312,7 @@ watch(
     }
 
     &.is-active {
-      color: var(--el-menu-hover-text-color);
+      color: var(--el-menu-active-text-color);
       background: var(--el-menu-active-bg-color);
       border: 1px dashed var(--el-menu-border-left-color);
     }

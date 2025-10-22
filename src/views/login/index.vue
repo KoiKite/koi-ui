@@ -262,8 +262,8 @@ const handleKoiLogin = () => {
     // @ts-ignore
     const codeKey = loginForm.codeKey;
     if (valid) {
-      loading.value = true;
       try {
+        loading.value = true;
         // 1、执行登录接口
         // const res: any = await koiLogin({ loginName, password, codeKey, securityCode });
         // userStore.setToken(res.data.tokenValue);
@@ -271,7 +271,7 @@ const handleKoiLogin = () => {
 
         // 2、添加动态路由 AND 用户按钮 AND 角色信息 AND 用户个人信息
         if (userStore?.token) {
-          await initDynamicRouter();
+            await initDynamicRouter(); // 等待 initDynamicRouter 完成
         } else {
           koiMsgWarning(t("msg.logIn"));
           router.replace(LOGIN_URL);
@@ -281,15 +281,15 @@ const handleKoiLogin = () => {
         // 3、清空 tabs数据、keepAlive缓存数据
         if (userStore.loginName) {
           if (userStore.loginName !== loginName) {
-            tabsStore.setTab([]);
+            tabsStore.$reset();
             userStore.setLoginName(loginName);
           }
         } else {
-          tabsStore.setTab([]);
+          tabsStore.$reset();
           userStore.setLoginName(loginName);
         }
 
-        keepAliveStore.setKeepAliveName([]);
+        keepAliveStore.$reset();
 
         // 4、跳转到首页
         router.replace(HOME_URL);
@@ -302,6 +302,8 @@ const handleKoiLogin = () => {
             loading.value = false;
           }
         }, 1000);
+      } finally {
+        loading.value = false;
       }
     } else {
       console.log("登录校验失败", fields);
