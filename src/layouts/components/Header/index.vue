@@ -45,7 +45,7 @@ import Toolbar from "@/layouts/components/Header/components/Toolbar.vue";
     padding: 2px 12px;
     // background: var(--el-bg-color);
     background-color: var(--el-header-bg-color); /* 添加背景色确保覆盖效果 */
-    border: 1px solid var(--el-border-color-light); /* 添加边框 */
+    border: 1px solid var(--el-header-toolbar-border-color); /* 添加边框 */
     border-radius: 20px; /* 圆角卡片效果 */
     box-shadow: 0 4px 12px rgb(0 0 0 / 15%); /* 明亮模式阴影效果 */
 

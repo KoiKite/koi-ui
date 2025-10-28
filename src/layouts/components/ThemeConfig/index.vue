@@ -277,8 +277,20 @@ const koiDrawerRef = ref();
 
 /** 打开主题配置 */
 const handleThemeConfig = () => {
+  // 使用递归重试机制，确保组件完全加载
+  const tryOpenDrawer = (retryCount = 0) => {
+    if (koiDrawerRef.value?.koiOpen) {
+      koiDrawerRef.value.koiOpen();
+    } else if (retryCount < 3) {
+      // 最多重试3次，每次延迟100ms
+      setTimeout(() => tryOpenDrawer(retryCount + 1), 100);
+    } else {
+      console.warn('无法打开主题配置抽屉，组件可能未正确加载');
+    }
+  };
+  
   nextTick(() => {
-    koiDrawerRef.value.koiOpen();
+    tryOpenDrawer();
   });
 };
 

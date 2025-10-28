@@ -1,6 +1,6 @@
 <template>
   <el-tooltip placement="left" :content="$t('header.language')">
-    <div class="hover:bg-[rgba(0,0,0,0.06)] hover:dark-bg-[rgba(255,255,255,0.1)] w-36px h-36px rounded-md flex flex-justify-center flex-items-center koi-flip-i">
+    <div class="hover:bg-[--el-header-toolbar-icon-hover-bg-color] w-36px h-36px rounded-md flex flex-justify-center flex-items-center koi-flip-i">
       <el-dropdown @command="handleChangeLanguage">
         <KoiGlobalIcon name="koi-translate" size="18" class="koi-icon" />
         <template #dropdown>

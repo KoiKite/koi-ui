@@ -39,7 +39,7 @@
                     @click="handleTopMenuClick(item)"
                   >
                     <KoiGlobalIcon v-if="item.meta.icon" :name="item.meta.icon" size="18"></KoiGlobalIcon>
-                    <el-tooltip :content="getMenuLanguage(item.meta?.title)" :show-after="2000" placement="right">
+                    <el-tooltip :content="getMenuLanguage(item.meta?.title)" :show-after="1500" placement="right">
                       <span class="title" v-text="getMenuLanguage(item.meta?.title)"></span>
                     </el-tooltip>
                   </div>
@@ -359,7 +359,7 @@ onBeforeUnmount(() => {
     transform: translateY(-50%);
     padding: 2px 12px;
     background-color: var(--el-header-bg-color);
-    border: 1px solid var(--el-border-color-light); /* 添加边框 */
+    border: 1px solid var(--el-header-toolbar-border-color); /* 添加边框 */
     border-radius: 20px; /* 圆角卡片效果 */
     box-shadow: 0 4px 12px rgb(0 0 0 / 15%); /* 漂浮阴影效果 */
     transition: all 0.3s ease;

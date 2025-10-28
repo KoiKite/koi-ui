@@ -2,7 +2,7 @@
   <!-- 搜索菜单 -->
   <div style="position: relative; display: flex; align-items: center">
     <div
-      class="hover:bg-[rgba(0,0,0,0.06)] hover:dark-bg-[rgba(255,255,255,0.1)] koi-icon w-36px h-36px rounded-md flex flex-justify-center flex-items-center koi-pulse-i"
+      class="hover:bg-[--el-header-toolbar-icon-hover-bg-color] koi-icon w-36px h-36px rounded-md flex flex-justify-center flex-items-center koi-pulse-i"
       @click="handleMenuOpen"
     >
       <el-tooltip :content="$t('header.searchMenu')">

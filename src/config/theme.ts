@@ -30,25 +30,34 @@ export const optimumHeaderTheme: any = {
 
 export const headerTheme: any = {
   light: {
+    "--el-header-logo-text-color": "#161616",
     "--el-header-bg-color": "#FFFFFF",
     "--el-header-text-color": "#303133",
     "--el-header-text-regular-color": "#606266",
-    "--el-header-collapse-bg-color": "var(--el-color-primary-light-9)",
-    "--el-header-collapse-hover-bg-color": "var(--el-color-primary-light-8)"
+    "--el-header-toolbar-collapse-bg-color": "var(--el-color-primary-light-9)",
+    "--el-header-toolbar-collapse-hover-bg-color": "var(--el-color-primary-light-8)",
+    "--el-header-toolbar-border-color": "#E4E7ED",
+    "--el-header-toolbar-icon-hover-bg-color": "rgba(0, 0, 0, 0.06)"
   },
   inverted: {
-    "--el-header-bg-color": "#161616",
-    "--el-header-text-color": "#E5EAF3",
-    "--el-header-text-regular-color": "#CFD3DC",
-    "--el-header-collapse-bg-color": "#303133",
-    "--el-header-collapse-hover-bg-color": "#414141"
-  },
-  dark: {
+    "--el-header-logo-text-color": "#E5EAF3",
     "--el-header-bg-color": "#141414",
     "--el-header-text-color": "#E5EAF3",
     "--el-header-text-regular-color": "#CFD3DC",
-    "--el-header-collapse-bg-color": "#303133",
-    "--el-header-collapse-hover-bg-color": "var(--el-color-primary-light-8)"
+    "--el-header-toolbar-collapse-bg-color": "#303133",
+    "--el-header-toolbar-collapse-hover-bg-color": "#414141",
+    "--el-header-toolbar-border-color": "#4C4D4F",
+    "--el-header-toolbar-icon-hover-bg-color": "rgba(255, 255, 255, 0.1)"
+  },
+  dark: {
+    "--el-header-logo-text-color": "#E5EAF3",
+    "--el-header-bg-color": "#141414",
+    "--el-header-text-color": "#E5EAF3",
+    "--el-header-text-regular-color": "#CFD3DC",
+    "--el-header-toolbar-collapse-bg-color": "#303133",
+    "--el-header-toolbar-collapse-hover-bg-color": "var(--el-color-primary-light-8)",
+    "--el-header-toolbar-border-color": "#4C4D4F",
+    "--el-header-toolbar-icon-hover-bg-color": "rgba(255, 255, 255, 0.1)"
   }
 };
 
@@ -58,7 +67,7 @@ export const asideTheme: any = {
     "--el-aside-border-right-color": "#E5E7ED"
   },
   inverted: {
-    "--el-aside-logo-text-color": "#DADADA",
+    "--el-aside-logo-text-color": "#E5EAF3",
     "--el-aside-border-right-color": "#414243"
   },
   dark: {
@@ -79,10 +88,10 @@ export const menuTheme: any = {
     "--el-menu-border-left-color": "var(--el-color-primary)"
   },
   inverted: {
-    "--el-menu-bg-color": "#161616",
-    "--el-menu-hover-bg-color": "#303133",
+    "--el-menu-bg-color": "#141414",
+    "--el-menu-hover-bg-color": "#252627",
     "--el-menu-active-bg-color": "var(--el-color-primary)",
-    "--el-menu-text-color": "#FFFFFF",
+    "--el-menu-text-color": "#D5D7DD",
     "--el-menu-hover-text-color": "var(--el-color-primary)",
     "--el-menu-parent-active-text-color": "var(--el-color-primary)",
     "--el-menu-active-text-color": "#FFFFFF",
@@ -98,4 +107,5 @@ export const menuTheme: any = {
     "--el-menu-active-text-color": "var(--el-color-primary)",
     "--el-menu-border-left-color": "var(--el-color-primary)"
   }
+  
 };

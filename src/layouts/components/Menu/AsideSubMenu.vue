@@ -9,7 +9,7 @@
           <!-- 图标本身 - 负责动画 -->
           <KoiGlobalIcon v-if="item.meta.icon" :name="item.meta.icon" size="18" class="menu-icon"></KoiGlobalIcon>
         </div>
-        <el-tooltip :content="getMenuLanguage(item.meta?.title)" :show-after="2000" placement="right">
+        <el-tooltip :content="getMenuLanguage(item.meta?.title)" :show-after="1500" placement="right">
           <span class="menu-ellipsis" v-text="getMenuLanguage(item.meta?.title)"></span>
         </el-tooltip>
       </template>
@@ -23,7 +23,7 @@
         <KoiGlobalIcon v-if="item.meta.icon" :name="item.meta.icon" size="18" class="menu-icon"></KoiGlobalIcon>
       </div>
       <template #title>
-        <el-tooltip :content="getMenuLanguage(item.meta?.title)" :show-after="2000" placement="right">
+        <el-tooltip :content="getMenuLanguage(item.meta?.title)" :show-after="1500" placement="right">
           <span class="menu-ellipsis" v-text="getMenuLanguage(item.meta?.title)"></span>
         </el-tooltip>
       </template>
@@ -151,10 +151,10 @@ const handleMenuRouter = (value: any) => {
     }
   }
   
-  &:active {
-    color: var(--el-menu-active-text-color);
-    background: var(--el-menu-active-bg-color);
-  }
+  // &:active {
+  //   color: var(--el-menu-active-text-color);
+  //   background: var(--el-menu-active-bg-color);
+  // }
 }
 
 /** 纯缩放动画 - 不受偏移影响 */

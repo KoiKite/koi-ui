@@ -16,7 +16,7 @@
         </div>
         <el-tooltip 
           :content="getMenuLanguage(item.meta?.title)" 
-          :show-after="2000" 
+          :show-after="1500" 
           placement="right"
         >
           <span 
@@ -42,7 +42,7 @@
       <template #title>
         <el-tooltip 
           :content="getMenuLanguage(item.meta?.title)" 
-          :show-after="2000" 
+          :show-after="1500" 
           placement="right"
         >
           <span 
@@ -162,10 +162,10 @@ const handleMenuRouter = (value: any) => {
     }
   }
   
-  &:active {
-    color: var(--el-menu-active-text-color);
-    background: var(--el-menu-active-bg-color);
-  }
+  // &:active {
+  //   color: var(--el-menu-active-text-color);
+  //   background: var(--el-menu-active-bg-color);
+  // }
 }
 
 /** 纯缩放动画 - 不受偏移影响 */

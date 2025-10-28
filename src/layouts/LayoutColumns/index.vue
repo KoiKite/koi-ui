@@ -13,7 +13,7 @@
           @click="handleTopMenuClick(item)"
         >
           <KoiGlobalIcon v-if="item.meta?.icon" :name="item.meta?.icon" size="18"></KoiGlobalIcon>
-          <el-tooltip :content="getMenuLanguage(item.meta?.title)" :show-after="2000" placement="top">
+          <el-tooltip :content="getMenuLanguage(item.meta?.title)" :show-after="1500" placement="top">
             <span class="title line-clamp-2">{{ getMenuLanguage(item.meta?.title) }}</span>
           </el-tooltip>
         </div>

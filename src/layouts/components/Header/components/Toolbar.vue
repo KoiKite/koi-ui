@@ -117,12 +117,12 @@ onUnmounted(() => {
     margin-left: 8px;
     color: var(--el-color-primary);
     cursor: pointer;
-    background: var(--el-header-collapse-bg-color);
+    background: var(--el-header-toolbar-collapse-bg-color);
     border-radius: 50%;
     transition: all 0.3s ease;
 
     &:hover {
-      background: var(--el-header-collapse-hover-bg-color);
+      background: var(--el-header-toolbar-collapse-hover-bg-color);
       transform: scale(1.05);
     }
 
