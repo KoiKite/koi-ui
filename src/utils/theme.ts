@@ -99,6 +99,7 @@ export const useTheme = () => {
       document.documentElement.style.setProperty(`--el-color-primary-light-${i}`, primaryColor);
     }
     globalStore.setGlobalState("themeColor", val);
+    setThemeColorRgb();
   };
 
   // 灰色和弱色切换
@@ -164,6 +165,14 @@ export const useTheme = () => {
       document.documentElement.style.setProperty(key, value as string | null);
     }
     setMenuTheme();
+  };
+
+  // 设置主题色 RGB 值
+  const setThemeColorRgb = () => {
+    const rgb = hexToRgb(themeColor.value);
+    if (rgb && Array.isArray(rgb) && rgb.length === 3 && typeof rgb[0] === 'number') {
+      document.documentElement.style.setProperty("--el-color-primary-rgb", `${rgb[0]},${rgb[1]},${rgb[2]}`);
+    }
   };
 
   // 初始化主题配置
