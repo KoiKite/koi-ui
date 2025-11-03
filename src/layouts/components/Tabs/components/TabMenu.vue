@@ -45,6 +45,70 @@ const isCurrent = ref();
 const isAlone = ref();
 const hasLeft = ref();
 const hasRight = ref();
+
+/**
+ * 计算菜单位置，避免超出视口边界
+ * @param card - 菜单元素
+ * @param pageX - 鼠标X坐标
+ * @param pageY - 鼠标Y坐标
+ */
+const calculateMenuPosition = (card: HTMLElement, pageX: number, pageY: number) => {
+  // 临时禁用 transition，避免位置变化时的动画
+  const originalTransition = card.style.transition;
+  card.style.transition = "none";
+  
+  // 移除动画 class，以便下次出现时重新触发
+  card.classList.remove("menu-appear");
+  
+  // 先显示菜单以获取其尺寸
+  card.style.display = "block";
+  const menuWidth = card.offsetWidth;
+  const menuHeight = card.offsetHeight;
+  
+  // 获取视口尺寸和滚动位置
+  const viewportWidth = window.innerWidth;
+  const viewportHeight = window.innerHeight;
+  const scrollX = window.pageXOffset || document.documentElement.scrollLeft;
+  const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+  
+  // 计算菜单最终位置（考虑滚动）
+  let left = pageX;
+  let top = pageY;
+  
+  // 检查右边界：如果菜单会超出右边界，则显示在鼠标左侧
+  if (pageX + menuWidth > scrollX + viewportWidth) {
+    left = pageX - menuWidth;
+  }
+  
+  // 检查左边界：确保菜单不会超出左边界
+  if (left < scrollX) {
+    left = scrollX + 5; // 留5px边距
+  }
+  
+  // 检查下边界：如果菜单会超出下边界，则显示在鼠标上方
+  if (pageY + menuHeight > scrollY + viewportHeight) {
+    top = pageY - menuHeight;
+  }
+  
+  // 检查上边界：确保菜单不会超出上边界
+  if (top < scrollY) {
+    top = scrollY + 5; // 留5px边距
+  }
+  
+  // 设置位置
+  card.style.left = left + "px";
+  card.style.top = top + "px";
+  
+  // 在下一帧恢复 transition 并触发出现动画
+  requestAnimationFrame(() => {
+    card.style.transition = originalTransition || "";
+    // 触发出现动画
+    card.classList.add("menu-appear");
+  });
+  
+  return { left, top };
+};
+
 const handleKoiMenuParent = (e: any) => {
   const tabList = tabsStore.tabList;
 
@@ -64,15 +128,22 @@ const handleKoiMenuParent = (e: any) => {
   // 阻止默认右键菜单
   e.preventDefault();
   if (card != null) {
-    // 设置 card 的位置为鼠标点击位置
-    card.style.display = "block";
-    card.style.left = (e.pageX + "px") as string;
-    card.style.top = (e.pageY + "px") as string;
+    // 计算并设置 card 的位置，避免超出视口边界
+    calculateMenuPosition(card, e.pageX, e.pageY);
 
     // 点击数据时，菜单消失
     const hideCard = () => {
       if (card !== null) {
-        card.style.display = "none";
+        card.classList.remove("menu-appear");
+        // 等待动画完成后再隐藏并重置状态
+        setTimeout(() => {
+          if (card !== null) {
+            card.style.display = "none";
+            // 重置动画状态，确保下次出现时动画正常
+            card.style.opacity = "0";
+            card.style.transform = "scale(0.8)";
+          }
+        }, 200);
       }
       window.removeEventListener("click", hideCard); // 移除点击事件监听器，以免影响其他操作
     };
@@ -96,15 +167,22 @@ const handleKoiMenuChildren = (path: any, e: any) => {
     isAlone.value = tabsMenu?.isAlone;
     hasLeft.value = tabsMenu?.hasLeft;
     hasRight.value = tabsMenu?.hasRight;
-    // 设置 card 的位置为鼠标点击位置
-    card.style.display = "block";
-    card.style.left = (e.pageX + "px") as string;
-    card.style.top = (e.pageY + "px") as string;
+    // 计算并设置 card 的位置，避免超出视口边界
+    calculateMenuPosition(card, e.pageX, e.pageY);
 
     // 点击数据时，菜单消失
     const hideCard = () => {
       if (card !== null) {
-        card.style.display = "none";
+        card.classList.remove("menu-appear");
+        // 等待动画完成后再隐藏并重置状态
+        setTimeout(() => {
+          if (card !== null) {
+            card.style.display = "none";
+            // 重置动画状态，确保下次出现时动画正常
+            card.style.opacity = "0";
+            card.style.transform = "scale(0.8)";
+          }
+        }, 200);
       }
       window.removeEventListener("click", hideCard); // 移除点击事件监听器，以免影响其他操作
     };
@@ -228,7 +306,28 @@ defineExpose({
   border-radius: 8px;
   box-shadow: var(--el-box-shadow-light);
   backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
+  /* 只对背景色、边框、阴影等应用过渡，不包括位置属性 */
+  transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  /* 初始状态：透明且缩放为0 */
+  opacity: 0;
+  transform: scale(0.8);
+  transform-origin: center;
+  
+  /* 出现动画 */
+  &.menu-appear {
+    animation: menuFadeIn 0.2s ease-out forwards;
+  }
+}
+
+@keyframes menuFadeIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .tab-menu-item {
