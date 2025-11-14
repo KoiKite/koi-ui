@@ -107,6 +107,7 @@ const imageDisabled = computed(() => {
  * */
 const emit = defineEmits<{
   "update:imageUrl": [value: string];
+  success: [value: string];
 }>();
 const handleHttpUpload = async (options: UploadRequestOptions) => {
   let formData = new FormData();
@@ -123,7 +124,9 @@ const handleHttpUpload = async (options: UploadRequestOptions) => {
 
   try {
     const res: any = await koi.upload(props.action, formData);
-    emit("update:imageUrl", import.meta.env.VITE_SERVER + res.data?.fileUploadPath);
+    const fileUrl = import.meta.env.VITE_SERVER + res.data?.fileUploadPath;
+    emit("update:imageUrl", fileUrl);
+    emit("success", fileUrl);
     loadingInstance.close();
     // 调用 el-form 内部的校验方法[可自动校验]
     formItemContext?.prop && formContext?.validateField([formItemContext.prop as string]);
