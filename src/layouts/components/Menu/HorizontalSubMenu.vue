@@ -5,7 +5,7 @@
     <el-sub-menu v-if="item.children?.length" :index="item.path">
       <template #title>
         <KoiGlobalIcon v-if="item.meta.icon" :name="item.meta.icon" size="18"></KoiGlobalIcon>
-        <span v-text="getMenuLanguage(item.meta?.title)"></span>
+        <span class="menu-ellipsis" v-text="getMenuLanguage(item.meta?.title)"></span>
       </template>
       <HorizontalSubMenu :menuList="item.children" />
     </el-sub-menu>
@@ -13,7 +13,7 @@
     <el-menu-item v-else :index="item.path" @click="handleMenuRouter(item)">
       <KoiGlobalIcon v-if="item.meta.icon" :name="item.meta.icon" size="18"></KoiGlobalIcon>
       <template #title>
-        <span v-text="getMenuLanguage(item.meta?.title)"></span>
+        <span class="menu-ellipsis" v-text="getMenuLanguage(item.meta?.title)"></span>
       </template>
     </el-menu-item>
   </template>
@@ -45,6 +45,15 @@ const handleMenuRouter = (value: any) => {
 </script>
 
 <style lang="scss">
+/** 菜单标题过长使用省略号 */
+.menu-ellipsis {
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  position: relative;
+}
+
 .el-menu--horizontal .el-menu-item {
   user-select: none;
   border: none !important;
@@ -86,6 +95,7 @@ const handleMenuRouter = (value: any) => {
 
 .el-popper.is-pure {
   border-radius: 8px;
+  border: none;
 }
 
 // 菜单折叠 hover 弹窗样式

@@ -12,7 +12,7 @@
               <el-sub-menu v-if="item.children?.length" :index="item.path + 'el-sub-menu'" :key="item.path">
                 <template #title>
                   <KoiGlobalIcon v-if="item.meta.icon" :name="item.meta.icon" size="18"></KoiGlobalIcon>
-                  <span v-text="getMenuLanguage(item.meta.title)"></span>
+                  <span class="menu-ellipsis" v-text="getMenuLanguage(item.meta.title)"></span>
                 </template>
                 <HorizontalSubMenu :menuList="item.children" />
               </el-sub-menu>
@@ -20,7 +20,7 @@
               <el-menu-item v-else :index="item.path" :key="item.path + 'el-menu-item'" @click="handleMenuRouter(item)">
                 <KoiGlobalIcon v-if="item.meta.icon" :name="item.meta.icon" size="18"></KoiGlobalIcon>
                 <template #title>
-                  <span v-text="getMenuLanguage(item.meta.title)"></span>
+                  <span class="menu-ellipsis" v-text="getMenuLanguage(item.meta.title)"></span>
                 </template>
               </el-menu-item>
             </template>
@@ -70,6 +70,15 @@ const activeMenu = computed(() => (route.meta.activeMenu ? route.meta.activeMenu
 </script>
 
 <style lang="scss" scoped>
+/** 菜单标题过长使用省略号 */
+.menu-ellipsis {
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  position: relative;
+}
+
 .layout-container {
   width: 100vw;
   height: 100vh;
