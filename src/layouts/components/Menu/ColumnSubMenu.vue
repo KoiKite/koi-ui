@@ -191,4 +191,46 @@ const handleMenuRouter = (value: any) => {
     color: var(--el-menu-parent-active-text-color) !important;
   }
 }
+
+/** 菜单收缩时悬浮显示的弹窗样式 - 移除border */
+.el-popper.is-pure {
+  border: none !important;
+  outline: none !important;
+}
+
+/** 菜单收缩时悬浮显示的二级、三级菜单 - 移除border */
+.el-menu--popup-container {
+  .el-menu--popup {
+    border: none !important;
+    outline: none !important;
+    
+    .el-menu-item {
+      border: none !important;
+      outline: none !important;
+    }
+    
+    .el-sub-menu {
+      border: none !important;
+      outline: none !important;
+      
+      .el-sub-menu__title {
+        border: none !important;
+        outline: none !important;
+      }
+    }
+  }
+}
+
+/** 覆盖所有层级的悬浮菜单border */
+.el-menu--popup {
+  border: none !important;
+  outline: none !important;
+  
+  .el-menu-item,
+  .el-sub-menu,
+  .el-sub-menu__title {
+    border: none !important;
+    outline: none !important;
+  }
+}
 </style>

@@ -95,7 +95,7 @@ const handleMenuRouter = (value: any) => {
 
 .el-popper.is-pure {
   border-radius: 8px;
-  border: none;
+  border: none !important;
 }
 
 // 菜单折叠 hover 弹窗样式
@@ -146,7 +146,6 @@ const handleMenuRouter = (value: any) => {
 .el-menu--popup-container {
   .el-menu--popup {
     background: var(--el-header-bg-color);
-    border: none;
   }
 }
 </style>
