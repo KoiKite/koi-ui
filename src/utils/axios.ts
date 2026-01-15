@@ -9,6 +9,14 @@ import i18n from "@/languages/index.ts";
 import { ElMessageBox } from "element-plus";
 import { createThrottleAdapter } from "@/utils/axiosThrottle.ts";
 
+// 扩展 AxiosRequestConfig 以支持 throttle 配置
+declare module 'axios' {
+  export interface AxiosRequestConfig {
+    /** 是否禁用节流，默认 true（启用节流） */
+    throttle?: boolean;
+  }
+}
+
 // axios配置[不含加密版本]
 const config = {
   // 接口请求的地址
