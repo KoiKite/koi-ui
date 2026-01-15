@@ -85,7 +85,7 @@ const breadcrumbList = computed(() => {
 });
 
 /** 点击面包屑 */
-const handleBreadcrumb = (item: any, index: number) => {
+const handleBreadcrumb = (item: any, index: number | string) => {
   if (breadcrumbList.value[0]?.path === STATIC_URL || breadcrumbList.value[1]?.path === STATIC_URL) {
     router.push(HOME_URL);
     return;

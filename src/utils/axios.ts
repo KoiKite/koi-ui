@@ -7,11 +7,13 @@ import { getToken } from "@/utils/storage.ts";
 import router from "@/routers/index.ts";
 import i18n from "@/languages/index.ts";
 import { ElMessageBox } from "element-plus";
+import { createThrottleAdapter } from "@/utils/axiosThrottle.ts";
 
 // axios配置[不含加密版本]
 const config = {
   // 接口请求的地址
   baseURL: import.meta.env.VITE_WEB_BASE_API,
+  adapter: createThrottleAdapter(),
   timeout: 12000
 };
 // 返回值类型
