@@ -84,9 +84,26 @@ const windowWidth = ref(window.innerWidth);
 
 // 计算对话框宽度，在页面小于600px时使用90%宽度
 const dialogWidth = computed(() => {
+  // 如果设置了全屏，直接返回100%
+  if (props.fullscreen) {
+    return "100%";
+  }
+
+  // 如果窗口宽度小于600px，使用90%宽度
   if (windowWidth.value < 600) {
     return "90%";
   }
+
+  // 如果对话框宽度大于窗口宽度，使用90%宽度
+  if (width.value > windowWidth.value) {
+    return "90%";
+  }
+
+ // 如果对话框宽度大于窗口宽度的95%，使用95%宽度（更平滑的过渡）
+  if (width.value > windowWidth.value * 0.95) {
+    return "95%";
+  }
+
   return width.value;
 });
 

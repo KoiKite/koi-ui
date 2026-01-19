@@ -38,7 +38,7 @@ const { t } = useI18n();
 interface IDrawerProps {
   title?: string;
   visible?: boolean;
-  size?: string;
+  size?: number | string;
   destroyOnClose?: boolean;
   closeOnClickModel?: boolean;
   confirmText?: string;
@@ -79,9 +79,37 @@ const handleResize = () => {
 
 // 计算抽屉大小
 const drawerSize = computed(() => {
-  if (windowWidth.value < 600) {
-    return "86%";
+  // 将size转换为数值（去掉可能的单位）
+  const sizeValue = parseFloat(String(props.size));
+  
+  // 处理不同方向的情况
+  const isHorizontal = props.direction === "ltr" || props.direction === "rtl";
+  
+  if (isHorizontal) {
+    // 水平方向（左右抽屉）：比较宽度
+    if (windowWidth.value < 600) {
+      return "86%";
+    }
+    
+    // 如果抽屉宽度大于窗口宽度，使用86%
+    if (sizeValue > windowWidth.value) {
+      return "86%";
+    }
+    
+    // 如果抽屉宽度大于窗口宽度的90%，使用90%
+    if (sizeValue > windowWidth.value * 0.9) {
+      return "90%";
+    }
+  } else {
+    // 垂直方向（上下抽屉）：比较高度
+    // 对于垂直抽屉，我们通常不会设置百分比，但可以根据需要调整
+    if (windowWidth.value < 600) {
+      // 小屏幕下，垂直抽屉使用更小的高度
+      return "60%";
+    }
   }
+  
+  // 返回原始size（可能是字符串或数字）
   return props.size;
 });
 
