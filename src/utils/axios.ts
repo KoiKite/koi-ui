@@ -1,5 +1,13 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 
+// 扩展 AxiosRequestConfig 以支持 throttle 配置
+declare module 'axios' {
+  export interface AxiosRequestConfig {
+    /** 是否禁用节流，默认 true（启用节流） */
+    throttle?: boolean;
+  }
+}
+
 import { koiMsgError, koiNoticeWarning, koiNoticeError } from "@/utils/koi.ts";
 import { LOGIN_URL } from "@/config/index.ts";
 import useUserStore from "@/stores/modules/user.ts";
@@ -8,14 +16,6 @@ import router from "@/routers/index.ts";
 import i18n from "@/languages/index.ts";
 import { ElMessageBox } from "element-plus";
 import { createThrottleAdapter } from "@/utils/axiosThrottle.ts";
-
-// 扩展 AxiosRequestConfig 以支持 throttle 配置
-declare module 'axios' {
-  export interface AxiosRequestConfig {
-    /** 是否禁用节流，默认 true（启用节流） */
-    throttle?: boolean;
-  }
-}
 
 // axios配置[不含加密版本]
 const config = {
@@ -30,6 +30,68 @@ export interface Result<T = any> {
   msg: string;
   data: T;
   trackId: string;
+}
+
+// 401 提示框显示标志，防止多个 401 请求同时弹出多个提示框
+let isShowing401MessageBox = false;
+
+/**
+ * 统一处理 401 未授权情况
+ * @returns Promise.reject
+ */
+function handle401Unauthorized(data: any) {
+  // 获取当前路由路径
+  const currentPath = router.currentRoute.value.path;
+  
+  // 如果当前是登录页面，直接清除token并拒绝请求
+  if (currentPath === "/" || currentPath === LOGIN_URL) {
+    const userStore = useUserStore();
+    userStore.setToken("");
+    return Promise.reject(data);
+  }
+
+  // 如果已经有提示框在显示，直接拒绝请求，避免重复弹出
+  if (isShowing401MessageBox) {
+    return Promise.reject(data);
+  }
+
+  // 非登录页面显示提示框
+  isShowing401MessageBox = true;
+  return new Promise((_, reject) => {
+    // 先关闭可能存在的其他提示框，然后延迟显示新的提示框
+    // 使用 requestAnimationFrame 确保在 DOM 更新后显示
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        ElMessageBox.confirm(i18n.global.t("msg.confirmLogin"), i18n.global.t("msg.remind"), {
+          confirmButtonText: i18n.global.t("button.confirm"),
+          cancelButtonText: i18n.global.t("button.cancel"),
+          type: "warning",
+          closeOnClickModal: false,
+          closeOnPressEscape: false,
+          showClose: false,
+          distinguishCancelAndClose: true
+        })
+          .then(() => {
+            const userStore = useUserStore();
+            userStore.setToken("");
+            koiMsgError(i18n.global.t("msg.confirmLogin"));
+            isShowing401MessageBox = false;
+            reject(i18n.global.t("button.confirm"));
+            setTimeout(() => {
+              router.replace(LOGIN_URL).catch(err => {
+                console.error("路由跳转失败:", err);
+                window.location.href = LOGIN_URL;
+              });
+            }, 0);
+          })
+          .catch(() => {
+            koiNoticeWarning(i18n.global.t("msg.cancelled"));
+            isShowing401MessageBox = false;
+            reject(i18n.global.t("msg.cancelled"));
+          });
+      }, 100); // 延迟 100ms 确保其他操作完成
+    });
+  });
 }
 
 class Yu {
@@ -71,41 +133,8 @@ class Yu {
         if (status == 200) {
           return res.data;
         } else if (status == 401) {
-          // 获取当前路由路径
-          const currentPath = router.currentRoute.value.path;
-          // 如果当前是登录页面，不显示提示框
-          if (currentPath === "/" || currentPath === LOGIN_URL) {
-            // 直接清除token并拒绝请求
-            const userStore = useUserStore();
-            userStore.setToken("");
-            return Promise.reject(res.data);
-          }
-
-          // 非登录页面显示提示框
-          return new Promise((_, reject) => {
-            ElMessageBox.close();
-            ElMessageBox.confirm(i18n.global.t("msg.confirmLogin"), i18n.global.t("msg.remind"), {
-              confirmButtonText: i18n.global.t("button.confirm"),
-              cancelButtonText: i18n.global.t("button.cancel"),
-              type: "warning"
-            })
-              .then(() => {
-                const userStore = useUserStore();
-                userStore.setToken("");
-                koiMsgError(i18n.global.t("msg.confirmLogin"));
-                reject(i18n.global.t("button.confirm"));
-                setTimeout(() => {
-                  router.replace(LOGIN_URL).catch(err => {
-                    console.error("路由跳转失败:", err);
-                    window.location.href = LOGIN_URL;
-                  });
-                }, 0);
-              })
-              .catch(() => {
-                koiNoticeWarning(i18n.global.t("msg.cancelled"));
-                reject(i18n.global.t("msg.cancelled"));
-              });
-          });
+          // 处理业务状态码 401
+          return handle401Unauthorized(res?.data);
         } else {
           // console.log("后端返回数据：", res.data.msg)
           koiNoticeError(res.data.msg + "" || "服务器偷偷跑到火星去玩了");
