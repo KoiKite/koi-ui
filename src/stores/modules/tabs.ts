@@ -98,16 +98,17 @@ const tabsStore = defineStore("tabs", {
       const currentIndex = this.tabList.findIndex(item => item.path === path);
       if (currentIndex !== -1) {
         const range = type === "left" ? [0, currentIndex] : [currentIndex + 1, this.tabList.length];
+        // isAffix === "1" 表示固定，不可关闭，需要保留
         this.tabList = this.tabList.filter((item, index) => {
-          return index < range[0] || index >= range[1] || !item.closable;
+          return index < range[0] || index >= range[1] || item.isAffix === "1";
         });
 
-        const closeTab = this.tabList.filter((item: any) => {
-          return !item.closable;
+        const fixedTabs = this.tabList.filter((item: any) => {
+          return item.isAffix === "1";
         });
 
         if (type === "left") { 
-          const nextTab = this.tabList[closeTab.length];
+          const nextTab = this.tabList[fixedTabs.length];
           router.push(nextTab?.path);
         }
   
@@ -123,18 +124,22 @@ const tabsStore = defineStore("tabs", {
     // 关闭多个选项卡，若tabValue传递有值并且选项卡数组中存在，则关闭除自己和固定选项卡之外的所有选项卡[关闭其他选项卡]，若tabValue不传值，则关闭除固定选项卡之外的所有选项卡[关闭所有选项卡]。
     async closeManyTabs(tabValue?: string) {
       const keepAliveStore = useKeepAliveStore();
+      // isAffix === "1" 表示固定，不可关闭，需要保留
       this.tabList = this.tabList.filter(item => {
-        return item.path === tabValue || !item.closable;
+        return item.path === tabValue || item.isAffix === "1";
       });
       // 重新设置路由缓存，将新的tabList的name覆盖keepAliveList
       const keepAliveList = this.tabList.filter(item => item.isKeepAlive);
       keepAliveStore.setKeepAliveName(keepAliveList.map(item => item.name));
     },
     // 选项卡是否固钉
-    async replaceIsAffix(tabPath?: string, closable?: boolean) {
+    async replaceIsAffix(tabPath?: string, isAffix?: string) {
       this.tabList.forEach(item => {
         if (item.path == tabPath) {
-          item.closable = closable;
+          // isAffix === "1" 表示固钉，isAffix === "0" 表示取消固钉
+          if (isAffix !== undefined) {
+            item.isAffix = isAffix;
+          }
         }
       });
     }

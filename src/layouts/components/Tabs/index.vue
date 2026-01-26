@@ -8,7 +8,7 @@
     @contextmenu.prevent="handleTabsMenuParent($event)"
   >
     <!-- :closable="true" 显示关闭图标 -->
-    <el-tab-pane v-for="item in tabList" :key="item.path" :label="item.title" :name="item.path" :closable="item.closable">
+    <el-tab-pane v-for="item in tabList" :key="item.path" :label="item.title" :name="item.path" :closable="getClosable(item)">
       <!-- 加载图标 -->
       <template #label>
         <div
@@ -17,6 +17,7 @@
         >
           <KoiGlobalIcon class="m-r-6px" v-show="item.icon" :name="item.icon" size="16"></KoiGlobalIcon>
           <div>{{ getMenuLanguage(item?.title) }}</div>
+          <KoiSvgIcon v-if="item.isAffix === '1'" name="koi-affixed" width="16" height="16" class="m-l-4px"></KoiSvgIcon>
         </div>
       </template>
     </el-tab-pane>
@@ -84,8 +85,8 @@ const initTabs = () => {
         title: item.meta.title,
         path: item.path,
         name: item.name,
-        closable: false,
-        isKeepAlive: item.meta.isKeepAlive
+        isKeepAlive: item.meta.isKeepAlive,
+        isAffix: "1" // 标记为固定
       };
       tabsStore.addTab(tabsParams);
     }
@@ -97,6 +98,13 @@ const tabList = computed(() => {
   return tabsStore.getTabs;
 });
 
+/** 根据 isAffix 计算 closable 值 */
+const getClosable = (item: any) => {
+  // isAffix === "1" 时，closable = false（固定，不可关闭）
+  // isAffix === "0" 时，closable = true（未固定，可关闭）
+  return item.isAffix === "1" ? false : true;
+};
+
 /** 2、添加后激活选项卡 */
 const activeTab = ref(route.fullPath);
 const setActiveTab = () => {
@@ -107,18 +115,23 @@ const setActiveTab = () => {
 const addTab = () => {
   // 解构路由数据
   const { meta, fullPath } = route;
+  
+  // 检查是否已存在该标签，如果已存在且已固定，保持固定状态
+  const existingTab = tabsStore.tabList.find((item: any) => item.path === fullPath);
+  const isAffixed = existingTab && existingTab.isAffix === "1";
+  
   // 构造选项卡数据
   const tab = {
     icon: meta.icon,
     title: meta.title as string,
     path: fullPath,
     name: route.name as string,
-    closable: route.meta.isAffix == "0", // true则显示关闭图标
-    isKeepAlive: route.meta.isKeepAlive
+    isKeepAlive: route.meta.isKeepAlive,
+    isAffix: isAffixed ? "1" : (route.meta.isAffix || "0") // 保存固定状态
   };
   if (fullPath == HOME_URL) {
     // 如果是首页的话，就固定不可关闭。
-    tab.closable = false;
+    tab.isAffix = "1";
   }
   // 添加到选项卡仓库里面
   tabsStore.addTab(tab);
@@ -236,6 +249,8 @@ const handleTabsMenuChildren = (path: any, value: any) => {
 :deep(.el-tabs__header) {
   margin: 0;
   padding-bottom: 0px !important;
+  display: flex;
+  align-items: center;
 }
 
 // 覆盖多余边框
@@ -243,14 +258,13 @@ const handleTabsMenuChildren = (path: any, value: any) => {
   border: none !important;
 }
 
-:deep(.el-tabs__nav-prev) {
-  // 标签页多了左侧图标
-  line-height: 30px;
-}
-
+:deep(.el-tabs__nav-prev),
 :deep(.el-tabs__nav-next) {
-  // 标签页多了右侧图标
-  line-height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  line-height: normal;
 }
 
 // 全局覆盖Element Plus的focus样式

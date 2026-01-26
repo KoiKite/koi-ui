@@ -313,7 +313,9 @@ export default {
     closeLeft: "Close Left",
     closeRight: "Close Right",
     closeOther: "Close Other",
-    closeAll: "Close All"
+    closeAll: "Close All",
+    affix: "Affix Tab",
+    unaffix: "Unfix Tab"
   },
   header: {
     searchMenu: "Search menu",

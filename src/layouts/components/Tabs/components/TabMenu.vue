@@ -20,13 +20,18 @@
     </div>
     <div icon="Remove" @click="handleCloseAllTabs()" class="tab-menu-item" v-if="isAlone">
       <el-icon size="16" class="m-r-5px"><Remove class="icon-bounce" /></el-icon>{{ $t("tabs.closeAll") }}
+    </div>  
+    <div @click="handleAffixTab()" class="tab-menu-item" v-if="handleShowAffix">
+      <KoiSvgIcon :name="isAffixed ? 'koi-unpinned' : 'koi-pinned'" class="m-r-5px icon-bounce"></KoiSvgIcon>
+      {{ isAffixed ? $t("tabs.unaffix") : $t("tabs.affix") }}
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { inject, nextTick, ref } from "vue";
+import { inject, nextTick, ref, computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { Remove } from "@element-plus/icons-vue";
 import useTabsStore from "@/stores/modules/tabs.ts";
 import useKeepAliveStore from "@/stores/modules/keepAlive.ts";
 import useGlobalStore from "@/stores/modules/global.ts";
@@ -45,6 +50,19 @@ const isCurrent = ref();
 const isAlone = ref();
 const hasLeft = ref();
 const hasRight = ref();
+
+/** 判断当前标签是否已固定 */
+const isAffixed = computed(() => {
+  if (!choosePath.value) return false;
+  const tab = tabsStore.tabList.find((item: any) => item.path === choosePath.value);
+  // isAffix === "1" 表示固钉，isAffix === "0" 表示取消固钉
+  return tab ? (tab.isAffix === "1") : false;
+});
+
+/** 判断是否显示固定标签选项（非首页才显示） */
+const handleShowAffix = computed(() => {
+  return choosePath.value && choosePath.value !== HOME_URL;
+});
 
 /**
  * 计算菜单位置，避免超出视口边界
@@ -109,13 +127,14 @@ const calculateMenuPosition = (card: HTMLElement, pageX: number, pageY: number) 
   return { left, top };
 };
 
+/** 处理鼠标右键点击父级菜单 */
 const handleKoiMenuParent = (e: any) => {
   const tabList = tabsStore.tabList;
 
   if (e.srcElement?.id) {
     choosePath.value = e.srcElement.id.split("-")[1];
     const tabsMenu = getMenuPositionAndClosable(tabList, choosePath.value);
-    isCurrent.value = tabsMenu?.closable;
+    isCurrent.value = tabsMenu?.isClosable;
     isAlone.value = tabsMenu?.isAlone;
     hasLeft.value = tabsMenu?.hasLeft;
     hasRight.value = tabsMenu?.hasRight;
@@ -154,6 +173,7 @@ const handleKoiMenuParent = (e: any) => {
   e.stopPropagation();
 };
 
+/** 处理鼠标右键点击子级菜单 */
 const handleKoiMenuChildren = (path: any, e: any) => {
   const tabList = tabsStore.tabList;
   choosePath.value = path;
@@ -163,7 +183,7 @@ const handleKoiMenuChildren = (path: any, e: any) => {
   e.preventDefault();
   if (card != null) {
     const tabsMenu = getMenuPositionAndClosable(tabList, choosePath.value);
-    isCurrent.value = tabsMenu?.closable;
+    isCurrent.value = tabsMenu?.isClosable;
     isAlone.value = tabsMenu?.isAlone;
     hasLeft.value = tabsMenu?.hasLeft;
     hasRight.value = tabsMenu?.hasRight;
@@ -199,7 +219,7 @@ const handleKoiMenuChildren = (path: any, e: any) => {
  * @param {string} targetPath - 目标路径
  * @returns {Object|null} 包含位置信息和关闭状态的对象，未找到时返回null
  * 首页 + 一个可关闭的页面tab情况：
- * 输入path："/home" 输出: { hasClosableLeft: false, hasClosableRight: true, hasLeft: false, hasRight: true, isAlone: false, closable: false }
+ * 输入path："/home" 输出: { hasClosableLeft: false, hasClosableRight: true, hasLeft: false, hasRight: true, isAlone: false, isClosable: false }
  */
 const getMenuPositionAndClosable = (tabsList: any, targetPath: string) => {
   // 1、查找目标菜单项的索引
@@ -210,23 +230,26 @@ const getMenuPositionAndClosable = (tabsList: any, targetPath: string) => {
 
   // 2、获取目标菜单项
   const menuItem = tabsList[index];
-  // 3、检查左侧是否存在可关闭的菜单项
-  const hasClosableLeft = tabsList.slice(0, index).some((item: any) => item.closable);
+  // 3、检查左侧是否存在可关闭的菜单项（isAffix !== "1" 表示可关闭）
+  const hasClosableLeft = tabsList.slice(0, index).some((item: any) => item.isAffix !== "1");
 
-  // 4、检查右侧是否存在可关闭的菜单项
-  const hasClosableRight = tabsList.slice(index + 1).some((item: any) => item.closable);
+  // 4、检查右侧是否存在可关闭的菜单项（isAffix !== "1" 表示可关闭）
+  const hasClosableRight = tabsList.slice(index + 1).some((item: any) => item.isAffix !== "1");
   // 5、计算位置信息
   const hasLeft = index > 0 && hasClosableLeft; // 左侧是否有菜单项
   const hasRight = index < tabsList.length - 1 && hasClosableRight; // 右侧是否有菜单项
   // 6、计算 isAlone: 先过滤掉所有可关闭的菜单项，然后判断是否只剩一个
-  const unclosableTabsList = tabsList.filter((item: any) => item.closable);
-  const isAlone = unclosableTabsList.length <= 1 ? false : true; // 是否只有当前这一个菜单项
+  const closableTabsList = tabsList.filter((item: any) => item.isAffix !== "1");
+  const isAlone = closableTabsList.length <= 1 ? false : true; // 是否只有当前这一个菜单项
+
+  // 根据 isAffix 计算 isClosable：isAffix === "1" 时不可关闭，isAffix !== "1" 时可关闭
+  const isClosable = menuItem.isAffix !== "1";
 
   return {
     hasLeft, // 左侧是否有其他菜单项
     hasRight, // 右侧是否有其他菜单项
     isAlone, // 当前是否只剩下这一个菜单项
-    closable: menuItem.closable // 关闭状态
+    isClosable // 是否可关闭
   };
 };
 
@@ -283,6 +306,20 @@ const handleCloseOtherTabs = () => {
 const handleCloseAllTabs = () => {
   tabsStore.closeManyTabs();
   router.push(HOME_URL);
+};
+
+/** 固定/取消固定标签 */
+const handleAffixTab = () => {
+  if (!choosePath.value) return;
+  
+  // 如果关闭的是首页，不允许取消固定
+  if (choosePath.value === HOME_URL && isAffixed.value) {
+    return;
+  }
+  
+  // 切换固定状态：isAffix === "1" 表示固钉，isAffix === "0" 表示取消固钉
+  const newIsAffix = isAffixed.value ? "0" : "1";
+  tabsStore.replaceIsAffix(choosePath.value, newIsAffix);
 };
 
 /** 组件对外暴露 */
