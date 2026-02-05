@@ -25,7 +25,7 @@
         </el-card>
       </el-col>
       <el-col :span="12" :lg="12" :md="12" :sm="24" :xs="24" class="m-t-5px">
-        <el-card class="rounded-md h-450px" shadow="hover">
+        <el-card class="rounded-md h-460px" shadow="hover">
           <template #header>
             <el-tag type="primary" effect="plain">地区异常订单排行</el-tag>
           </template>
@@ -33,7 +33,7 @@
         </el-card>
       </el-col>
       <el-col :span="12" :lg="12" :md="12" :sm="24" :xs="24" class="m-t-5px">
-        <el-card class="rounded-md h-450px" shadow="hover">
+        <el-card class="rounded-md h-460px" shadow="hover">
           <template #header>
             <el-tag type="primary" effect="plain">近10日订单量</el-tag>
           </template>
