@@ -6,10 +6,10 @@
     <div @click="handleMaximize()" class="tab-menu-item">
       <el-icon size="16" class="m-r-5px"><FullScreen class="icon-bounce" /></el-icon>{{ $t("tabs.maximize") }}
     </div>
-    <div @click="handleCloseCurrentTab()" class="tab-menu-item" v-if="isCurrent || isAlone">
+    <div @click="handleCloseCurrentTab()" class="tab-menu-item" v-if="(isCurrent || isAlone) && !isAffixed">
       <el-icon size="16" class="m-r-5px"><Close class="icon-bounce" /></el-icon>{{ $t("tabs.closeCurrent") }}
     </div>
-    <div @click="handleCloseOtherTabs()" class="tab-menu-item" v-if="isAlone">
+    <div @click="handleCloseOtherTabs()" class="tab-menu-item" v-if="hasLeft || hasRight">
       <el-icon size="16" class="m-r-5px"><Switch class="icon-bounce" /></el-icon>{{ $t("tabs.closeOther") }}
     </div>
     <div @click="handleCloseSideTabs('left')" class="tab-menu-item" v-if="hasLeft">
