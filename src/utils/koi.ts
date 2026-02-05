@@ -2,7 +2,7 @@
 import { ElNotification, ElMessageBox, ElMessage } from "element-plus";
 import i18n from '@/languages/index.ts';
 
-type MessageType = "info" | "success" | "error" | "warning";
+type MessageType = "primary" | "info" | "success" | "error" | "warning";
 
 /** 封装任意提示类型通知，默认info */
 export function koiNotice(message: any, title = i18n.global.t("msg.remind"), duration = 2000, type: MessageType = "info", parseHtml = false) {
@@ -88,7 +88,7 @@ export function koiNoticeInfo(message: any, title = i18n.global.t("msg.remind"),
 }
 
 /** 封装提示信息，默认info */
-export function koiMsg(message: any, plain = false, duration = 2000, type: MessageType = "info", parseHtml = false) {
+export function koiMsg(message: any, plain = true, duration = 2000, type: MessageType = "info", parseHtml = false) {
   ElMessage.closeAll();
   ElMessage({
     message,
@@ -101,7 +101,20 @@ export function koiMsg(message: any, plain = false, duration = 2000, type: Messa
 }
 
 /** 封装提示信息，默认success */
-export function koiMsgSuccess(message: any, plain = false, duration = 2000, type: MessageType = "success", parseHtml = false) {
+export function koiMsgPrimary(message: any, plain = true, duration = 2000, type: MessageType = "primary", parseHtml = false) {
+  ElMessage.closeAll();
+  ElMessage({
+    message,
+    plain: plain,
+    duration: duration,
+    type,
+    showClose: true,
+    dangerouslyUseHTMLString: parseHtml
+  });
+}
+
+/** 封装提示信息，默认success */
+export function koiMsgSuccess(message: any, plain = true, duration = 2000, type: MessageType = "success", parseHtml = false) {
   ElMessage.closeAll();
   ElMessage({
     message,
@@ -114,7 +127,7 @@ export function koiMsgSuccess(message: any, plain = false, duration = 2000, type
 }
 
 /** 封装提示信息，默认error */
-export function koiMsgError(message: any, plain = false, duration = 2000, type: MessageType = "error", parseHtml = false) {
+export function koiMsgError(message: any, plain = true, duration = 2000, type: MessageType = "error", parseHtml = false) {
   ElMessage.closeAll();
   ElMessage({
     message,
@@ -127,7 +140,7 @@ export function koiMsgError(message: any, plain = false, duration = 2000, type: 
 }
 
 /** 封装提示信息，默认warning */
-export function koiMsgWarning(message: any, plain = false, duration = 2000, type: MessageType = "warning", parseHtml = false) {
+export function koiMsgWarning(message: any, plain = true, duration = 2000, type: MessageType = "warning", parseHtml = false) {
   ElMessage.closeAll();
   ElMessage({
     message,
@@ -140,7 +153,7 @@ export function koiMsgWarning(message: any, plain = false, duration = 2000, type
 }
 
 /** 封装提示信息，默认info */
-export function koiMsgInfo(message: any, plain = false, duration = 2000, type: MessageType = "info", parseHtml = false) {
+export function koiMsgInfo(message: any, plain = true, duration = 2000, type: MessageType = "info", parseHtml = false) {
   ElMessage.closeAll();
   ElMessage({
     message,
