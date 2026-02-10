@@ -33,11 +33,12 @@ export default defineConfig(({ command, mode }: ConfigEnv): UserConfig => {
       viteMockServe({
         // 解析根目录下的mock文件夹
         mockPath: "mock",
-        enable: command === "serve", // 保证开发阶段可以使用mock接口
-        // @ts-ignore
-        supportTs: true, // 打开后，可以读取 ts 文件模块。 请注意，打开后将无法监视.js 文件。
-        watchFiles: true // 监视文件更改 更改mock的时候，不需要重新启动编译
-        // prodEnabled:true // 设置打包是否启用mock功能
+        // 开发环境启用 mock
+        enable: command === "serve",
+        // 监视文件更改，更改 mock 文件时不需要重新启动编译
+        watchFiles: true,
+        // 是否在控制台显示请求日志[开发环境推荐开启，方便调试]
+        logger: true
       })
     ],
     resolve: {
@@ -85,6 +86,7 @@ export default defineConfig(({ command, mode }: ConfigEnv): UserConfig => {
         "@vueuse/core",
         "echarts",
         "vue-i18n",
+        "sortablejs",
         "element-plus/es/components/form/style/css",
         "element-plus/es/components/form-item/style/css",
         "element-plus/es/components/button/style/css",
