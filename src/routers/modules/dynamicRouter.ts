@@ -54,7 +54,7 @@ export const initDynamicRouter = async () => {
     // 4、检查所有路由是否都注册成功
     const allRoutes = router.getRoutes();
     const allRegistered = authStore.menuList.every((menu: any) => 
-      allRoutes.some(route => route.name === menu.name)
+      allRoutes.some((route: any) => route.name === menu.name)
     );
 
     if (!allRegistered) {

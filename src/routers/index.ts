@@ -1,7 +1,7 @@
 import { createRouter, createWebHashHistory, createWebHistory } from "vue-router";
 import { layoutRouter, staticRouter, errorRouter } from "@/routers/modules/staticRouter";
 import nprogress from "@/utils/nprogress";
-import { RouteLocationNormalized, NavigationGuardNext } from "vue-router";
+import { RouteLocationNormalized } from "vue-router";
 import useUserStore from "@/stores/modules/user.ts";
 import useAuthStore from "@/stores/modules/auth.ts";
 import { LOGIN_URL, ROUTER_WHITE_LIST } from "@/config/index.ts";
@@ -36,8 +36,9 @@ const router = createRouter({
 
 /**
  * @description 前置路由
+ * Vue Router 4.x 新语法：不再使用 next() 回调，直接返回路由对象或 true/false
  */
-router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
+router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormalized) => {
   const userStore = useUserStore();
   const authStore = useAuthStore();
 
@@ -46,34 +47,40 @@ router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormali
   // 2、标题切换，没有放置后置路由，是因为页面路径不存在，title会变成undefined
   document.title = getMenuLanguage(to.meta?.title as string) || "KOI-ADMIN";
 
-  // 3、判断是访问登陆页，有Token访问当前页面，token过期访问接口，axios封装则自动跳转登录页面，没有Token重置路由到登陆页。
+  // 3、判断是访问登录页，有Token访问当前页面，token过期访问接口，axios封装则自动跳转登录页面，没有Token重置路由到登陆页。
   if (to.path.toLocaleLowerCase() === LOGIN_URL) {
-    // 有Token访问当前页面
+    // 有Token访问当前页面，重定向到之前访问的页面或首页
     if (userStore.token) {
-      return next(from.fullPath);
+      return from.fullPath && from.fullPath !== LOGIN_URL ? from.fullPath : "/";
     } else {
       koiMsgWarning(i18n.global.t("msg.confirmLogin"));
     }
-    // 没有Token重置路由到登陆页。
+    // 登录页需要清空路由，否则会显示之前的路由。
     resetRouter();
-    return next();
+    return true; // 允许访问登录页
   }
 
   // 4、判断访问页面是否在路由白名单地址[静态路由]中，如果存在直接放行。
-  if (ROUTER_WHITE_LIST.some((pattern: any) => isPathMatch(pattern, to.path))) return next();
+  if (ROUTER_WHITE_LIST.some((pattern: any) => isPathMatch(pattern, to.path))) {
+    return true; // 允许访问白名单路由
+  }
 
   // 5、判断是否有 Token，没有重定向到 login 页面。
-  if (!userStore.token) return next({ path: LOGIN_URL, replace: true });
+  if (!userStore.token) {
+    return { path: LOGIN_URL, replace: true }; // 重定向到登录页
+  }
 
   // 6、如果没有菜单列表[一级扁平化路由 OR 递归菜单路由数据判断是否存在都阔以]，就重新请求菜单列表并添加动态路由。
   if (!authStore.getMenuList.length) {
     // 注意：authStore.getMenuList，不能持久化菜单数据，否则这里一直有值，就不会走这里，而且持久化之后还会被篡改数据。
     // 获取相关菜单数据 && 按钮数据 && 角色数据[to.meta.roles获取角色信息进行判断] && 用户信息。
     await initDynamicRouter();
-    return next({ ...to, replace: true }); // ...to 保证路由添加完了再进入页面 (可以理解为重进一次) replace: true 重进一次, 不保留重复历史
+    // ...to 保证路由添加完了再进入页面 (可以理解为重进一次) replace: true 重进一次, 不保留重复历史
+    return { ...to, replace: true };
   }
+  
   // 7、正常访问页面。
-  next();
+  return true; // 允许访问
 });
 
 /**
@@ -92,7 +99,7 @@ export const resetRouter = () => {
 /**
  * @description 路由跳转错误
  */
-router.onError(error => {
+router.onError((error: any) => {
   // 结束全屏动画
   nprogress.done();
   console.warn("路由错误", error.message);
