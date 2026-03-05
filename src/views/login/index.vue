@@ -128,6 +128,7 @@ import useUserStore from "@/stores/modules/user.ts";
 import useKeepAliveStore from "@/stores/modules/keepAlive.ts";
 import { HOME_URL, LOGIN_URL } from "@/config/index.ts";
 import { initDynamicRouter } from "@/routers/modules/dynamicRouter.ts";
+import { resetRouter } from "@/routers/index.ts";
 import useTabsStore from "@/stores/modules/tabs.ts";
 import logo from "@/assets/images/logo/logo.webp";
 import bg from "@/assets/images/login/bg.png";
@@ -244,6 +245,7 @@ const handleKoiLogin = () => {
     if (valid) {
       try {
         loading.value = true;
+        resetRouter();
         // 1、执行登录接口
         // const res: any = await koiLogin({ loginName, password, codeKey, securityCode });
         // userStore.setToken(res.data.tokenValue);

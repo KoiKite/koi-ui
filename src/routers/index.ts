@@ -88,6 +88,9 @@ router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormali
  */
 export const resetRouter = () => {
   const authStore = useAuthStore();
+  if (!authStore.getMenuList.length) {
+    return;
+  }
   authStore.getMenuList.forEach((route: any) => {
     const { name } = route;
     if (name && router.hasRoute(name)) {
