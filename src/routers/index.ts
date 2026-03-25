@@ -6,6 +6,8 @@ import useUserStore from "@/stores/modules/user.ts";
 import useAuthStore from "@/stores/modules/auth.ts";
 import { LOGIN_URL, ROUTER_WHITE_LIST } from "@/config/index.ts";
 import { koiMsgWarning } from "@/utils/koi.ts";
+import { ElMessageBox } from 'element-plus';
+import { useDebounceFn } from '@vueuse/core';
 import { initDynamicRouter } from "@/routers/modules/dynamicRouter.ts";
 import { getMenuLanguage, isPathMatch } from "@/utils/index.ts";
 import i18n from '@/languages/index.ts';
@@ -106,6 +108,11 @@ router.onError((error: any) => {
   // 结束全屏动画
   nprogress.done();
   console.warn("路由错误", error.message);
+  // 匹配动态导入模块失败的特定错误信息
+  if (error.message.includes('Failed to fetch dynamically imported module')) {
+    // 调用防抖后的刷新函数
+    failFetchModule();
+  }
 });
 
 /**
@@ -117,5 +124,27 @@ router.afterEach((to: RouteLocationNormalized, from: RouteLocationNormalized) =>
   // 结束全屏动画
   nprogress.done();
 });
+
+/**
+ * 处理路由模块加载失败的逻辑
+ * @description 当动态导入的组件（路由懒加载）加载失败时，提示用户并刷新页面
+ */
+export const failFetchModule = useDebounceFn(() => {
+  ElMessageBox.confirm('页面加载失败，是否刷新?', '提示', {
+    type: 'warning',
+    // 确认按钮的文本
+    confirmButtonText: '刷新',
+    // 取消按钮的文本
+    cancelButtonText: '取消'
+  })
+    .then(() => {
+      // 确认刷新，强制重新加载整个页面
+      window.location.reload();
+    })
+    .catch(() => {
+      // 用户点击取消，可以在这里记录错误日志或执行其他逻辑
+      console.log('用户取消了刷新');
+    });
+}, 1500);
 
 export default router;

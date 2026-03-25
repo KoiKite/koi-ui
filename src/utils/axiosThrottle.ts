@@ -34,7 +34,12 @@ export interface ThrottleAdapterOptions {
   threshold?: number;
   /** 需要节流的 HTTP 方法列表，默认 ['get', 'post', 'put', 'patch'] */
   methods?: string[];
-  /** 需要排除节流的 URL 模式（支持正则表达式字符串或函数） */
+  /**
+   * 需要排除节流的 URL 模式
+   * - string：支持 `*` / `**` glob 通配符，也兼容旧的 `includes` 子串匹配
+   * - RegExp：直接用 `test`
+   * - function：自定义匹配
+   */
   excludeUrls?: Array<string | RegExp | ((url: string) => boolean)>;
   /** 需要排除节流的请求方法列表 */
   excludeMethods?: string[];
@@ -133,8 +138,44 @@ const shouldExcludeUrl = (
     return false;
   }
 
+  const globToRegExp = (glob: string): RegExp => {
+    // 将 glob 字符串转换为正则：支持 **(任意层级) 和 *(同层任意)。
+    // 不做 ^ $ 锚定以兼容 url 中可能存在 baseURL/查询参数等情况。
+    let re = "";
+    for (let i = 0; i < glob.length; i++) {
+      const ch = glob[i];
+      const next = glob[i + 1];
+
+      if (ch === "*" && next === "*") {
+        re += ".*";
+        i++;
+        continue;
+      }
+
+      if (ch === "*") {
+        // `*` 只匹配不包含 `/` 的片段（按路径语义）
+        re += "[^/]*";
+        continue;
+      }
+
+      // escape regex special chars
+      if (/[\\^$+?.()|[\]{}]/.test(ch)) {
+        re += `\\${ch}`;
+      } else {
+        re += ch;
+      }
+    }
+
+    return new RegExp(re);
+  };
+
   return excludeUrls.some(pattern => {
     if (typeof pattern === 'string') {
+      // 兼容 glob 写法：`/koi/upload/**`
+      if (pattern.includes("*")) {
+        return globToRegExp(pattern).test(url);
+      }
+      // 旧逻辑：子串匹配
       return url.includes(pattern);
     }
     if (pattern instanceof RegExp) {
@@ -195,7 +236,7 @@ const getDefaultAdapter = (): AxiosAdapter => {
  * const adapter = createThrottleAdapter(undefined, {
  *   threshold: 2000,
  *   methods: ['get', 'post'],
- *   excludeUrls: ['/api/upload', /^\/api\/export/]
+ *   excludeUrls: ['/api/upload', '/api/upload/**']
  * });
  * axiosInstance.defaults.adapter = adapter;
  */
@@ -219,7 +260,7 @@ export const createThrottleAdapter = (
   const {
     threshold = 1000,
     methods = ['get', 'post', 'put', 'patch'],
-    excludeUrls = [],
+    excludeUrls = ['/koi/upload/**'],
     excludeMethods = ['options', 'head'],
     cleanupInterval = 30000,
     clearOnError = true,

@@ -16,6 +16,7 @@ import "element-plus/theme-chalk/dark/css-vars.css";
 // 引入I18n语言配置
 import I18n from "@/languages/index";
 // SVG插件配置
+// @ts-ignore
 import "virtual:svg-icons-register";
 // 引入animate
 import "animate.css";
