@@ -74,17 +74,17 @@ onMounted(() => {
 
 // 前后端版本Gitee地址
 const handleKoiAdminGitee = () => {
-  koiMsgSuccess("前后端版本JAVA[169元]，博客版本 + 管理平台[366元]~");
+  koiMsgSuccess("前后端版本JAVA[188元]，博客版本 + 管理平台[366元]~");
 };
 
 // 纯前端Gitee地址
 const handleKoiUIGitee = () => {
-  window.open("https://gitee.com/BigCatHome/koi-ui", "_blank");
+  window.open("https://gitee.com/KoiKite/koi-ui", "_blank");
 };
 
 // 纯前端GitHub地址
 const handleKoiUIGitHub = () => {
-  koiMsgSuccess("前后端版本JAVA[169元]，博客版本 + 管理平台[366元]~");
+  window.open("https://github.com/KoiKite/koi-ui", "_blank");
 };
 </script>
 

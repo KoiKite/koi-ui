@@ -56,6 +56,7 @@ const handleSwitchDark = async (event: MouseEvent) => {
       {
         duration: 300,
         easing: "ease-in",
+        fill: "both",
         pseudoElement: globalStore.isDark ? "::view-transition-new(root)" : "::view-transition-old(root)"
       }
     );

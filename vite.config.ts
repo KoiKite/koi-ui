@@ -5,8 +5,6 @@ import vueSetupExtend from "vite-plugin-vue-setup-extend";
 // 引入svg需要的插件
 import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
 import Unocss from "unocss/vite";
-// 数据mock配置
-import { viteMockServe } from "vite-plugin-mock";
 // gzip压缩
 import viteCompression from "vite-plugin-compression";
 // 图片压缩
@@ -15,7 +13,7 @@ import path from "path";
 
 // https://vitejs.dev/config/
 // 配置mock根据官网，这里写法将改成箭头函数
-export default defineConfig(({ command, mode }: ConfigEnv): UserConfig => {
+export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
   const env = loadEnv(mode, process.cwd()); // 获取配置文件别名配置
   return {
     plugins: [
@@ -28,17 +26,6 @@ export default defineConfig(({ command, mode }: ConfigEnv): UserConfig => {
         // 配置SVG图片
         iconDirs: [path.resolve(process.cwd(), "src/assets/icons")],
         symbolId: "icon-[dir]-[name]"
-      }),
-      // 配置mock
-      viteMockServe({
-        // 解析根目录下的mock文件夹
-        mockPath: "mock",
-        // 开发环境启用 mock
-        enable: command === "serve",
-        // 监视文件更改，更改 mock 文件时不需要重新启动编译
-        watchFiles: true,
-        // 是否在控制台显示请求日志[开发环境推荐开启，方便调试]
-        logger: true
       })
     ],
     resolve: {
