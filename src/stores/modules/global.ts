@@ -17,6 +17,8 @@ const globalStore = defineStore("global", {
       isFullScreen: false,
       // 是否折叠菜单
       isCollapse: false,
+      // 分栏布局第一列是否折叠
+      isColumnFirstCollapse: false,      
       // 菜单展开宽度[默认：220px]
       menuWidth: 220,
       // 默认关闭黑暗模式
@@ -57,6 +59,11 @@ const globalStore = defineStore("global", {
       this.isCollapse = value;
       return this.isCollapse;
     },
+    // 设置分栏布局第一列折叠
+    setColumnFirstCollapse(value: boolean) {
+      this.isColumnFirstCollapse = value;
+      return this.isColumnFirstCollapse;
+    },    
     // 设置左侧菜单宽度
     setMenuWidth(value: number) {
       this.menuWidth = value;

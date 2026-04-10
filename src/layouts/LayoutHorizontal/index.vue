@@ -85,7 +85,7 @@ const activeMenu = computed(() => (route.meta.activeMenu ? route.meta.activeMenu
 
   .layout-header {
     box-sizing: border-box;
-    padding: 0 20px 0 0;
+    padding: 0 $layout-header-padding-x;
     display: flex;
     align-items: center;
     justify-content: space-between;

@@ -5,7 +5,7 @@
         <img class="w-60px h-60px rounded-full select-none user-avatar" src="https://pic4.zhimg.com/v2-702a23ebb518199355099df77a3cfe07_1440w.webp" alt="avatar" />
         <div class="p-l-20px">
           <div class="font-bold p-b-8px whitespace-nowrap">
-            <span>KOI-ADMIN/</span><span class="c-#6169FF" @click="handleKoiAdminGitee">前后端版本[169块]</span><span>/</span
+            <span>KOI-ADMIN/</span><span class="c-#6169FF" @click="handleKoiAdminGitee">前后端版本[188块]</span><span>/</span
             ><span class="c-#409EFF" @click="handleKoiUIGitee">纯前端[Gitee]</span><span>/</span
             ><span class="c-orange" @click="handleKoiUIGitHub">纯前端[GitHub]</span>
           </div>

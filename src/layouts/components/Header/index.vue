@@ -42,7 +42,7 @@ import Toolbar from "@/layouts/components/Header/components/Toolbar.vue";
     z-index: 10; /* 确保在 header-left 上方 */
     height: 40px;
     transform: translateY(-50%);
-    padding: 2px 12px;
+    padding: 2px 6px;
     // background: var(--el-bg-color);
     background-color: var(--el-header-bg-color); /* 添加背景色确保覆盖效果 */
     border: 1px solid var(--el-header-toolbar-border-color); /* 添加边框 */

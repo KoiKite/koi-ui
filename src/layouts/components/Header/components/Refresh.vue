@@ -5,7 +5,7 @@
     @click="handleRefresh"
   >
     <el-tooltip :content="$t('header.refreshCache')">
-      <KoiGlobalIcon name="koi-refresh-arrow" size="18" />
+      <KoiGlobalIcon name="koi-refresh-arrow" size="17" />
     </el-tooltip>
   </div>
 </template>

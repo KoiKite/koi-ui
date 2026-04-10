@@ -2,31 +2,33 @@
   <!-- 混合布局 -->
   <el-container class="layout-container">
     <el-aside
-      class="layout-aside transition-all"
+      class="layout-optimum-aside transition-all"
       :style="{ width: !globalStore.isCollapse ? globalStore.menuWidth + 'px' : settings.columnMenuCollapseWidth }"
       v-if="currentSubMenuTree.length > 0"
     >
       <Logo :isCollapse="globalStore.isCollapse" :layout="globalStore.layout"></Logo>
-      <el-scrollbar class="layout-scrollbar">
-        <el-menu
-          :default-active="activeMenu"
-          :collapse="globalStore.isCollapse"
-          :collapse-transition="false"
-          :uniqueOpened="globalStore.uniqueOpened"
-          :router="false"
-          :class="menuAnimate"
-        >
-          <ColumnSubMenu :menuList="currentSubMenuTree"></ColumnSubMenu>
-        </el-menu>
-      </el-scrollbar>
+      <div class="layout-optimum-menu-scroller">
+        <div class="layout-optimum-menu-pad">
+          <el-menu
+            :default-active="activeMenu"
+            :collapse="globalStore.isCollapse"
+            :collapse-transition="false"
+            :uniqueOpened="globalStore.uniqueOpened"
+            :router="false"
+            :class="menuAnimate"
+          >
+            <ColumnSubMenu :menuList="currentSubMenuTree"></ColumnSubMenu>
+          </el-menu>
+        </div>
+      </div>
     </el-aside>
     <el-container>
       <el-header class="layout-header">
         <div class="koi-header">
-          <div class="header-left" :style="{ paddingRight: toolbarWidth + 16 + 'px' }">
+          <div class="header-left" :style="{ paddingRight: toolbarWidth + 10 + 'px' }">
             <!-- 左侧菜单展开和折叠图标 -->
             <Collapse></Collapse>
-            <div class="layout-row m-l-12px">
+            <div class="layout-row m-l-6px">
               <el-scrollbar class="horizontal-scrollbar" ref="horizontalScrollbarRef">
                 <div class="horizontal-menu">
                   <div
@@ -357,7 +359,7 @@ onBeforeUnmount(() => {
     z-index: 10; /* 确保在 header-left 上方 */
     height: 40px;
     transform: translateY(-50%);
-    padding: 2px 12px;
+    padding: 2px 6px;
     background-color: var(--el-header-bg-color);
     border: 1px solid var(--el-header-toolbar-border-color); /* 添加边框 */
     border-radius: 20px; /* 圆角卡片效果 */
@@ -373,7 +375,7 @@ onBeforeUnmount(() => {
   min-width: 0;
   user-select: none;
   background-color: var(--el-header-bg-color);
-  padding-left: 10px;
+  padding-left: 4px;
   position: relative;
   overflow: hidden;
 
@@ -503,11 +505,31 @@ onBeforeUnmount(() => {
   height: 100vh;
   overflow: hidden;
 
-  .layout-aside {
-    padding-right: $column-menu-padding-right;
+  .layout-optimum-aside {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    min-height: 0;
     padding-left: $column-menu-padding-left;
+    padding-right: 0;
     background-color: var(--el-menu-bg-color);
     border-right: 1px solid var(--el-aside-border-right-color);
+    box-sizing: border-box;
+    user-select: none;
+  }
+
+  .layout-optimum-aside :deep(.el-menu) {
+    height: auto;
+    min-height: 0;
+    max-height: none;
+    border-right: none;
+    box-sizing: border-box;
+  }
+
+  .layout-optimum-aside :deep(.el-menu.el-menu--collapse) {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
   }
 
   .layout-header {
@@ -523,18 +545,18 @@ onBeforeUnmount(() => {
   }
 }
 
-.layout-scrollbar {
+.layout-optimum-menu-scroller {
+  flex: 1;
+  min-height: 0;
   width: 100%;
-  height: calc(100vh - $aside-header-height);
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -ms-scroll-chaining: none;
 }
 
-.el-menu {
-  border-right: none;
-}
-</style>
-
-<style lang="scss">
-.el-menu--collapse {
-  width: calc(var(--el-menu-icon-width) + var(--el-menu-base-level-padding)) !important;
+.layout-optimum-menu-pad {
+  padding-right: $column-menu-padding-right;
+  box-sizing: border-box;
 }
 </style>

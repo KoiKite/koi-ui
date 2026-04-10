@@ -2,26 +2,28 @@
   <el-container class="layout-container">
     <el-header class="layout-header">
       <Logo :layout="globalStore.layout" class="flex-shrink-0"></Logo>
-      <Header class="header m-l-20px"></Header>
+      <Header class="header m-l-8px"></Header>
     </el-header>
     <el-container class="layout-container-aside">
       <el-aside
-        class="layout-aside transition-all"
+        class="layout-classic-aside transition-all"
         :style="{ width: !globalStore.isCollapse ? globalStore.menuWidth + 'px' : settings.asideMenuCollapseWidth }"
       >
-        <el-scrollbar class="layout-scrollbar">
-          <!-- :unique-opened="true" 子菜单不能同时展开 -->
-          <el-menu
-            :default-active="activeMenu"
-            :collapse="globalStore.isCollapse"
-            :collapse-transition="false"
-            :uniqueOpened="globalStore.uniqueOpened"
-            :router="false"
-            :class="menuAnimate"
-          >
-            <AsideSubMenu :menuList="menuList"></AsideSubMenu>
-          </el-menu>
-        </el-scrollbar>
+        <div class="layout-classic-menu-scroller">
+          <div class="layout-classic-menu-pad">
+            <!-- :unique-opened="true" 子菜单不能同时展开 -->
+            <el-menu
+              :default-active="activeMenu"
+              :collapse="globalStore.isCollapse"
+              :collapse-transition="false"
+              :uniqueOpened="globalStore.uniqueOpened"
+              :router="false"
+              :class="menuAnimate"
+            >
+              <AsideSubMenu :menuList="menuList"></AsideSubMenu>
+            </el-menu>
+          </div>
+        </div>
       </el-aside>
       <el-container class="flex flex-col">
         <!-- 路由页面 -->
@@ -46,8 +48,6 @@ const route = useRoute();
 const authStore = useAuthStore();
 const globalStore = useGlobalStore();
 
-console.log("左侧动态路由", authStore.showMenuList);
-
 // 动态绑定左侧菜单animate动画
 const menuAnimate = ref(settings.menuAnimate);
 const menuList = computed(() => authStore.showMenuList);
@@ -57,15 +57,26 @@ const activeMenu = computed(() => (route.meta.activeMenu ? route.meta.activeMenu
 
 <style lang="scss" scoped>
 .layout-container {
+  display: flex;
+  flex-direction: column;
   width: 100vw;
   height: 100vh;
+  overflow: hidden;
   .layout-container-aside {
+    flex: 1;
+    min-height: 0;
     overflow: hidden;
-    .layout-aside {
-      padding-right: $aside-menu-padding-right; // 左侧布局右边距[用于悬浮和选择更明显]
-      padding-left: $aside-menu-padding-left; // 左侧布局左边距[用于悬浮和选择更明显]
+    .layout-classic-aside {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      min-height: 0;
+      padding-left: $aside-menu-padding-left;
+      padding-right: 0;
       background-color: var(--el-menu-bg-color);
       border-right: 1px solid var(--el-aside-border-right-color);
+      box-sizing: border-box;
+      user-select: none;
     }
   }
   .layout-header {
@@ -81,13 +92,32 @@ const activeMenu = computed(() => (route.meta.activeMenu ? route.meta.activeMenu
   }
 }
 
-.layout-scrollbar {
+.layout-classic-menu-scroller {
+  flex: 1;
+  min-height: 0;
   width: 100%;
-  height: calc(100vh - $aside-header-height);
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -ms-scroll-chaining: none;
 }
 
-/** 去除菜单右侧边框 */
-.el-menu {
+.layout-classic-menu-pad {
+  padding-right: $aside-menu-padding-right;
+  box-sizing: border-box;
+}
+
+.layout-classic-aside :deep(.el-menu) {
+  height: auto;
+  min-height: 0;
+  max-height: none;
   border-right: none;
+  box-sizing: border-box;
+}
+
+.layout-classic-aside :deep(.el-menu.el-menu--collapse) {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 </style>

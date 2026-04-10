@@ -22,7 +22,7 @@
 
 /* 悬浮在滑块上时为滑块设置背景颜色 */
 ::-webkit-scrollbar-thumb {
-  background: var(--el-border-color-darker);
+  background: var(--el-border-color-dark);
   border-radius: 6px;
 
   &:hover {

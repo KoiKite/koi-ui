@@ -1,3 +1,5 @@
+@use "./variable.scss" as *;
+
 /* 当前页面最大化CSS */
 .main-maximize {
   .el-aside,
@@ -7,6 +9,11 @@
   .layout-tabs {
     display: none !important;
   }
+}
+
+/* 各布局顶栏 el-header.layout-header */
+.el-header.layout-header {
+  --el-header-padding: 0 #{$layout-header-padding-x};
 }
 
 /* 图标颜色 */

@@ -69,9 +69,9 @@ const logoContainerClass = computed(() => {
   const baseClass = "rounded-full";
   switch (props.layout) {
     case 'classic':
-      return `${baseClass} m-l--14px`;
+      return `${baseClass} m-l--4px`;
     case 'horizontal':
-      return `${baseClass} m-l-6px`;
+      return `${baseClass}`;
     default:
       return baseClass;
   }

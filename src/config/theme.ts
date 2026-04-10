@@ -79,7 +79,7 @@ export const asideTheme: any = {
 export const menuTheme: any = {
   light: {
     "--el-menu-bg-color": "#FFFFFF",
-    "--el-menu-hover-bg-color": "#F4F4F5",
+    "--el-menu-hover-bg-color": "#F2F4F5",
     "--el-menu-active-bg-color": "var(--el-color-primary-light-9)",
     "--el-menu-text-color": "#333639",
     "--el-menu-hover-text-color": "var(--el-color-primary)",

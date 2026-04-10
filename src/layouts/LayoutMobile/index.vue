@@ -25,18 +25,22 @@
     :close-on-click-modal="true"
   >
     <div class="mobile-drawer-inner">
-      <Logo layout="mobile"></Logo>
-      <el-scrollbar class="mobile-drawer-scrollbar">
-        <el-menu
-          :default-active="activeMenu"
-          :collapse-transition="false"
-          :uniqueOpened="globalStore.uniqueOpened"
-          :router="false"
-          :class="menuAnimate"
-        >
-          <ColumnSubMenu :menuList="menuList"></ColumnSubMenu>
-        </el-menu>
-      </el-scrollbar>
+      <div class="mobile-drawer-logo">
+        <Logo layout="mobile"></Logo>
+      </div>
+      <div class="mobile-drawer-menu-scroller">
+        <div class="mobile-drawer-menu-pad">
+          <el-menu
+            :default-active="activeMenu"
+            :collapse-transition="false"
+            :uniqueOpened="globalStore.uniqueOpened"
+            :router="false"
+            :class="menuAnimate"
+          >
+            <ColumnSubMenu :menuList="menuList"></ColumnSubMenu>
+          </el-menu>
+        </div>
+      </div>
     </div>
   </el-drawer>
 </template>
@@ -87,15 +91,39 @@ const activeMenu = computed(() => (route.meta.activeMenu ? route.meta.activeMenu
   background-color: var(--el-menu-bg-color);
 }
 
-.mobile-drawer-scrollbar {
+.mobile-drawer-logo {
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+.mobile-drawer-menu-scroller {
   flex: 1;
   min-height: 0;
   width: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -ms-scroll-chaining: none;
 }
 
-/** 去除菜单右侧边框 */
-.el-menu {
+.mobile-drawer-menu-pad {
+  padding-right: $aside-menu-padding-right;
+  box-sizing: border-box;
+}
+
+.mobile-drawer-inner :deep(.el-menu) {
+  height: auto;
+  min-height: 0;
+  max-height: none;
   border-right: none;
+  box-sizing: border-box;
+}
+
+/* 若抽屉菜单日后开启 collapse，与纵向布局一致避免窄宽度裁掉右侧留白 */
+.mobile-drawer-inner :deep(.el-menu.el-menu--collapse) {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 .layout-container {
   width: 100vw;
