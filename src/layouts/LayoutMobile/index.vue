@@ -88,6 +88,7 @@ const activeMenu = computed(() => (route.meta.activeMenu ? route.meta.activeMenu
   box-sizing: border-box;
   height: 100%;
   min-height: 0;
+  padding-left: $aside-menu-padding-left;
   background-color: var(--el-menu-bg-color);
 }
 
@@ -149,8 +150,8 @@ const activeMenu = computed(() => (route.meta.activeMenu ? route.meta.activeMenu
   height: 100%;
   min-height: 0;
   margin: 0 !important;
-  /* 左、右、下 6px，顶贴边（与无标题栏一致） */
-  padding: 0 6px 6px !important;
+  /* 顶贴边；底部留 6px。左右间距由内部容器控制，避免与 menu-pad 叠加导致不对称 */
+  padding: 0 0 6px !important;
   overflow: hidden;
 }
 </style>
