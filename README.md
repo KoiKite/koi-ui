@@ -40,7 +40,7 @@
 
 <p align="center">
   <span>&nbsp;[&nbsp;</span>
-  博客演示[369元]
+  博客演示[388元]
   <a href="http://39.107.143.109:8188/home/index" target="_blank">点击这里</a>
   <span>&nbsp;]&nbsp;</span>
 </p>
@@ -59,7 +59,7 @@
   <span>&nbsp;]&nbsp;</span>
 </p>
 前后端版本模版[188元]：SpringBoot3、JDK17、Sa-Token等技术；
-博客版本[369元]：博客 + 管理平台；
+博客版本[388元]：博客 + 管理平台；
 
 ## 1、简介
 
