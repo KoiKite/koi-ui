@@ -40,9 +40,11 @@
                     }"
                     @click="handleTopMenuClick(item)"
                   >
-                    <KoiGlobalIcon v-if="item.meta.icon" :name="item.meta.icon" size="18"></KoiGlobalIcon>
                     <el-tooltip :content="getMenuLanguage(item.meta?.title)" :show-after="1500" placement="right">
-                      <span class="title" v-text="getMenuLanguage(item.meta?.title)"></span>
+                      <div class="left-row-tooltip-trigger">
+                        <KoiGlobalIcon v-if="item.meta.icon" :name="item.meta.icon" size="18"></KoiGlobalIcon>
+                        <span class="title" v-text="getMenuLanguage(item.meta?.title)"></span>
+                      </div>
                     </el-tooltip>
                   </div>
                 </div>
@@ -470,6 +472,15 @@ onBeforeUnmount(() => {
   border: 1px solid transparent;
   color: var(--el-header-optimum-color);
   transition: all 0.3s ease;
+
+  .left-row-tooltip-trigger {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+  }
 
   .title {
     margin-top: 8px;

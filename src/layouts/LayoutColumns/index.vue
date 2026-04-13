@@ -11,9 +11,8 @@
           v-for="(item, index) in topLevelMenus"
           :key="item.meta?.menuId || index"
           :content="getMenuLanguage(item.meta?.title)"
-          :show-after="200"
+          :show-after="isFirstColumnCollapse ? 0 : 1500"
           placement="right"
-          :disabled="!isFirstColumnCollapse"
         >
           <div
             class="left-column"

@@ -4,16 +4,34 @@
     <!-- 非叶子节点 -->
     <el-sub-menu v-if="item.children?.length" :index="item.path">
       <template #title>
-        <KoiGlobalIcon v-if="item.meta.icon" :name="item.meta.icon" size="18"></KoiGlobalIcon>
-        <span class="menu-ellipsis" v-text="getMenuLanguage(item.meta?.title)"></span>
+        <el-tooltip
+          :content="getMenuLanguage(item.meta?.title)"
+          :show-after="1500"
+          placement="bottom"
+          popper-class="koi-horizontal-menu-tooltip"
+        >
+          <div class="menu-title-wrap menu-title-trigger">
+            <KoiGlobalIcon v-if="item.meta.icon" :name="item.meta.icon" size="18"></KoiGlobalIcon>
+            <span class="menu-ellipsis" v-text="getMenuLanguage(item.meta?.title)"></span>
+          </div>
+        </el-tooltip>
       </template>
       <HorizontalSubMenu :menuList="item.children" />
     </el-sub-menu>
     <!-- 叶子节点[功能节点] -->
     <el-menu-item v-else :index="item.path" @click="handleMenuRouter(item)">
-      <KoiGlobalIcon v-if="item.meta.icon" :name="item.meta.icon" size="18"></KoiGlobalIcon>
       <template #title>
-        <span class="menu-ellipsis" v-text="getMenuLanguage(item.meta?.title)"></span>
+        <el-tooltip
+          :content="getMenuLanguage(item.meta?.title)"
+          :show-after="1500"
+          placement="bottom"
+          popper-class="koi-horizontal-menu-tooltip"
+        >
+          <div class="menu-title-wrap menu-title-trigger">
+            <KoiGlobalIcon v-if="item.meta.icon" :name="item.meta.icon" size="18"></KoiGlobalIcon>
+            <span class="menu-ellipsis" v-text="getMenuLanguage(item.meta?.title)"></span>
+          </div>
+        </el-tooltip>
       </template>
     </el-menu-item>
   </template>
@@ -46,6 +64,18 @@ const handleMenuRouter = (value: any) => {
 
 <style lang="scss">
 /** 菜单标题过长使用省略号 */
+.menu-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+}
+
+.menu-title-trigger {
+  width: 100%;
+  height: 100%;
+}
+
 .menu-ellipsis {
   max-width: 150px;
   overflow: hidden;
@@ -96,6 +126,10 @@ const handleMenuRouter = (value: any) => {
 .el-popper.is-pure {
   border-radius: 8px;
   border: none !important;
+}
+
+.koi-horizontal-menu-tooltip {
+  z-index: 4000 !important;
 }
 
 // 菜单折叠 hover 弹窗样式
