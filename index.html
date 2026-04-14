@@ -1,6 +1,35 @@
 <!doctype html>
 <html lang="en">
 <head>
+  <!-- 与 Pinia global 持久化一致，首屏前挂上 html.dark，避免加载页闪亮色 -->
+  <script>
+    (function () {
+      var DEFAULT_THEME = "#2992FF";
+      var DEFAULT_THEME_RGB = "41,146,255";
+      try {
+        var raw = localStorage.getItem("koi-global");
+        var data = raw ? JSON.parse(raw) : null;
+        var themeColor = data && typeof data.themeColor === "string" ? data.themeColor.trim() : "";
+        var isValidHex = /^#([0-9A-Fa-f]{6})$/.test(themeColor);
+        var safeTheme = isValidHex ? themeColor : DEFAULT_THEME;
+        var safeThemeRgb = DEFAULT_THEME_RGB;
+        if (isValidHex) {
+          safeThemeRgb = [
+            parseInt(safeTheme.slice(1, 3), 16),
+            parseInt(safeTheme.slice(3, 5), 16),
+            parseInt(safeTheme.slice(5, 7), 16)
+          ].join(",");
+        }
+        document.documentElement.style.setProperty("--loading-primary-color", safeTheme);
+        document.documentElement.style.setProperty("--loading-text-color", safeTheme);
+        document.documentElement.style.setProperty("--loading-primary-rgb", safeThemeRgb);
+        if (data && data.isDark === true) {
+          document.documentElement.classList.add("dark");
+          document.documentElement.style.colorScheme = "dark";
+        }
+      } catch (e) {}
+    })();
+  </script>
   <meta charset="UTF-8" />
   <link rel="icon" type="image/svg+xml" href="/public/vite.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -11,21 +40,56 @@
       position: fixed;
       top: 0;
       left: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
       width: 100vw;
       height: 100vh;
-      background: #D8D8D8;
+      background: #FFFFFF;
       overflow: hidden;
       z-index: 9999;
     }
 
+    .loading-background {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 560px 420px at 85% 18%, rgba(var(--loading-primary-rgb, 41,146,255), 0.12), transparent 70%),
+        radial-gradient(460px circle at 20% 80%, rgba(var(--loading-primary-rgb, 41,146,255), 0.10), transparent 65%),
+        radial-gradient(320px circle at 52% 52%, rgba(var(--loading-primary-rgb, 41,146,255), 0.08), transparent 60%),
+        #F8F8F8;
+      z-index: 0;
+    }
+
+    html.dark .loading-background {
+      background:
+        radial-gradient(ellipse 560px 420px at 85% 18%, rgba(255, 255, 255, 0.34), transparent 70%),
+        radial-gradient(460px circle at 20% 80%, rgba(255, 255, 255, 0.30), transparent 65%),
+        radial-gradient(320px circle at 52% 52%, rgba(255, 255, 255, 0.28), transparent 60%),
+        #03020C;
+    }
+
+    .glass-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(30px);
+      -webkit-backdrop-filter: blur(30px);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    html.dark .glass-overlay {
+      background: rgba(0, 0, 0, 0.2);
+    }
+
     .loading-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 2;
       display: flex;
       flex-direction: column;
       align-items: center;
+      text-align: center;
     }
 
     .loading-element {
@@ -38,7 +102,7 @@
       content: '';
       width: 48px;
       height: 5px;
-      background: #3D6AFF;
+      background: var(--loading-primary-color, #2992FF);
       position: absolute;
       top: 60px;
       left: 0;
@@ -46,16 +110,25 @@
       animation: loading-shadow 0.5s linear infinite;
     }
 
+    html.dark .loading-element:before {
+      background: var(--loading-primary-color, #2992FF);
+      opacity: 0.45;
+    }
+
     .loading-element:after {
       content: '';
       width: 100%;
       height: 100%;
-      background: #3D6AFF;
+      background: var(--loading-primary-color, #2992FF);
       position: absolute;
       top: 0;
       left: 0;
       border-radius: 4px;
       animation: loading-jump 0.5s linear infinite;
+    }
+
+    html.dark .loading-element:after {
+      background: var(--loading-primary-color, #2992FF);
     }
 
     @keyframes loading-jump {
@@ -87,11 +160,15 @@
     }
 
     .loading-text {
-      color: #557CFF;
+      color: var(--loading-text-color, #2992FF);
       font-size: 32px;
       font-weight: 500;
       text-align: center;
       font-family: Arial, Helvetica, sans-serif;
+    }
+
+    html.dark .loading-text {
+      color: var(--loading-text-color, #2992FF);
     }
     
     .loading-element + .loading-text {
@@ -104,6 +181,8 @@
   <div id="app">
     <!-- 第二步开始 -->
     <div class="loading-box">
+      <div class="loading-background"></div>
+      <div class="glass-overlay"></div>
       <div class="loading-container">
         <div class="loading-element"></div>
         <p class="loading-text">%VITE_WEB_TITLE%</p>
