@@ -67,7 +67,7 @@ const handleMenuRouter = (value: any) => {
 .menu-title-wrap {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 2px;
   max-width: 100%;
 }
 

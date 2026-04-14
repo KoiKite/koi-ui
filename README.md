@@ -7,7 +7,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Vue-3.x-4FC08D?style=flat-square&logo=vue.js" alt="Vue" />
   <img src="https://img.shields.io/badge/TypeScript-8.x-3178C6?style=flat-square&logo=typescript" alt="TypeScript" />
-  <img src="https://img.shields.io/badge/Vite-7.x-646CFF?style=flat-square&logo=vite" alt="Vite" />
+  <img src="https://img.shields.io/badge/Vite-8.x-646CFF?style=flat-square&logo=vite" alt="Vite" />
   <img src="https://img.shields.io/badge/ElementPlus-2.x-409EFF?style=flat-square&logo=element" alt="Element Plus" />
 </p>
 

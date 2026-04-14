@@ -206,10 +206,12 @@ const uploadError = () => {
   .el-upload,
   .el-upload-dragger {
     cursor: not-allowed !important;
-    background: var(--el-color-primary-light-9);
-    border: 2px dashed var(--el-color-primary) !important;
+    background: var(--el-fill-color-light) !important;
+    border: 2px dashed var(--el-border-color-darker) !important;
+    box-shadow: none !important;
     &:hover {
-      border: 2px dashed var(--el-color-primary) !important;
+      border: 2px dashed var(--el-border-color-darker) !important;
+      box-shadow: none !important;
     }
   }
 }
@@ -228,11 +230,23 @@ const uploadError = () => {
       width: v-bind(width);
       height: v-bind(height);
       overflow: hidden;
-      border: 2px dashed var(--el-color-primary);
+      border: 2px dashed var(--el-border-color-darker);
       border-radius: v-bind(borderRadius);
-      transition: var(--el-transition-duration-fast);
+      box-shadow: none;
+      transition:
+        border-color var(--el-transition-duration-fast),
+        background-color var(--el-transition-duration-fast),
+        box-shadow var(--el-transition-duration-fast);
       &:hover {
-        background: var(--el-color-primary-light-9);
+        border-color: var(--el-color-primary);
+        background: var(--el-fill-color-lighter);
+        box-shadow: var(--el-box-shadow-light);
+        .upload-content {
+          color: var(--el-color-primary);
+          .el-icon {
+            color: var(--el-color-primary);
+          }
+        }
         .upload-operate {
           opacity: 1;
         }
@@ -246,19 +260,32 @@ const uploadError = () => {
         padding: 0;
         overflow: hidden;
         background-color: transparent;
-        border: 2px dashed var(--el-color-primary);
+        border: 2px dashed var(--el-border-color-darker);
         border-radius: v-bind(borderRadius);
         &:hover {
-          border: 2px dashed var(--el-color-primary);
+          border-color: var(--el-color-primary);
+          background: var(--el-fill-color-lighter);
+          .upload-content {
+            color: var(--el-color-primary);
+            .el-icon {
+              color: var(--el-color-primary);
+            }
+          }
         }
       }
       .el-upload-dragger.is-dragover {
         background-color: var(--el-color-primary-light-9);
         border: 2px dashed var(--el-color-primary) !important;
       }
+      .el-upload:has(.el-upload-dragger.is-dragover) {
+        box-shadow: var(--el-box-shadow-light);
+      }
       .upload-image {
+        display: block;
         width: 100%;
         height: 100%;
+        max-width: 100%;
+        max-height: 100%;
         object-fit: contain;
       }
       .upload-content {
@@ -269,10 +296,12 @@ const uploadError = () => {
         justify-content: center;
         font-size: 12px;
         line-height: 30px;
-        color: var(--el-color-primary);
+        color: var(--el-text-color-regular);
+        transition: color var(--el-transition-duration-fast);
         .el-icon {
           font-size: 28px;
-          color: var(--el-color-primary);
+          color: var(--el-text-color-regular);
+          transition: color var(--el-transition-duration-fast);
         }
       }
       .upload-operate {
@@ -312,7 +341,7 @@ const uploadError = () => {
   .upload-tip {
     font-size: 12px;
     line-height: 26px;
-    color: var(--el-color-primary);
+    color: var(--el-text-color-secondary);
     text-align: left;
   }
 }

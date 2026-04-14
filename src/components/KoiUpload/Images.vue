@@ -4,9 +4,9 @@
       v-model:file-list="_fileList"
       action="#"
       list-type="picture-card"
-      :class="['upload', imageDisabled ? 'disabled' : '', drag ? 'no-border' : '']"
+      :class="['upload', uploadDisabled ? 'disabled' : '', drag ? 'no-border' : '']"
       :multiple="true"
-      :disabled="imageDisabled"
+      :disabled="uploadDisabled"
       :limit="limit"
       :http-request="handleHttpUpload"
       :before-upload="beforeUpload"
@@ -46,7 +46,7 @@
 </template>
 
 <script setup lang="ts" name="KoiUploadImages">
-import { ref, computed, inject, watch } from "vue";
+import { ref, computed, inject, watch, onBeforeUnmount } from "vue";
 import { ElLoading } from "element-plus";
 import koi from "@/utils/axios.ts";
 import { koiNoticeSuccess, koiNoticeWarning, koiNoticeError } from "@/utils/koi.ts";
@@ -91,8 +91,11 @@ const formItemContext = inject(formItemContextKey, void 0);
 const imageDisabled = computed(() => {
   return props.disabled || formContext?.disabled;
 });
-
 const _fileList = ref<UploadUserFile[]>(props.fileList);
+// 达到限制数量后禁用上传入口，但仍允许删除
+const uploadDisabled = computed(() => {
+  return imageDisabled.value || _fileList.value.length >= props.limit;
+});
 
 // 监听 props.fileList 列表默认值改变
 watch(
@@ -134,7 +137,7 @@ const handleHttpUpload = async (options: UploadRequestOptions) => {
     text: "正在上传",
     background: "rgba(0,0,0,.2)"
   });
-  
+
   try {
     const res: any = await koi.upload(props.action, formData);
     options.onSuccess(import.meta.env.VITE_SERVER + res.data?.fileUploadPath);
@@ -153,13 +156,34 @@ const handleHttpUpload = async (options: UploadRequestOptions) => {
 const emit = defineEmits<{
   "update:fileList": [value: UploadUserFile[]];
 }>();
+
+const uploadSuccessCount = ref(0);
+let uploadSuccessTimer: number | undefined;
+
+const flushUploadSuccessNotice = () => {
+  if (uploadSuccessCount.value <= 0) return;
+  koiNoticeSuccess(`图片上传成功，共 ${uploadSuccessCount.value} 张`);
+  uploadSuccessCount.value = 0;
+};
+
+const scheduleUploadSuccessNotice = () => {
+  if (uploadSuccessTimer) {
+    window.clearTimeout(uploadSuccessTimer);
+  }
+  uploadSuccessTimer = window.setTimeout(() => {
+    flushUploadSuccessNotice();
+    uploadSuccessTimer = undefined;
+  }, 300);
+};
+
 const uploadSuccess = (response: string | undefined, uploadFile: UploadFile) => {
   if (!response) return;
   uploadFile.url = response;
   emit("update:fileList", _fileList.value);
   // 调用 el-form 内部的校验方法[可自动校验]
   formItemContext?.prop && formContext?.validateField([formItemContext.prop as string]);
-  koiNoticeSuccess("图片上传成功");
+  uploadSuccessCount.value += 1;
+  scheduleUploadSuccessNotice();
 };
 
 /**
@@ -191,6 +215,14 @@ const handlePictureCardPreview: UploadProps["onPreview"] = file => {
   viewImageUrl.value = file.url!;
   imgViewVisible.value = true;
 };
+
+onBeforeUnmount(() => {
+  if (uploadSuccessTimer) {
+    window.clearTimeout(uploadSuccessTimer);
+    uploadSuccessTimer = undefined;
+  }
+  flushUploadSuccessNotice();
+});
 </script>
 
 <style scoped lang="scss">
@@ -209,10 +241,12 @@ const handlePictureCardPreview: UploadProps["onPreview"] = file => {
   .el-upload--picture-card,
   .el-upload-dragger {
     cursor: not-allowed;
-    background: var(--el-color-primary-light-9) !important;
-    border: 2px dashed var(--el-color-primary);
+    background: var(--el-fill-color-light) !important;
+    border: 2px dashed var(--el-border-color-darker);
+    box-shadow: none !important;
     &:hover {
-      border-color: var(--el-color-primary) !important;
+      border-color: var(--el-border-color-darker) !important;
+      box-shadow: none !important;
     }
   }
 }
@@ -231,31 +265,62 @@ const handlePictureCardPreview: UploadProps["onPreview"] = file => {
       height: 100%;
       padding: 0;
       overflow: hidden;
-      border: 2px dashed var(--el-color-primary);
+      border: 2px dashed var(--el-border-color-darker);
       border-radius: v-bind(borderRadius);
       &:hover {
-        background: var(--el-color-primary-light-9);
-        border: 2px dashed var(--el-color-primary);
+        border-color: var(--el-color-primary);
+        background: var(--el-fill-color-lighter);
+        box-shadow: var(--el-box-shadow-light);
+        .upload-content {
+          color: var(--el-color-primary);
+          .el-icon {
+            color: var(--el-color-primary);
+          }
+        }
       }
     }
     .el-upload-dragger.is-dragover {
       background-color: var(--el-color-primary-light-9);
       border: 2px dashed var(--el-color-primary) !important;
     }
+    .el-upload-list__item:has(.el-upload-dragger.is-dragover),
+    .el-upload--picture-card:has(.el-upload-dragger.is-dragover) {
+      box-shadow: var(--el-box-shadow-light);
+    }
     .el-upload-list__item,
     .el-upload--picture-card {
       width: v-bind(width);
       height: v-bind(height);
+      overflow: hidden;
       background-color: transparent;
-      border: 2px dashed var(--el-color-primary);
+      border: 2px dashed var(--el-border-color-darker);
       border-radius: v-bind(borderRadius);
+      box-shadow: none;
+      transition:
+        border-color var(--el-transition-duration-fast),
+        background-color var(--el-transition-duration-fast),
+        box-shadow var(--el-transition-duration-fast);
       &:hover {
-        background-color: var(--el-color-primary-light-9);
+        border-color: var(--el-color-primary);
+        background-color: var(--el-fill-color-lighter);
+        box-shadow: var(--el-box-shadow-lighter);
+        .upload-content {
+          color: var(--el-color-primary);
+          .el-icon {
+            color: var(--el-color-primary);
+          }
+        }
+        .upload-operator {
+          opacity: 1;
+        }
       }
     }
     .upload-image {
+      display: block;
       width: 100%;
       height: 100%;
+      max-width: 100%;
+      max-height: 100%;
       object-fit: contain;
     }
     .upload-operator {
@@ -288,31 +353,25 @@ const handlePictureCardPreview: UploadProps["onPreview"] = file => {
         }
       }
     }
-    .el-upload-list__item {
-      border: 2px dashed var(--el-color-primary);
-      &:hover {
-        .upload-operator {
-          opacity: 1;
-        }
-      }
-    }
     .upload-content {
       display: flex;
       flex-direction: column;
       align-items: center;
       font-size: 12px;
       line-height: 30px;
-      color: var(--el-color-primary);
+      color: var(--el-text-color-regular);
+      transition: color var(--el-transition-duration-fast);
       .el-icon {
         font-size: 28px;
-        color: var(--el-color-primary);
+        color: var(--el-text-color-regular);
+        transition: color var(--el-transition-duration-fast);
       }
     }
   }
   .el-upload-tip {
     font-size: 12px;
     line-height: 12px;
-    color: var(--el-color-primary);
+    color: var(--el-text-color-secondary);
     text-align: left;
     margin-top: 5px;
   }

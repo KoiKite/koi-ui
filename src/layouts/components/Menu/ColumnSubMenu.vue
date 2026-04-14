@@ -89,6 +89,7 @@ const handleMenuRouter = (value: any) => {
 .menu-title-wrap {
   display: flex;
   align-items: center;
+  gap: 2px;
   width: 100%;
 }
 
@@ -103,6 +104,7 @@ const handleMenuRouter = (value: any) => {
 /** 图标容器 - 只负责偏移 */
 .icon-container {
   display: inline-block;
+  flex-shrink: 0;
   transform: translate($aside-menu-font-icon-translate); // 图标容器偏移
 }
 
